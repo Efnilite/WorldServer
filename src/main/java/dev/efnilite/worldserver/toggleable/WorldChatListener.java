@@ -8,10 +8,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class WorldChatListener extends Toggleable implements Listener {
 
-    public WorldChatListener(boolean enabled) {
-        super(enabled);
-    }
-
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
         if (!Option.CHAT_ENABLED) {

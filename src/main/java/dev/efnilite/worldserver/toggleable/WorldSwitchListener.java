@@ -12,10 +12,6 @@ import java.util.List;
 
 public class WorldSwitchListener extends Toggleable implements Listener {
 
-    public WorldSwitchListener(boolean enabled) {
-        super(enabled);
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (!Option.TAB_ENABLED) {

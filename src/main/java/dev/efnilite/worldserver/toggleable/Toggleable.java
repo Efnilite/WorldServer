@@ -5,15 +5,9 @@ import dev.efnilite.worldserver.util.VisibilityHandler;
 
 public abstract class Toggleable {
 
-    protected boolean enabled;
     protected VisibilityHandler visibilityHandler;
 
-    public Toggleable(boolean enabled) {
-        this.enabled = enabled;
+    public Toggleable() {
         this.visibilityHandler = WorldServer.getVisibilityHandler();
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 }

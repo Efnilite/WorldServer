@@ -3,6 +3,7 @@ package dev.efnilite.worldserver;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.config.Verbose;
+import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.*;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldServer extends JavaPlugin {
 
+    public static boolean IS_OUTDATED;
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
@@ -21,6 +23,8 @@ public class WorldServer extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        Tasks.init(this);
+        Tasks.time("startup");
         Verbose.init(this);
         configuration = new Configuration(this);
         Option.init();
@@ -51,10 +55,15 @@ public class WorldServer extends JavaPlugin {
 
         SimpleCommand.register("worldserver",  new WorldServerCommand());
 
-        Bukkit.getPluginManager().registerEvents(new WorldChatListener(Option.CHAT_ENABLED), this);
-        Bukkit.getPluginManager().registerEvents(new WorldSwitchListener(Option.TAB_ENABLED), this);
 
-        Verbose.info("Loaded WorldServer " + getDescription().getVersion() + " by Efnilite");
+        Bukkit.getPluginManager().registerEvents(new GeneralHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new WorldChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new WorldSwitchListener(), this);
+
+        UpdateChecker checker = new UpdateChecker();
+        Tasks.syncRepeat(checker::check, 8 * 72000); // 8 hours
+
+        Verbose.info("Loaded WorldServer " + getDescription().getVersion() + " by Efnilite in " + Tasks.end("startup")  + "ms!");
     }
 
     public static VisibilityHandler getVisibilityHandler() {

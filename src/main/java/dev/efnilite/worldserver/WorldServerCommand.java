@@ -1,6 +1,7 @@
 package dev.efnilite.worldserver;
 
 import dev.efnilite.worldserver.util.SimpleCommand;
+import dev.efnilite.worldserver.util.Tasks;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,8 +25,9 @@ public class WorldServerCommand extends SimpleCommand {
                 if (!sender.hasPermission("ws.reload")) {
                     return true;
                 }
+                Tasks.time("reload");
                 WorldServer.getConfiguration().reload();
-                Util.send(sender, "&#468094> &7Reloaded WorldServer!");
+                Util.send(sender, "&#468094&l> &7Reloaded WorldServer in " + Tasks.end("reload") + "ms!");
             }
         }
         return true;
