@@ -30,6 +30,21 @@ global-chat-prefix: '!'
 # %player% is used to get the player and %message% is to get the message.
 global-chat-format: '&#468094[Global] &f%player%: %message%'
 
+# -= World groups =-
+# Group together worlds to share the tab list and chat
+groups:
+    example:
+        - 'World-1'
+        - 'World-2'
+        - 'Nether'
+
+# -= World chat format =-
+# Change the chat format for a group of worlds or a specific world
+# If conflict happens, groups are prioritized over worlds.
+chat-format:
+    example: '&c[Example World Group] &f%player%: &7%message%' # Example with a group
+    MyWorld: '&c[MyWorld] &7%player% -  %message%' # Example with a world
+
 # -= Enable per world chat =-
 # True: players not in the same world can't chat with each other
 # False: chat will be global

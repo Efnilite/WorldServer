@@ -2,9 +2,14 @@ package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.Util;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldChatListener extends Toggleable implements Listener {
 
@@ -16,15 +21,37 @@ public class WorldChatListener extends Toggleable implements Listener {
         String message = event.getMessage();
         String prefix = Option.GLOBAL_CHAT_PREFIX;
 
-
+        // Global chat handling
         if (Option.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
-            event.setFormat(Util.color(Option.GLOBAL_CHAT_FORMAT
-                    .replace("%player%", "%s")
-                    .replace("%message%", "%s")));
+            event.setFormat(getChatFormatted(message));
             event.setMessage(message.replaceFirst(prefix, ""));
             return;
         }
+
+        World world = event.getPlayer().getWorld();
+
+        // Update recipients with world groups
+        List<Player> sendTo = getPlayersInWorldGroup(world);
+
         event.getRecipients().clear();
-        event.getRecipients().addAll(event.getPlayer().getWorld().getPlayers());
+        event.getRecipients().addAll(sendTo);
+
+        // Update possible formatting for groups and single worlds
+        String format;
+        String group = Option.getGroupFromWorld(world);
+        if (group.equals("")) {
+            format = Option.CHAT_FORMAT.get(world.getName());
+        } else {
+            format = Option.CHAT_FORMAT.get(group);
+        }
+        if (format != null) {
+            event.setFormat(getChatFormatted(format));
+        }
+    }
+
+    private String getChatFormatted(String message) {
+        return Util.color(message
+                .replace("%player%", "%s")
+                .replace("%message%", "%s"));
     }
 }
