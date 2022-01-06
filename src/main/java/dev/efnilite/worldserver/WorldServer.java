@@ -33,16 +33,17 @@ public class WorldServer extends JavaPlugin {
             case "v1_18":
             case "v1_17":
             case "v1_16":
-                visibilityHandler = new VisibilityHandler_v1_16();
-                break;
             case "v1_15":
             case "v1_14":
             case "v1_13":
+                visibilityHandler = new VisibilityHandler_v1_13();
+                break;
             case "v1_12":
             case "v1_11":
             case "v1_10":
             case "v1_9_":
-                visibilityHandler = new VisibilityHandler_v1_9();
+            case "v1_8_":
+                visibilityHandler = new VisibilityHandler_v1_8();
                 break;
             default:
                 Verbose.error("Unsupported version! Please upgrade your server :(");

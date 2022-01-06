@@ -2,8 +2,8 @@ package dev.efnilite.worldserver.util;
 
 import org.bukkit.entity.Player;
 
-// from 1.16 to 1.18
-public class VisibilityHandler_v1_16 extends VisibilityHandler {
+// from 1.13 to 1.18
+public class VisibilityHandler_v1_13 extends VisibilityHandler {
 
     @Override
     public void show(Player player, Player show) {
