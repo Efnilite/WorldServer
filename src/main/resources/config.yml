@@ -32,6 +32,7 @@ global-chat-format: '&#468094[Global] &f%player%: %message%'
 
 # -= World groups =-
 # Group together worlds to share the tab list and chat
+# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 groups:
     example:
         - 'World-1'
@@ -41,6 +42,7 @@ groups:
 # -= World chat format =-
 # Change the chat format for a group of worlds or a specific world
 # If conflict happens, groups are prioritized over worlds.
+# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 chat-format:
     example: '&c[Example World Group] &f%player%: &7%message%' # Example with a group
     MyWorld: '&c[MyWorld] &7%player% -  %message%' # Example with a world

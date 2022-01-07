@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Option {
 
-    public static boolean VERBOSE;
     public static boolean CHAT_ENABLED;
     public static boolean TAB_ENABLED;
     public static boolean GLOBAL_CHAT_ENABLED;
@@ -24,7 +23,6 @@ public class Option {
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
 
-        VERBOSE = config.getBoolean("verbose");
         CHAT_ENABLED = config.getBoolean("chat-enabled");
         TAB_ENABLED = config.getBoolean("tab-enabled");
         GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
