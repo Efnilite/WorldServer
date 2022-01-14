@@ -1,6 +1,8 @@
 package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.worldserver.WorldServer;
+import dev.efnilite.worldserver.util.Util;
+import dev.efnilite.worldserver.util.Version;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -17,15 +19,17 @@ public class GeneralHandler implements Listener {
         Player player = event.getPlayer();
 
         if (player.isOp() && WorldServer.IS_OUTDATED) {
-            BaseComponent[] message = new ComponentBuilder()
-                    .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Efnilite/WorldServer/releases/latest"))
-                    .append("> ").color(ChatColor.of("#468094")).bold(true)
-                    .append("Your WorldServer version is outdated. ").color(ChatColor.GRAY).bold(false)
-                    .append("Click here").color(ChatColor.of("#468094")).underlined(true)
-                    .append(" to visit the latest version!").color(ChatColor.GRAY).underlined(false)
-                    .create();
+            if (Version.isHigherOrEqual(Version.V1_16)) {
+                BaseComponent[] message = new ComponentBuilder()
+                        .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Efnilite/WorldServer/releases/latest"))
+                        .append("> ").color(ChatColor.of("#468094")).bold(true).append("Your WorldServer version is outdated. ")
+                        .color(ChatColor.GRAY).bold(false).append("Click here").color(ChatColor.of("#468094")).underlined(true)
+                        .append(" to visit the latest version!").color(ChatColor.GRAY).underlined(false).create();
 
-            player.spigot().sendMessage(message);
+                player.spigot().sendMessage(message);
+            } else {
+                player.sendMessage(Util.color("&#468094&b> &7Your WorldServer version is outdated. Visit the Spigot page to download the latest version."));
+            }
         }
     }
 }

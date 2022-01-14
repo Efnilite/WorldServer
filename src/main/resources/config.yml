@@ -45,7 +45,7 @@ groups:
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 chat-format:
     example: '&c[Example World Group] &f%player%: &7%message%' # Example with a group
-    MyWorld: '&c[MyWorld] &7%player% -  %message%' # Example with a world
+    MyWorld: '&c[MyWorld] &7%player% - %message%' # Example with a world
 
 # -= Enable per world chat =-
 # True: players not in the same world can't chat with each other

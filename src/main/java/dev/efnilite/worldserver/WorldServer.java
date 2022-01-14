@@ -29,7 +29,55 @@ public class WorldServer extends JavaPlugin {
         configuration = new Configuration(this);
         Option.init();
 
-        switch (Util.getVersion().substring(0, 5)) {
+        String version = Util.getVersion();
+        switch (version.substring(0, 5)) {
+            case "v1_18":
+                Verbose.info("Registered under server version 1.17");
+                Version.VERSION = Version.V1_18;
+                break;
+            case "v1_17":
+                Verbose.info("Registered under server version 1.17");
+                Version.VERSION = Version.V1_17;
+                break;
+            case "v1_16":
+                Verbose.info("Registered under server version 1.16");
+                Version.VERSION = Version.V1_16;
+                break;
+            case "v1_15":
+                Verbose.info("Registered under server version 1.15");
+                Version.VERSION = Version.V1_16;
+                break;
+            case "v1_14":
+                Verbose.info("Registered under server version 1.14");
+                Version.VERSION = Version.V1_16;
+                break;
+            case "v1_13":
+                Verbose.info("Registered under server version 1.13");
+                Version.VERSION = Version.V1_16;
+                break;
+            case "v1_12":
+                Verbose.info("Registered under server version 1.12");
+                Version.VERSION = Version.V1_12;
+                break;
+            case "v1_11":
+                Verbose.info("Registered under server version 1.11");
+                Version.VERSION = Version.V1_11;
+                break;
+            case "v1_10":
+                Verbose.info("Registered under server version 1.10");
+                Version.VERSION = Version.V1_10;
+                break;
+            case "v1_9_":
+                Verbose.info("Registered under server version 1.9");
+                Version.VERSION = Version.V1_9;
+                break;
+            case "v1_8_":
+                Verbose.info("Registered under server version 1.8");
+                Version.VERSION = Version.V1_8;
+                break;
+        }
+
+        switch (version) {
             case "v1_18":
             case "v1_17":
             case "v1_16":
