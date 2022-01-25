@@ -1,18 +1,17 @@
 package dev.efnilite.worldserver.toggleable;
 
+import dev.efnilite.fycore.event.EventWatcher;
 import dev.efnilite.worldserver.config.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class WorldSwitchListener extends Toggleable implements Listener {
+public class WorldSwitchListener extends Toggleable implements EventWatcher {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

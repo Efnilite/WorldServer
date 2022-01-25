@@ -1,18 +1,18 @@
 package dev.efnilite.worldserver.toggleable;
 
+import dev.efnilite.fycore.event.EventWatcher;
+import dev.efnilite.fycore.util.Version;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.util.Util;
-import dev.efnilite.worldserver.util.Version;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class GeneralHandler implements Listener {
+public class GeneralHandler implements EventWatcher {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -28,7 +28,7 @@ public class GeneralHandler implements Listener {
 
                 player.spigot().sendMessage(message);
             } else {
-                player.sendMessage(Util.color("&#468094&b> &7Your WorldServer version is outdated. Visit the Spigot page to download the latest version."));
+                player.sendMessage(Util.colour("&#468094&b> &7Your WorldServer version is outdated. Visit the Spigot page to download the latest version."));
             }
         }
     }

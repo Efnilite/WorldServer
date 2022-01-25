@@ -1,17 +1,16 @@
 package dev.efnilite.worldserver.toggleable;
 
+import dev.efnilite.fycore.event.EventWatcher;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class WorldChatListener extends Toggleable implements Listener {
+public class WorldChatListener extends Toggleable implements EventWatcher {
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
@@ -50,7 +49,7 @@ public class WorldChatListener extends Toggleable implements Listener {
     }
 
     private String getChatFormatted(String message) {
-        return Util.color(message
+        return Util.colour(message
                 .replace("%player%", "%s")
                 .replace("%message%", "%s"));
     }

@@ -1,7 +1,8 @@
 package dev.efnilite.worldserver.util;
 
+import dev.efnilite.fycore.util.Logging;
+import dev.efnilite.fycore.util.Task;
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.config.Verbose;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,32 +14,34 @@ import java.util.stream.Collectors;
 public class UpdateChecker {
 
     public void check() {
-        Tasks.asyncTask(() -> {
-            String latest;
-            try {
-                latest = getLatestVersion();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                Verbose.error("Error while trying to fetch latest version!");
-                return;
-            }
-            if (!WorldServer.getInstance().getDescription().getVersion().equals(latest)) {
-                Verbose.info("A new version of WorldServer is available to download!");
-                Verbose.info("Newest version: " + latest);
-                WorldServer.IS_OUTDATED = true;
-            } else {
-                Verbose.info("WorldServer is currently up-to-date!");
-            }
-        });
+        new Task()
+                .async()
+                .execute(() -> {
+                    String latest;
+                    try {
+                        latest = getLatestVersion();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        Logging.error("Error while trying to fetch latest version!");
+                        return;
+                    }
+                    if (!WorldServer.getInstance().getDescription().getVersion().equals(latest)) {
+                        Logging.info("A new version of WorldServer is available to download!");
+                        Logging.info("Newest version: " + latest);
+                        WorldServer.IS_OUTDATED = true;
+                    } else {
+                        Logging.info("WorldServer is currently up-to-date!");
+                    }
+                }).run();
     }
 
     private String getLatestVersion() throws IOException {
         InputStream stream;
-        Verbose.info("Checking for updates...");
+        Logging.info("Checking for updates...");
         try {
             stream = new URL("https://raw.githubusercontent.com/Efnilite/WorldServer/master/src/main/resources/plugin.yml").openStream();
         } catch (IOException e) {
-            Verbose.info("Unable to check for updates!");
+            Logging.info("Unable to check for updates!");
             return "";
         }
 

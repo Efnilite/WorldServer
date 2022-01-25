@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.1a</version>
+    <version>1.1.2</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -40,8 +40,12 @@
                             <minimizeJar>true</minimizeJar>
                             <relocations>
                                 <relocation>
+                                    <pattern>com.github.Efnilite</pattern>
+                                    <shadedPattern>dev.efnilite.worldserver.fycore</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>dev.efnilite.witp.util.bstats</shadedPattern>
+                                    <shadedPattern>dev.efnilite.worldserver.util.bstats</shadedPattern>
                                 </relocation>
                             </relocations>
                             <filters>
@@ -74,8 +78,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Efnilite</groupId>
+            <artifactId>fyCore</artifactId>
+            <version>ed5019d10a</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

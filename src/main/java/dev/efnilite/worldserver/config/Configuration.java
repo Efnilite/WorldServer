@@ -1,5 +1,7 @@
 package dev.efnilite.worldserver.config;
 
+import dev.efnilite.fycore.config.ConfigUpdater;
+import dev.efnilite.fycore.util.Logging;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,14 +38,14 @@ public class Configuration {
             for (String file : defaultFiles) {
                 plugin.saveResource(file, false);
             }
-            Verbose.info("Downloaded all config files");
+            Logging.info("Downloaded all config files");
         }
         for (String file : defaultFiles) {
             try {
                 ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Collections.emptyList());
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Verbose.error("Error while trying to update config");
+                Logging.error("Error while trying to update config");
             }
             FileConfiguration configuration = this.getFile(folder + "/" + file);
             files.put(file.replaceAll("(.+/|.yml)", ""), configuration);
@@ -85,7 +87,7 @@ public class Configuration {
         if (string.isEmpty()) {
             return null;
         }
-        return Util.color(string);
+        return Util.colour(string);
     }
 
     /**
@@ -103,6 +105,6 @@ public class Configuration {
         if (string == null) {
             return null;
         }
-        return Util.color(string);
+        return Util.colour(string);
     }
 }

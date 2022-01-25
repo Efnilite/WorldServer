@@ -1,4 +1,2 @@
-- Added World Groups
-    > Make multiple worlds have the same chat and tab list
-- Added Per World/Group Chat Format
-    > Adjust the chat format per world or group
+- Migrate to fyCore architecture
+- Update Spigot version

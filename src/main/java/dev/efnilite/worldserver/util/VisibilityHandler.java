@@ -4,6 +4,9 @@ import dev.efnilite.worldserver.WorldServer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * Handler for visibility of players
+ */
 public abstract class VisibilityHandler {
 
     protected Plugin plugin;

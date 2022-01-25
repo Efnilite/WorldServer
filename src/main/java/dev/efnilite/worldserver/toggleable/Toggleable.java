@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for the chat/tab listeners
+ */
 public abstract class Toggleable {
 
     protected VisibilityHandler visibilityHandler;

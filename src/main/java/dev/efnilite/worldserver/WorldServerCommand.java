@@ -1,16 +1,15 @@
 package dev.efnilite.worldserver;
 
-import dev.efnilite.worldserver.util.SimpleCommand;
-import dev.efnilite.worldserver.util.Tasks;
+import dev.efnilite.fycore.command.FyCommand;
+import dev.efnilite.fycore.util.Timer;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WorldServerCommand extends SimpleCommand {
+public class WorldServerCommand extends FyCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
@@ -25,19 +24,19 @@ public class WorldServerCommand extends SimpleCommand {
                 if (!sender.hasPermission("ws.reload")) {
                     return true;
                 }
-                Tasks.time("reload");
+                Timer.start("reload");
                 WorldServer.getConfiguration().reload();
-                Util.send(sender, "&#468094&l> &7Reloaded WorldServer in " + Tasks.end("reload") + "ms!");
+                Util.send(sender, "&#468094&l> &7Reloaded WorldServer in " + Timer.end("reload") + "ms!");
             }
         }
         return true;
     }
 
     @Override
-    public List<String> tabComplete(Player player, String[] args) {
+    public List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
-            if (player.hasPermission("ws.reload")) {
+            if (sender.hasPermission("ws.reload")) {
                 completions.add("reload");
             }
             return completions(args[0], completions);

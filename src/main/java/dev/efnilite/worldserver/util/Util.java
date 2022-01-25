@@ -1,5 +1,6 @@
 package dev.efnilite.worldserver.util;
 
+import dev.efnilite.fycore.util.colour.Colours;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,19 +21,19 @@ public class Util {
      *
      * @return the strings
      */
-    public static String[] color(String... strings) {
+    public static String[] colour(String... strings) {
         String[] ret = new String[strings.length];
         int i = 0;
         for (String string : strings) {
-            ret[i++] = Util.color(string);
+            ret[i++] = Util.colour(string);
         }
         return ret;
     }
 
-    public static List<String> color(List<String> strings) {
+    public static List<String> colour(List<String> strings) {
         List<String> ret = new ArrayList<>();
         for (String string : strings) {
-            ret.add(Util.color(string));
+            ret.add(Util.colour(string));
         }
         return ret;
     }
@@ -40,15 +41,15 @@ public class Util {
     /**
      * Color something
      */
-    public static String color(String string) {
+    public static String colour(String string) {
         if (!string.equals("")) {
-            return ChatColor.translateAlternateColorCodes('&', HexColours.translate(string));
+            return ChatColor.translateAlternateColorCodes('&', Colours.colour(string));
         }
         return string;
     }
 
     public static void send(CommandSender sender, String... message) {
-        sender.sendMessage(Util.color(message));
+        sender.sendMessage(Util.colour(message));
     }
 
     /**
