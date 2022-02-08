@@ -23,12 +23,14 @@ global-chat-enabled: true
 
 # -= Global chat prefix =-
 # The prefix for global chat
+# This is used to be able to type in global chat.
+# If you set this to '!', typing '!hello' will be seen by all players.
 global-chat-prefix: '!'
 
 # -= Global chat format =-
 # The text format when a message is sent in global chat
 # %player% is used to get the player and %message% is to get the message.
-global-chat-format: '&#468094[Global] &f%player%: %message%'
+global-chat-format: '<#468094>[Global] &f%player%: %message%'
 
 # -= World groups =-
 # Group together worlds to share the tab list and chat

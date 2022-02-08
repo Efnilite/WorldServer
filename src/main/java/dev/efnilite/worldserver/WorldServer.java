@@ -3,7 +3,7 @@ package dev.efnilite.worldserver;
 import dev.efnilite.fycore.FyPlugin;
 import dev.efnilite.fycore.util.Logging;
 import dev.efnilite.fycore.util.Task;
-import dev.efnilite.fycore.util.Timer;
+import dev.efnilite.fycore.util.Time;
 import dev.efnilite.fycore.util.Version;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
@@ -21,6 +21,9 @@ import org.bukkit.event.HandlerList;
 
 public class WorldServer extends FyPlugin {
 
+    public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
+    public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
+
     public static boolean IS_OUTDATED;
     private static WorldServer instance;
     private static Configuration configuration;
@@ -30,7 +33,7 @@ public class WorldServer extends FyPlugin {
     public void enable() {
         instance = this;
         verbosing = false;
-        Timer.start("enable");
+        Time.timerStart("enable");
 
         Logging.info("Registered under version " + Version.getPrettyVersion());
 
@@ -58,7 +61,7 @@ public class WorldServer extends FyPlugin {
                 Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        registerCommand("worldserver", WorldServerCommand.class);
+        registerCommand("worldserver", new WorldServerCommand());
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
@@ -73,7 +76,7 @@ public class WorldServer extends FyPlugin {
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
         metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
 
-        Logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Timer.end("enable")  + "ms!");
+        Logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }
 
     @Override

@@ -1,8 +1,10 @@
 package dev.efnilite.worldserver;
 
+import dev.efnilite.fycore.chat.Message;
 import dev.efnilite.fycore.command.FyCommand;
-import dev.efnilite.fycore.util.Timer;
-import dev.efnilite.worldserver.util.Util;
+import dev.efnilite.fycore.config.ConfigOption;
+import dev.efnilite.fycore.util.Time;
+import dev.efnilite.worldserver.config.Option;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -14,19 +16,54 @@ public class WorldServerCommand extends FyCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            Util.send(sender, "&8&m-----------&r &#468094&lWorldServer &8&m-----------");
-            Util.send(sender, "&#468094/ws &f- &7The main command");
-            if (sender.hasPermission("ws.reload")) {
-                Util.send(sender, "&#468094/ws reload &f- &7Reload the config and commands");
+            Message.send(sender, "");
+            Message.send(sender, "<dark_gray><strikethrough>-----------&r " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
+            Message.send(sender, "");
+            Message.send(sender, "<gray>/ws <dark_gray>- The main command");
+            Message.send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
+            if (sender.hasPermission("ws.mute.global")) {
+                Message.send(sender, "<gray>/ws muteglobal <dark_gray>- Mute or unmute the global chat");
             }
+            if (sender.hasPermission("ws.reload")) {
+                Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
+            }
+            Message.send(sender, "");
+            Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
+            Message.send(sender, "");
+            return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (!sender.hasPermission("ws.reload")) {
                     return true;
                 }
-                Timer.start("reload");
+                Time.timerStart("reload");
                 WorldServer.getConfiguration().reload();
-                Util.send(sender, "&#468094&l> &7Reloaded WorldServer in " + Timer.end("reload") + "ms!");
+                Message.send(sender, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
+                return true;
+            } else if (args[0].equalsIgnoreCase("muteglobal")) {
+                if (!sender.hasPermission("ws.reload")) {
+                    return true;
+                }
+
+                if (Option.GLOBAL_CHAT_ENABLED) {
+                    Option.GLOBAL_CHAT_ENABLED = false;
+                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Muted global chat!");
+                } else {
+                    Option.GLOBAL_CHAT_ENABLED = true;
+                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Unmuted global chat!");
+                }
+                return true;
+            } else if (args[0].equalsIgnoreCase("permissions")) {
+
+                Message.send(sender, "");
+                Message.send(sender, "<dark_gray><strikethrough>-----------&r <gradient:#3D626F>Permissions</gradient:#0EACE2> <dark_gray><strikethrough>-----------");
+                Message.send(sender, "");
+                Message.send(sender, "<gray>ws.reload <dark_gray>- Reloads the config");
+                Message.send(sender, "<gray>ws.mute.global <dark_gray>- For (un)muting global chat");
+                Message.send(sender, "");
+                Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
+                Message.send(sender, "");
+                return true;
             }
         }
         return true;
@@ -36,8 +73,12 @@ public class WorldServerCommand extends FyCommand {
     public List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
+            completions.add("permissions");
             if (sender.hasPermission("ws.reload")) {
                 completions.add("reload");
+            }
+            if (sender.hasPermission("ws.mute.global")) {
+                completions.add("muteglobal");
             }
             return completions(args[0], completions);
         } else {

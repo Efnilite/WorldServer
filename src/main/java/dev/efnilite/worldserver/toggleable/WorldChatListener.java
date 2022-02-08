@@ -22,7 +22,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         // Global chat handling
         if (Option.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
-            event.setFormat(getChatFormatted(message));
+            event.setFormat(getChatFormatted(Option.GLOBAL_CHAT_FORMAT));
             event.setMessage(message.replaceFirst(prefix, ""));
             return;
         }
@@ -48,8 +48,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
     }
 
-    private String getChatFormatted(String message) {
-        return Util.colour(message
+    private String getChatFormatted(String format) {
+        return Util.colour(format
                 .replace("%player%", "%s")
                 .replace("%message%", "%s"));
     }

@@ -1,5 +1,6 @@
 package dev.efnilite.worldserver.toggleable;
 
+import dev.efnilite.fycore.chat.Message;
 import dev.efnilite.fycore.event.EventWatcher;
 import dev.efnilite.fycore.util.Version;
 import dev.efnilite.worldserver.WorldServer;
@@ -20,15 +21,15 @@ public class GeneralHandler implements EventWatcher {
 
         if (player.isOp() && WorldServer.IS_OUTDATED) {
             if (Version.isHigherOrEqual(Version.V1_16)) {
-                BaseComponent[] message = new ComponentBuilder()
-                        .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Efnilite/WorldServer/releases/latest"))
-                        .append("> ").color(ChatColor.of("#468094")).bold(true).append("Your WorldServer version is outdated. ")
-                        .color(ChatColor.GRAY).bold(false).append("Click here").color(ChatColor.of("#468094")).underlined(true)
-                        .append(" to visit the latest version!").color(ChatColor.GRAY).underlined(false).create();
-
-                player.spigot().sendMessage(message);
+                Message.send(player, "");
+                Message.send(player,
+                        WorldServer.MESSAGE_PREFIX + "Your version is outdated. " +
+                                "Please <underline>visit the Spigot page<reset><gray> to update.");
+                Message.send(player, "");
             } else {
-                player.sendMessage(Util.colour("&#468094&b> &7Your WorldServer version is outdated. Visit the Spigot page to download the latest version."));
+                Message.send(player, "");
+                Message.send(player, WorldServer.MESSAGE_PREFIX + "Your WorldServer version is outdated. Please update!");
+                Message.send(player, "");
             }
         }
     }
