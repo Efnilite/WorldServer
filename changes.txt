@@ -1,3 +1,1 @@
-- Fix global chat format
-- Improved colouring scheme
-- Added mute (and unmute) command for global chat
+- Added brand new menu to easily change config options/reload the plugin.
