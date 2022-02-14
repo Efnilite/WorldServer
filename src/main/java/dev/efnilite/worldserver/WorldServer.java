@@ -17,6 +17,7 @@ import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 public class WorldServer extends FyPlugin {
@@ -76,13 +77,18 @@ public class WorldServer extends FyPlugin {
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
         metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            WorldPlayer.register(player);
+        }
+
         Logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }
 
     @Override
     public void disable() {
-        HandlerList.unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
+        for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
+            wp.save(false);
+        }
     }
 
     public static VisibilityHandler getVisibilityHandler() {

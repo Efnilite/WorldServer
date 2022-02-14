@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +31,8 @@ public class Configuration {
 
         String[] defaultFiles = new String[]{"config.yml"};
 
+        new File(plugin.getDataFolder(), "players").mkdirs();
+
         File folder = plugin.getDataFolder();
         if (!new File(folder, defaultFiles[0]).exists()) {
             plugin.getDataFolder().mkdirs();
@@ -42,7 +44,7 @@ public class Configuration {
         }
         for (String file : defaultFiles) {
             try {
-                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Collections.emptyList());
+                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups", "chat-format"));
             } catch (IOException ex) {
                 ex.printStackTrace();
                 Logging.error("Error while trying to update config");

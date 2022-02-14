@@ -2,9 +2,7 @@ package dev.efnilite.worldserver;
 
 import dev.efnilite.fycore.chat.Message;
 import dev.efnilite.fycore.command.FyCommand;
-import dev.efnilite.fycore.config.ConfigOption;
 import dev.efnilite.fycore.util.Time;
-import dev.efnilite.worldserver.config.Option;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -53,6 +51,7 @@ public class WorldServerCommand extends FyCommand {
                 Message.send(sender, "");
                 Message.send(sender, "<gray>ws.reload <dark_gray>- Reloads the config");
                 Message.send(sender, "<gray>ws.menu <dark_gray>- For opening and viewing the menu");
+                Message.send(sender, "<gray>ws.spy <dark_gray>- For spying on what everyone in every world is saying. This requires the ws.menu permission.");
                 Message.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
                 Message.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
                 Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");

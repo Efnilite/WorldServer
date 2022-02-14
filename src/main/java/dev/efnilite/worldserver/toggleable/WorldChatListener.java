@@ -1,6 +1,7 @@
 package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.fycore.event.EventWatcher;
+import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
@@ -34,6 +35,16 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         event.getRecipients().clear();
         event.getRecipients().addAll(sendTo);
+
+        String spy = Option.SPY_FORMAT
+                .replace("%world%", world.getName())
+                .replace("%player%", event.getPlayer().getName())
+                .replace("%message%", event.getMessage());
+        for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
+            if (wp.spyMode() && !wp.getPlayer().getWorld().getUID().equals(world.getUID())) {
+                wp.send(spy);
+            }
+        }
 
         // Update possible formatting for groups and single worlds
         String format;

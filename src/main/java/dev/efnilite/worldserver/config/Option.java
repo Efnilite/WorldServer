@@ -16,6 +16,7 @@ public class Option {
     public static boolean TAB_ENABLED;
     public static boolean GLOBAL_CHAT_ENABLED;
     public static String GLOBAL_CHAT_PREFIX;
+    public static String SPY_FORMAT;
     public static String GLOBAL_CHAT_FORMAT;
     public static HashMap<String, String> CHAT_FORMAT;
     public static HashMap<String, List<String>> GROUPS;
@@ -28,6 +29,7 @@ public class Option {
         GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
         GLOBAL_CHAT_PREFIX = config.getString("global-chat-prefix");
         GLOBAL_CHAT_FORMAT = config.getString("global-chat-format");
+        SPY_FORMAT = config.getString("spy-format");
 
         GROUPS = new HashMap<>();
         List<String> node = Util.getNode(config, "groups");
