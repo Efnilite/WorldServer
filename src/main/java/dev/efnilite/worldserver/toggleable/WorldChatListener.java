@@ -41,7 +41,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
                 .replace("%player%", event.getPlayer().getName())
                 .replace("%message%", event.getMessage());
         for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
-            if (wp.spyMode() && !wp.getPlayer().getWorld().getUID().equals(world.getUID())) {
+            if (wp.spyMode() && !sendTo.contains(wp.getPlayer())) {
                 wp.send(spy);
             }
         }

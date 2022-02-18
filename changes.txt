@@ -1,1 +1,1 @@
-- Added brand new menu to easily change config options/reload the plugin.
+- Fix spy mode not supporting world groups
