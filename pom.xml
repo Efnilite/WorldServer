@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -90,9 +90,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.Efnilite</groupId>
-            <artifactId>fyCore</artifactId>
-            <version>6940c36122</version>
+            <groupId>com.github.ViStudios</groupId>
+            <artifactId>vilib</artifactId>
+            <version>a4d626e879</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.config;
 
 import com.tchristofferson.configupdater.ConfigUpdater;
-import dev.efnilite.fycore.util.Logging;
+import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

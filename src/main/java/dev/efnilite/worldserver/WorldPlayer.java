@@ -1,9 +1,9 @@
 package dev.efnilite.worldserver;
 
 import com.google.gson.annotations.Expose;
-import dev.efnilite.fycore.chat.Message;
-import dev.efnilite.fycore.util.Logging;
-import dev.efnilite.fycore.util.Task;
+import dev.efnilite.vilib.chat.Message;
+import dev.efnilite.vilib.util.Logging;
+import dev.efnilite.vilib.util.Task;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -94,7 +94,7 @@ public class WorldPlayer {
                     .async()
                     .execute(() -> {
                         try {
-                            File file = new File(WorldServer.getFyPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+                            File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
 
                             if (!file.exists()) {
                                 file.createNewFile();
@@ -111,7 +111,7 @@ public class WorldPlayer {
                     }).run();
         } else {
             try {
-                File file = new File(WorldServer.getFyPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+                File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
 
                 if (!file.exists()) {
                     file.createNewFile();
@@ -139,7 +139,7 @@ public class WorldPlayer {
     @Nullable
     public static WorldPlayer read(Player player) {
         try {
-            File file = new File(WorldServer.getFyPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+            File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
 
             if (!file.exists()) {
                 file.createNewFile();

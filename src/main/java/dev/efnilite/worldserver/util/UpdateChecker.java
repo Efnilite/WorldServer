@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.util;
 
-import dev.efnilite.fycore.util.Logging;
-import dev.efnilite.fycore.util.Task;
+import dev.efnilite.vilib.util.Logging;
+import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.WorldServer;
 
 import java.io.BufferedReader;

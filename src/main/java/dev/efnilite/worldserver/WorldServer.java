@@ -1,10 +1,10 @@
 package dev.efnilite.worldserver;
 
-import dev.efnilite.fycore.FyPlugin;
-import dev.efnilite.fycore.util.Logging;
-import dev.efnilite.fycore.util.Task;
-import dev.efnilite.fycore.util.Time;
-import dev.efnilite.fycore.util.Version;
+import dev.efnilite.vilib.ViPlugin;
+import dev.efnilite.vilib.util.Logging;
+import dev.efnilite.vilib.util.Task;
+import dev.efnilite.vilib.util.Time;
+import dev.efnilite.vilib.util.Version;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
@@ -19,7 +19,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class WorldServer extends FyPlugin {
+public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";

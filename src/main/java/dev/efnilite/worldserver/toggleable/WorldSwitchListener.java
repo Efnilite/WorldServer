@@ -1,6 +1,6 @@
 package dev.efnilite.worldserver.toggleable;
 
-import dev.efnilite.fycore.event.EventWatcher;
+import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.config.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

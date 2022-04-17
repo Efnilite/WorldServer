@@ -1,8 +1,8 @@
 package dev.efnilite.worldserver.toggleable;
 
-import dev.efnilite.fycore.chat.Message;
-import dev.efnilite.fycore.event.EventWatcher;
-import dev.efnilite.fycore.util.Version;
+import dev.efnilite.vilib.chat.Message;
+import dev.efnilite.vilib.event.EventWatcher;
+import dev.efnilite.vilib.util.Version;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
 import org.bukkit.entity.Player;

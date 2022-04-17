@@ -1,8 +1,8 @@
 package dev.efnilite.worldserver;
 
-import dev.efnilite.fycore.chat.Message;
-import dev.efnilite.fycore.command.FyCommand;
-import dev.efnilite.fycore.util.Time;
+import dev.efnilite.vilib.chat.Message;
+import dev.efnilite.vilib.command.ViCommand;
+import dev.efnilite.vilib.util.Time;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WorldServerCommand extends FyCommand {
+public class WorldServerCommand extends ViCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {

@@ -1,6 +1,6 @@
 package dev.efnilite.worldserver.util;
 
-import dev.efnilite.fycore.chat.Message;
+import dev.efnilite.vilib.chat.Message;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

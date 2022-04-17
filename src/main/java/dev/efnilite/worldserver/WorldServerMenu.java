@@ -1,12 +1,12 @@
 package dev.efnilite.worldserver;
 
-import dev.efnilite.fycore.chat.Message;
-import dev.efnilite.fycore.inventory.Menu;
-import dev.efnilite.fycore.inventory.animation.RandomAnimation;
-import dev.efnilite.fycore.inventory.item.Item;
-import dev.efnilite.fycore.inventory.item.SliderItem;
-import dev.efnilite.fycore.inventory.item.TimedItem;
-import dev.efnilite.fycore.util.Time;
+import dev.efnilite.vilib.chat.Message;
+import dev.efnilite.vilib.inventory.Menu;
+import dev.efnilite.vilib.inventory.animation.RandomAnimation;
+import dev.efnilite.vilib.inventory.item.Item;
+import dev.efnilite.vilib.inventory.item.SliderItem;
+import dev.efnilite.vilib.inventory.item.TimedItem;
+import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Option;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
