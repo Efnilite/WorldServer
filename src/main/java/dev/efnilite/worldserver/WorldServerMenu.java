@@ -3,6 +3,7 @@ package dev.efnilite.worldserver;
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.inventory.Menu;
 import dev.efnilite.vilib.inventory.animation.RandomAnimation;
+import dev.efnilite.vilib.inventory.animation.SnakeSingleAnimation;
 import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.SliderItem;
 import dev.efnilite.vilib.inventory.item.TimedItem;
@@ -103,14 +104,14 @@ public class WorldServerMenu {
                     Time.timerStart("reload");
                     WorldServer.getConfiguration().reload();
                     Message.send(player, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
-                }), event, 20 * 5));
+                }), event).stay(20 * 5));
                 menu.updateItem(event.getSlot());
             }));
         }
 
         main
                 .distributeRowEvenly(1)
-                .animation(new RandomAnimation())
+                .animation(new SnakeSingleAnimation())
                 .fillBackground(Material.GRAY_STAINED_GLASS_PANE)
                 .open(player);
     }
