@@ -22,9 +22,10 @@
 global-chat-enabled: true
 
 # -= Global chat prefix =-
-# The prefix for global chat
+# The prefix for global chat.
 # This is used to be able to type in global chat.
 # If you set this to '!', typing '!hello' will be seen by all players.
+# This is not a command. Add the prefix (by default '!') in front of your message to access global chat!
 global-chat-prefix: '!'
 
 # -= Global chat format =-
@@ -34,6 +35,7 @@ global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 
 # -= Spy Format =-
 # The format for when spy mode is enabled.
+# Change this by using /ws menu
 spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
 # -= World groups =-
