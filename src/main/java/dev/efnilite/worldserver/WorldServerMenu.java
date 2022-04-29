@@ -2,7 +2,6 @@ package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.inventory.Menu;
-import dev.efnilite.vilib.inventory.animation.RandomAnimation;
 import dev.efnilite.vilib.inventory.animation.SnakeSingleAnimation;
 import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.SliderItem;
@@ -15,17 +14,18 @@ import org.bukkit.entity.Player;
 public class WorldServerMenu {
 
     public static void openMainMenu(Player player) {
-        Menu main = new Menu(3, "<white>WorldServer");
+        Menu menu = new Menu(3, "<white>WorldServer");
 
         WorldPlayer wp = WorldPlayer.getPlayer(player);
 
+        // in case somehow registration messed up
         if (wp == null) {
             wp = WorldPlayer.register(player);
         }
 
         if (player.hasPermission("ws.spy")) {
             WorldPlayer finalWp = wp;
-            main
+            menu
                     .item(9, new SliderItem()
                             .initial(wp.spyMode() ? 0 : 1)
                             .add(0, new Item(Material.LIME_STAINED_GLASS_PANE, "<#0DCB07><bold>Spy mode enabled")
@@ -41,7 +41,7 @@ public class WorldServerMenu {
         }
 
         if (player.hasPermission("ws.option.global-chat")) {
-            main
+            menu
                     .item(10, new SliderItem()
                             .initial(Option.GLOBAL_CHAT_ENABLED ? 0 : 1)
                             .add(0, new Item(Material.LIME_STAINED_GLASS_PANE, "<#0DCB07><bold>Global chat enabled")
@@ -59,7 +59,7 @@ public class WorldServerMenu {
         }
 
         if (player.hasPermission("ws.option.chat")) {
-            main
+            menu
                     .item(11, new SliderItem()
                             .initial(Option.CHAT_ENABLED ? 0 : 1)
                             .add(0, new Item(Material.LIME_STAINED_GLASS_PANE, "<#0DCB07><bold>Chat handling enabled")
@@ -77,7 +77,7 @@ public class WorldServerMenu {
         }
 
         if (player.hasPermission("ws.option.tab")) {
-            main
+            menu
                     .item(12, new SliderItem()
                             .initial(Option.TAB_ENABLED ? 0 : 1)
                             .add(0, new Item(Material.LIME_STAINED_GLASS_PANE, "<#0DCB07><bold>Tab handling enabled")
@@ -95,9 +95,9 @@ public class WorldServerMenu {
         }
 
         if (player.hasPermission("ws.reload")) {
-            main.item(13, new Item(Material.COMPARATOR, "&b<bold>Reload files").lore("<gray>This will reload all files.").click((event) -> {
-                Menu menu = event.getMenu();
-                menu.item(event.getSlot(), new TimedItem(new Item(Material.BARRIER, "<red><bold>Are you sure?")
+            menu.item(13, new Item(Material.COMPARATOR, "&b<bold>Reload files").lore("<gray>This will reload all files.").click((event) -> {
+                Menu cmenu = event.getMenu();
+                cmenu.item(event.getSlot(), new TimedItem(new Item(Material.BARRIER, "<red><bold>Are you sure?")
                         .lore("<gray>If you click this item again,", "<gray>all files will be reloaded")
                         .click((event1) -> {
                     player.closeInventory();
@@ -105,11 +105,11 @@ public class WorldServerMenu {
                     WorldServer.getConfiguration().reload();
                     Message.send(player, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
                 }), event).stay(20 * 5));
-                menu.updateItem(event.getSlot());
+                cmenu.updateItem(event.getSlot());
             }));
         }
 
-        main
+        menu
                 .distributeRowEvenly(1)
                 .animation(new SnakeSingleAnimation())
                 .fillBackground(Material.GRAY_STAINED_GLASS_PANE)

@@ -12,8 +12,11 @@ import java.util.List;
 
 public class Option {
 
-    public static boolean CHAT_ENABLED;
+    /* Tab options */
     public static boolean TAB_ENABLED;
+
+    /* Chat options */
+    public static boolean CHAT_ENABLED;
     public static boolean GLOBAL_CHAT_ENABLED;
     public static String GLOBAL_CHAT_PREFIX;
     public static String SPY_FORMAT;
@@ -21,16 +24,23 @@ public class Option {
     public static HashMap<String, String> CHAT_FORMAT;
     public static HashMap<String, List<String>> GROUPS;
 
+    /* Eco options */
+    public static boolean ECONOMY_ENABLED;
+    public static boolean ECONOMY_SWITCH_NOTIFICATION;
+    public static String ECONOMY_SWITCH_FORMAT;
+    public static String ECONOMY_CURRENCY_SYMBOL;
+    public static List<String> ECONOMY_CURRENCY_NAMES;
+
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
 
-        CHAT_ENABLED = config.getBoolean("chat-enabled");
         TAB_ENABLED = config.getBoolean("tab-enabled");
+
+        CHAT_ENABLED = config.getBoolean("chat-enabled");
         GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
         GLOBAL_CHAT_PREFIX = config.getString("global-chat-prefix");
         GLOBAL_CHAT_FORMAT = config.getString("global-chat-format");
         SPY_FORMAT = config.getString("spy-format");
-
         GROUPS = new HashMap<>();
         List<String> node = Util.getNode(config, "groups");
         if (node != null) {
@@ -39,7 +49,6 @@ public class Option {
                 GROUPS.put(group, worlds);
             }
         }
-
         CHAT_FORMAT = new HashMap<>();
         node = Util.getNode(config, "chat-format");
         if (node != null) {
@@ -48,6 +57,12 @@ public class Option {
                 CHAT_FORMAT.put(world, format);
             }
         }
+
+        ECONOMY_ENABLED = config.getBoolean("economy-enabled");
+        ECONOMY_SWITCH_NOTIFICATION = config.getBoolean("economy-switch-notification");
+        ECONOMY_SWITCH_FORMAT = config.getString("economy-switch-format");
+        ECONOMY_CURRENCY_SYMBOL = config.getString("economy-currency-symbol");
+        ECONOMY_CURRENCY_NAMES = config.getStringList("economy-currency-names");
     }
 
     // Gets the worlds from a group name
@@ -63,7 +78,15 @@ public class Option {
         return worlds;
     }
 
-    // Gets a group from a world name
+    /**
+     * Gets a group from a world name.
+     * todo caching
+     *
+     * @param   world
+     *          The world
+     *
+     * @return the World Group, or the world name if it is not in a group
+     */
     public static String getGroupFromWorld(World world) {
         String name = world.getName();
         for (String group : GROUPS.keySet()) {

@@ -16,6 +16,16 @@
 #                                                                                                                                    #
 #====================================================================================================================================#
 
+# -= Enable per world tab list =-
+# True: players not in the same world will be hidden
+# False: every player will be visible
+tab-enabled: true
+
+# -= Enable per world chat =-
+# True: players not in the same world can't chat with each other
+# False: chat will be global
+chat-enabled: true
+
 # -= Enable global chat =-
 # True: players will be able to talk in global chat using a prefix
 # False: players are bound to talk in their own world (if enabled)
@@ -34,8 +44,8 @@ global-chat-prefix: '!'
 global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 
 # -= Spy Format =-
-# The format for when spy mode is enabled.
-# Change this by using /ws menu
+# The message format for when spy mode is enabled for an admin.
+# Change this by using /ws menu.
 spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
 # -= World groups =-
@@ -55,12 +65,28 @@ chat-format:
     example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
     MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
 
-# -= Enable per world chat =-
-# True: players not in the same world can't chat with each other
-# False: chat will be global
-chat-enabled: true
+# -= Enable per world economy =-
+# True: players will have a different balance, depending on which World or World Group they are in.
+# False: players will share
+economy-enabled: true
 
-# -= Enable per world tab list =-
-# True: players not in the same world will be hidden
-# False: every player will be visible
-tab-enabled: true
+# -= Economy switch notification =-
+# True: players will receive a message when they switch worlds (or join) detailing how much balance they have
+# False: players won't get a message
+economy-switch-notification: true
+
+# -= Economy balance notification format =-
+# Set the format of the message players get if they switch worlds.
+# This will only be set if economy and economy switch notifications are enabled.
+economy-switch-format: '<gray>You now have <#1FB4DE>%amount% eurodollars<gray>.'
+
+# -= Economy currency symbol =-
+# The economy currency symbol.
+economy-currency-symbol: '€$'
+
+# -= Economy currency names =-
+# The names of the currency.
+# The first entry is for singular, the second for plural.
+economy-currency-names:
+  - 'eurodollar'
+  - 'eurodollars'

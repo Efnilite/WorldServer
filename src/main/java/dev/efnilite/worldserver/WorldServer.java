@@ -10,14 +10,13 @@ import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
-import dev.efnilite.worldserver.util.UpdateChecker;
-import dev.efnilite.worldserver.util.VisibilityHandler;
-import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
-import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
+import dev.efnilite.worldserver.util.*;
+import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 
 public class WorldServer extends ViPlugin {
 
@@ -28,6 +27,17 @@ public class WorldServer extends ViPlugin {
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
+
+    @Override
+    public void onLoad() {
+        try {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+            getServer().getServicesManager().register(Economy.class, new WEconomyProvider(), this, ServicePriority.Normal);
+            getLogger().info("Registered Vault Economy Provider");
+        } catch (ClassNotFoundException ignored) {
+
+        }
+    }
 
     @Override
     public void enable() {

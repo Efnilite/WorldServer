@@ -6,10 +6,22 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Util {
+
+    public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getInstance(Locale.US);
+
+    static {
+        CURRENCY_FORMAT.setRoundingMode(RoundingMode.FLOOR);
+        CURRENCY_FORMAT.setGroupingUsed(true);
+        CURRENCY_FORMAT.setMinimumFractionDigits(2);
+        CURRENCY_FORMAT.setMaximumFractionDigits(2);
+    }
 
     public static List<String> colour(List<String> strings) {
         List<String> ret = new ArrayList<>();

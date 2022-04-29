@@ -4,6 +4,7 @@ main: 'dev.efnilite.worldserver.WorldServer'
 version: '1.2.6'
 api-version: '1.16'
 description: 'Separate chat and tab list in the worlds in your server.'
+softdepend: ['Vault']
 commands:
     worldserver:
         aliases: [ws]

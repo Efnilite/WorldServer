@@ -14,17 +14,18 @@ import java.util.List;
 public class WorldSwitchListener extends Toggleable implements EventWatcher {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void join(PlayerJoinEvent event) {
         if (!Option.TAB_ENABLED) {
             return;
         }
         Player player = event.getPlayer();
 
+        List<Player> inGroup = getPlayersInWorldGroup(player.getWorld());
         for (Player pl : Bukkit.getOnlinePlayers()) {
-            if (!pl.getWorld().getName().equals(player.getWorld().getName())) {
-                visibilityHandler.hide(pl, player);
+            if (inGroup.contains(pl)) {
+                visibilityHandler.show(player, pl);
             } else {
-                visibilityHandler.show(pl, player);
+                visibilityHandler.hide(player, pl);
             }
         }
     }

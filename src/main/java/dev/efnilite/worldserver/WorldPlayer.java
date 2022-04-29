@@ -4,7 +4,10 @@ import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.vilib.util.Task;
+import dev.efnilite.worldserver.config.Option;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +22,9 @@ public class WorldPlayer {
 
     @Expose
     private boolean spyMode;
+
+    @Expose
+    private Map<String, Double> balances;
 
     private final Player player;
 
@@ -41,8 +47,6 @@ public class WorldPlayer {
         WorldPlayer oldWp = getPlayer(player);
         if (oldWp == null) {
             WorldPlayer wp = read(player);
-
-
 
             players.put(uuid, wp);
             return wp;
@@ -89,42 +93,34 @@ public class WorldPlayer {
      *          True if saving should be async
      */
     public void save(boolean async) {
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
+                    FileWriter writer = new FileWriter(file.getAbsolutePath());
+                    WorldServer.getGson().toJson(this, writer);
+
+                    writer.flush();
+                    writer.close();
+                } catch (Throwable throwable) {
+                    Logging.stack("Error while saving file of player", "Please report this error to the developer", throwable);
+                }
+            }
+        };
+
         if (async) {
             new Task()
                     .async()
-                    .execute(() -> {
-                        try {
-                            File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
-
-                            if (!file.exists()) {
-                                file.createNewFile();
-                            }
-
-                            FileWriter writer = new FileWriter(file.getAbsolutePath());
-                            WorldServer.getGson().toJson(this, writer);
-
-                            writer.flush();
-                            writer.close();
-                        } catch (Throwable throwable) {
-                            Logging.stack("Error while saving file of player", "Please report this error to the developer", throwable);
-                        }
-                    }).run();
+                    .execute(runnable)
+                    .run();
         } else {
-            try {
-                File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
-
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-
-                FileWriter writer = new FileWriter(file.getAbsolutePath());
-                WorldServer.getGson().toJson(this, writer);
-
-                writer.flush();
-                writer.close();
-            } catch (Throwable throwable) {
-                Logging.stack("Error while saving file of player", "Please report this error to the developer", throwable);
-            }
+            runnable.run();
         }
     }
 
@@ -153,12 +149,14 @@ public class WorldPlayer {
                 WorldPlayer def = new WorldPlayer(player);
 
                 def.spyMode = false;
+                def.balances = new HashMap<>();
 
                 def.save(false);
                 return def;
             }
 
             newWp.setSpyMode(valueContainer.spyMode);
+            newWp.setBalances(valueContainer.balances);
 
             reader.close();
             return newWp;
@@ -174,16 +172,62 @@ public class WorldPlayer {
         }
     }
 
+    public void setBalance(double amount) {
+        String group = getWorldGroup();
+
+        balances.put(group, amount);
+    }
+
+    public double getBalance() {
+        return balances.get(getWorldGroup());
+    }
+
+    public double getBalance(String group) {
+        return balances.get(group);
+    }
+
+    public void withdraw(double amount) {
+        withdraw(getWorldGroup(), amount);
+    }
+
+    public void withdraw(String group, double amount) {
+        double updated = balances.getOrDefault(group, 0D) - amount;
+
+        balances.put(group, updated);
+    }
+
+    public void deposit(double amount) {
+        deposit(getWorldGroup(), amount);
+    }
+
+    public void deposit(String group, double amount) {
+        double updated = balances.getOrDefault(group, 0D) + amount;
+
+        balances.put(group, updated);
+    }
+
     public static Map<UUID, WorldPlayer> getPlayers() {
         return players;
+    }
+
+    public void setBalances(Map<String, Double> balances) {
+        this.balances = balances;
     }
 
     public void setSpyMode(boolean spyMode) {
         this.spyMode = spyMode;
     }
 
+    public World getWorld() {
+        return player.getWorld();
+    }
+
     public Player getPlayer() {
         return player;
+    }
+
+    public String getWorldGroup() {
+        return Option.getGroupFromWorld(getWorld());
     }
 
     public boolean spyMode() {

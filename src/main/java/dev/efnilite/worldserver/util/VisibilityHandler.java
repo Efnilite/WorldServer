@@ -15,8 +15,26 @@ public abstract class VisibilityHandler {
         this.plugin = WorldServer.getInstance();
     }
 
+    /**
+     * Shows a player to another one
+     *
+     * @param   player
+     *          The player
+     *
+     * @param   show
+     *          The player that will be shown to {@code player}
+     */
     public abstract void show(Player player, Player show);
 
+    /**
+     * Hides a player from another one
+     *
+     * @param   player
+     *          The player
+     *
+     * @param   hide
+     *          The player that will be hidden from {@code player}
+     */
     public abstract void hide(Player player, Player hide);
 
 }

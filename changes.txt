@@ -1,1 +1,1 @@
-- Fix spy mode not supporting world groups
+- Fix world groups not being supported on join

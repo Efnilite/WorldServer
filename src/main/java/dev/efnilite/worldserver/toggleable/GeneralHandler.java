@@ -30,9 +30,7 @@ public class GeneralHandler implements EventWatcher {
             }
         }
 
-        if (player.hasPermission("ws.menu")) {
-            WorldPlayer.register(player);
-        }
+        WorldPlayer.register(player);
     }
 
     @EventHandler
