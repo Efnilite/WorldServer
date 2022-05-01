@@ -5,10 +5,13 @@ import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
+import dev.efnilite.vilib.util.elevator.GitElevator;
+import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
+import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
 import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.*;
 import net.milkbowl.vault.economy.Economy;
@@ -33,7 +36,7 @@ public class WorldServer extends ViPlugin {
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");
             getServer().getServicesManager().register(Economy.class, new WEconomyProvider(), this, ServicePriority.Normal);
-            getLogger().info("Registered Vault Economy Provider");
+            getLogger().info("Registered with Vault!");
         } catch (ClassNotFoundException ignored) {
 
         }
@@ -42,10 +45,12 @@ public class WorldServer extends ViPlugin {
     @Override
     public void enable() {
         instance = this;
-        verbosing = false;
+
+        logging = new Logging(this);
+
         Time.timerStart("enable");
 
-        Logging.info("Registered under version " + Version.getPrettyVersion());
+        logging.info("Registered under version " + Version.getPrettyVersion());
 
         configuration = new Configuration(this);
         Option.init();
@@ -67,7 +72,7 @@ public class WorldServer extends ViPlugin {
                 visibilityHandler = new VisibilityHandler_v1_8();
                 break;
             default:
-                Logging.error("Unsupported version! Please upgrade your server :(");
+                logging.error("Unsupported version! Please upgrade your server :(");
                 Bukkit.getPluginManager().disablePlugin(this);
         }
 
@@ -75,12 +80,9 @@ public class WorldServer extends ViPlugin {
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
+        registerListener(new WorldEconomyListener());
 
-        UpdateChecker checker = new UpdateChecker();
-        new Task()
-                .repeat(8 * 72000)
-                .execute(checker::check)
-                .run(); // 8 hours
+        new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, Option.AUTO_UPDATER);
 
         Metrics metrics = new Metrics(this, 13856);
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
@@ -90,7 +92,7 @@ public class WorldServer extends ViPlugin {
             WorldPlayer.register(player);
         }
 
-        Logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
+        logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }
 
     @Override
@@ -98,6 +100,15 @@ public class WorldServer extends ViPlugin {
         for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
             wp.save(false);
         }
+    }
+
+    /**
+     * Returns the {@link Logging} belonging to this plugin.
+     *
+     * @return this plugin's {@link Logging} instance.
+     */
+    public static Logging logging() {
+        return getPlugin().logging;
     }
 
     public static VisibilityHandler getVisibilityHandler() {
@@ -108,7 +119,7 @@ public class WorldServer extends ViPlugin {
         return configuration;
     }
 
-    public static WorldServer getInstance() {
+    public static WorldServer getPlugin() {
         return instance;
     }
 }

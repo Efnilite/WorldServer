@@ -2,6 +2,7 @@ package dev.efnilite.worldserver.config;
 
 import com.tchristofferson.configupdater.ConfigUpdater;
 import dev.efnilite.vilib.util.Logging;
+import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,14 +41,14 @@ public class Configuration {
             for (String file : defaultFiles) {
                 plugin.saveResource(file, false);
             }
-            Logging.info("Downloaded all config files");
+            WorldServer.logging().info("Downloaded all config files");
         }
         for (String file : defaultFiles) {
             try {
                 ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups", "chat-format"));
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Logging.error("Error while trying to update config");
+                WorldServer.logging().error("Error while trying to update config");
             }
             FileConfiguration configuration = this.getFile(folder + "/" + file);
             files.put(file.replaceAll("(.+/|.yml)", ""), configuration);

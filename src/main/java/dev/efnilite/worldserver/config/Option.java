@@ -12,6 +12,8 @@ import java.util.List;
 
 public class Option {
 
+    public static boolean AUTO_UPDATER;
+
     /* Tab options */
     public static boolean TAB_ENABLED;
 
@@ -33,6 +35,8 @@ public class Option {
 
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
+
+        AUTO_UPDATER = config.getBoolean("auto-updater");
 
         TAB_ENABLED = config.getBoolean("tab-enabled");
 

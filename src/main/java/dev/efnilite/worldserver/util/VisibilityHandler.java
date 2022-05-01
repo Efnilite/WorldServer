@@ -12,7 +12,7 @@ public abstract class VisibilityHandler {
     protected Plugin plugin;
 
     public VisibilityHandler() {
-        this.plugin = WorldServer.getInstance();
+        this.plugin = WorldServer.getPlugin();
     }
 
     /**

@@ -2,7 +2,6 @@ package dev.efnilite.worldserver;
 
 import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.chat.Message;
-import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.Option;
 import org.bukkit.World;
@@ -97,7 +96,7 @@ public class WorldPlayer {
             @Override
             public void run() {
                 try {
-                    File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+                    File file = new File(WorldServer.getPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
 
                     if (!file.exists()) {
                         file.createNewFile();
@@ -109,13 +108,13 @@ public class WorldPlayer {
                     writer.flush();
                     writer.close();
                 } catch (Throwable throwable) {
-                    Logging.stack("Error while saving file of player", "Please report this error to the developer", throwable);
+                    WorldServer.logging().stack("Error while saving file of player", "Please report this error to the developer", throwable);
                 }
             }
         };
 
         if (async) {
-            new Task()
+            Task.create(WorldServer.getPlugin())
                     .async()
                     .execute(runnable)
                     .run();
@@ -135,7 +134,7 @@ public class WorldPlayer {
     @Nullable
     public static WorldPlayer read(Player player) {
         try {
-            File file = new File(WorldServer.getInstance().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+            File file = new File(WorldServer.getPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
 
             if (!file.exists()) {
                 file.createNewFile();
@@ -161,7 +160,7 @@ public class WorldPlayer {
             reader.close();
             return newWp;
         } catch (Throwable throwable) {
-            Logging.stack("Error while reading file of player", "Please report this error to the developer", throwable);
+            WorldServer.logging().stack("Error while reading file of player", "Please report this error to the developer", throwable);
             return null;
         }
     }
