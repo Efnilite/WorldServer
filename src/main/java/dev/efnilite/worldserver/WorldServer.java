@@ -8,6 +8,7 @@ import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.eco.WBalCommand;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -15,7 +16,7 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.util.WEconomyProvider;
+import dev.efnilite.worldserver.eco.WEconomyProvider;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -78,6 +79,9 @@ public class WorldServer extends ViPlugin {
                 Bukkit.getPluginManager().disablePlugin(this);
         }
 
+        if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
+            registerCommand("bal", new WBalCommand());
+        }
         registerCommand("worldserver", new WorldServerCommand());
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());

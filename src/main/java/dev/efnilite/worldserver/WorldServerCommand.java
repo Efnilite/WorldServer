@@ -23,8 +23,11 @@ public class WorldServerCommand extends ViCommand {
                 Message.send(sender, "");
                 Message.send(sender, "<gray>/ws <dark_gray>- The main command");
                 Message.send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
-                if (sender.hasPermission("ws.mute.global")) {
+                if (sender.hasPermission("ws.menu")) {
                     Message.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
+                }
+                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
+                    Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> <dark_gray>- Admin commands for setting player balances");
                 }
                 if (sender.hasPermission("ws.reload")) {
                     Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
@@ -58,16 +61,29 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
                         Message.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
+                        Message.send(sender, "<gray>ws.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
                         Message.send(sender, "<gray>ws.eco <dark_gray>- For using the /ws eco command");
                         Message.send(sender, "");
                         Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
                         Message.send(sender, "");
                         return true;
+                    case "bal":
+                    case "balance":
+                        if (sender.hasPermission("ws.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
+                            Player p = (Player) sender;
+                            WorldPlayer player = WorldPlayer.getPlayer(p);
+
+                            if (player == null) {
+                                player = WorldPlayer.register(p);
+                            }
+
+                            player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
+                        }
                 }
                 break;
             case 4:
             case 5:
-                if (args[0].equalsIgnoreCase("eco")) {
+                if (args[0].equalsIgnoreCase("eco") && Option.ECONOMY_ENABLED) {
                     Player p = Bukkit.getPlayer(args[2]);
 
                     if (p == null) {
@@ -125,7 +141,7 @@ public class WorldServerCommand extends ViCommand {
             if (sender.hasPermission("ws.menu")) {
                 completions.add("menu");
             }
-            if (sender.hasPermission("ws.eco")) {
+            if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
                 completions.add("eco");
             }
             if (sender.hasPermission("ws.reload")) {
@@ -134,7 +150,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[0], completions);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco")) {
+                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
                     completions.add("set");
                     completions.add("add");
                     completions.add("remove");
@@ -143,7 +159,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[1], completions);
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco")) {
+                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         completions.add(player.getName());
                     }

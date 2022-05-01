@@ -7,6 +7,10 @@ description: 'Separate chat and tab list in the worlds in your server.'
 depend: ['vilib']
 softdepend: ['Vault']
 commands:
-    worldserver:
-        aliases: [ws]
-        description: The main command of WorldServer
+  worldserver:
+    aliases: [ws]
+    description: The main command of WorldServer
+
+  bal:
+    aliases: [balance]
+    description: Gets your current balance

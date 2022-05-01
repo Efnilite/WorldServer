@@ -34,6 +34,7 @@ public class Option {
     public static String ECONOMY_CURRENCY_SYMBOL;
     public static List<String> ECONOMY_CURRENCY_NAMES;
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
+    public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
 
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
@@ -77,6 +78,7 @@ public class Option {
                 ECONOMY_STARTING_AMOUNT.put(world, amount);
             }
         }
+        ECONOMY_OVERRIDE_BALANCE_COMMAND = config.getBoolean("economy-override-balance-command");
     }
 
     // Gets the worlds from a group name

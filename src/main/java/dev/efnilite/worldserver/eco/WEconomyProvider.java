@@ -1,7 +1,8 @@
-package dev.efnilite.worldserver.util;
+package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.util.Util;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;

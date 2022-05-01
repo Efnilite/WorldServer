@@ -101,3 +101,8 @@ economy-currency-names:
 economy-starting-amount:
   example: 1000
   MyWorld: 69.69
+
+# -= Economy override balance command =-
+# Whether WorldServer should use register /bal and /balance.
+# This will override any plugin who is already using this command.
+economy-override-balance-command: true
