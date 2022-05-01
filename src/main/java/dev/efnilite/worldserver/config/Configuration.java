@@ -1,7 +1,6 @@
 package dev.efnilite.worldserver.config;
 
 import com.tchristofferson.configupdater.ConfigUpdater;
-import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -45,7 +44,7 @@ public class Configuration {
         }
         for (String file : defaultFiles) {
             try {
-                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups", "chat-format"));
+                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups", "chat-format", "economy-currency-names"));
             } catch (IOException ex) {
                 ex.printStackTrace();
                 WorldServer.logging().error("Error while trying to update config");

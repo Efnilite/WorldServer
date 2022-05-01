@@ -2,7 +2,6 @@ package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.ViPlugin;
 import dev.efnilite.vilib.util.Logging;
-import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
@@ -13,7 +12,10 @@ import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
 import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
-import dev.efnilite.worldserver.util.*;
+import dev.efnilite.worldserver.util.VisibilityHandler;
+import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
+import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
+import dev.efnilite.worldserver.util.WEconomyProvider;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -35,7 +37,7 @@ public class WorldServer extends ViPlugin {
     public void onLoad() {
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");
-            getServer().getServicesManager().register(Economy.class, new WEconomyProvider(), this, ServicePriority.Normal);
+            getServer().getServicesManager().register(Economy.class, new WEconomyProvider(), this, ServicePriority.High);
             getLogger().info("Registered with Vault!");
         } catch (ClassNotFoundException ignored) {
 

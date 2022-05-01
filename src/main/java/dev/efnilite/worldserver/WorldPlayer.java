@@ -171,9 +171,7 @@ public class WorldPlayer {
         }
     }
 
-    public void setBalance(double amount) {
-        String group = getWorldGroup();
-
+    public void setBalance(double amount, String group) {
         balances.put(group, amount);
     }
 
@@ -182,6 +180,9 @@ public class WorldPlayer {
     }
 
     public double getBalance(String group) {
+        if (!balances.containsKey(group)) {
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+        }
         return balances.get(group);
     }
 
@@ -190,7 +191,10 @@ public class WorldPlayer {
     }
 
     public void withdraw(String group, double amount) {
-        double updated = balances.getOrDefault(group, 0D) - amount;
+        if (!balances.containsKey(group)) {
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+        }
+        double updated = balances.get(group) - amount;
 
         balances.put(group, updated);
     }
@@ -200,7 +204,10 @@ public class WorldPlayer {
     }
 
     public void deposit(String group, double amount) {
-        double updated = balances.getOrDefault(group, 0D) + amount;
+        if (!balances.containsKey(group)) {
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+        }
+        double updated = balances.get(group) + amount;
 
         balances.put(group, updated);
     }

@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Option {
 
@@ -32,6 +33,7 @@ public class Option {
     public static String ECONOMY_SWITCH_FORMAT;
     public static String ECONOMY_CURRENCY_SYMBOL;
     public static List<String> ECONOMY_CURRENCY_NAMES;
+    public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
 
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
@@ -67,6 +69,14 @@ public class Option {
         ECONOMY_SWITCH_FORMAT = config.getString("economy-switch-format");
         ECONOMY_CURRENCY_SYMBOL = config.getString("economy-currency-symbol");
         ECONOMY_CURRENCY_NAMES = config.getStringList("economy-currency-names");
+        ECONOMY_STARTING_AMOUNT = new HashMap<>();
+        node = Util.getNode(config, "economy-starting-amount");
+        if (node != null) {
+            for (String world : node) {
+                double amount = config.getDouble("economy-starting-amount." + world);
+                ECONOMY_STARTING_AMOUNT.put(world, amount);
+            }
+        }
     }
 
     // Gets the worlds from a group name
@@ -100,6 +110,6 @@ public class Option {
                 }
             }
         }
-        return "";
+        return name;
     }
 }

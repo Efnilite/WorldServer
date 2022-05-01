@@ -3,10 +3,8 @@ package dev.efnilite.worldserver.util;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
 import net.milkbowl.vault.economy.AbstractEconomy;
-import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 

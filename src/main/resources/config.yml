@@ -95,3 +95,9 @@ economy-currency-symbol: '€$'
 economy-currency-names:
   - 'eurodollar'
   - 'eurodollars'
+
+# -= Economy starting amount =-
+# The amount of money the player will start with in a specific world group if they haven't ever joined that group.
+economy-starting-amount:
+  example: 1000
+  MyWorld: 69.69
