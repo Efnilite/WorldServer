@@ -83,7 +83,7 @@ public class WorldServerCommand extends ViCommand {
                 break;
             case 4:
             case 5:
-                if (args[0].equalsIgnoreCase("eco") && Option.ECONOMY_ENABLED) {
+                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
                     Player p = Bukkit.getPlayer(args[2]);
 
                     if (p == null) {
