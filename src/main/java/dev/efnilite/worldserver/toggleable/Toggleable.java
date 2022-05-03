@@ -24,12 +24,9 @@ public abstract class Toggleable {
     protected List<Player> getPlayersInWorldGroup(World world) {
         List<Player> players = new ArrayList<>();
         String group = Option.getGroupFromWorld(world);
-        if (group.equals("")) {
-            players.addAll(world.getPlayers());
-        } else {
-            for (World loopWorld : Option.getWorlds(group)) {
-                players.addAll(loopWorld.getPlayers());
-            }
+
+        for (World loopWorld : Option.getWorlds(group)) {
+            players.addAll(loopWorld.getPlayers());
         }
         return players;
     }

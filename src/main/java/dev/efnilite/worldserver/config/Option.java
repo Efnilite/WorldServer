@@ -82,15 +82,31 @@ public class Option {
     }
 
     // Gets the worlds from a group name
+
+    /**
+     * Gets the worlds from a group name. If there is no associated group, it returns a single-item list with the World instead.
+     *
+     * @param   group
+     *          The group/world name
+     *
+     * @return a list with worlds belonging to the specified group/world.
+     */
     public static List<World> getWorlds(String group) {
         List<World> worlds = new ArrayList<>();
-        for (String name : GROUPS.get(group)) {
-            World world = Bukkit.getWorld(name);
-            if (world == null) {
-                continue;
+        List<String> worldNames = GROUPS.get(group);
+
+        if (worldNames != null) {
+            for (String name : worldNames) {
+                World world = Bukkit.getWorld(name);
+                if (world == null) {
+                    continue;
+                }
+                worlds.add(world);
             }
-            worlds.add(world);
+        } else {
+            worlds.add(Bukkit.getWorld(group));
         }
+
         return worlds;
     }
 
@@ -106,7 +122,13 @@ public class Option {
     public static String getGroupFromWorld(World world) {
         String name = world.getName();
         for (String group : GROUPS.keySet()) {
-            for (String loopWorld : GROUPS.get(group)) {
+            List<String> names = GROUPS.get(group);
+
+            if (names == null) {
+                return name;
+            }
+
+            for (String loopWorld : names) {
                 if (name.equals(loopWorld)) {
                     return group;
                 }

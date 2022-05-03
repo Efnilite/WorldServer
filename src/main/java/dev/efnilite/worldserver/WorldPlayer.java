@@ -20,10 +20,10 @@ import java.util.UUID;
 public class WorldPlayer {
 
     @Expose
-    private boolean spyMode = false;
+    private boolean spyMode;
 
     @Expose
-    private Map<String, Double> balances = new HashMap<>();
+    private Map<String, Double> balances;
 
     private final Player player;
 
@@ -31,6 +31,8 @@ public class WorldPlayer {
 
     public WorldPlayer(Player player) {
         this.player = player;
+        this.spyMode = false;
+        this.balances = new HashMap<>();
     }
 
     /**
@@ -96,14 +98,17 @@ public class WorldPlayer {
             @Override
             public void run() {
                 try {
-                    File file = new File(WorldServer.getPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
-
+                    File file = new File(WorldServer.getPlugin().getDataFolder(), "players/" + player.getUniqueId() + ".json");
                     if (!file.exists()) {
+                        File folder = new File(WorldServer.getPlugin().getDataFolder(), "players");
+                        if (!folder.exists()) {
+                            folder.mkdirs();
+                        }
                         file.createNewFile();
                     }
 
-                    FileWriter writer = new FileWriter(file.getAbsolutePath());
-                    WorldServer.getGson().toJson(this, writer);
+                    FileWriter writer = new FileWriter(file);
+                    WorldServer.getGson().toJson(WorldPlayer.this, writer);
 
                     writer.flush();
                     writer.close();
@@ -176,7 +181,11 @@ public class WorldPlayer {
     }
 
     public double getBalance() {
-        return balances.get(getWorldGroup());
+        String group = getWorldGroup();
+        if (!balances.containsKey(group)) {
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+        }
+        return balances.get(group);
     }
 
     public double getBalance(String group) {

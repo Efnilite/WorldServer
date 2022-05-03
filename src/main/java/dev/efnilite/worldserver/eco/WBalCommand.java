@@ -13,7 +13,7 @@ public class WBalCommand extends ViCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player && sender.hasPermission("ws.bal") && Option.ECONOMY_ENABLED) {
-            ((Player) sender).performCommand("/ws bal");
+            ((Player) sender).performCommand("ws bal");
         }
         return true;
     }

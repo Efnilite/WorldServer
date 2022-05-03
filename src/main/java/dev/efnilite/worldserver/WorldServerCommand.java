@@ -119,12 +119,18 @@ public class WorldServerCommand extends ViCommand {
                     switch (args[1].toLowerCase()) {
                         case "set":
                             player.setBalance(amount, group);
+                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                                    "Successfully set " + player.getPlayer().getName() + "'s balance to " + amount);
                             return true;
                         case "add":
                             player.deposit(group, amount);
+                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                                    "Successfully added " + amount + " to " + player.getPlayer().getName() + "'s balance");
                             return true;
                         case "remove":
                             player.withdraw(group, amount);
+                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                                    "Successfully removed " + amount + " from " + player.getPlayer().getName() + "'s balance");
                             return true;
                     }
                 }

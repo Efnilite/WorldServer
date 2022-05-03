@@ -2,6 +2,7 @@ package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.ViPlugin;
 import dev.efnilite.vilib.util.Logging;
+import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
@@ -28,8 +29,7 @@ public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
-
-    public static boolean IS_OUTDATED;
+    private static GitElevator elevator;
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
@@ -79,16 +79,16 @@ public class WorldServer extends ViPlugin {
                 Bukkit.getPluginManager().disablePlugin(this);
         }
 
+        registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             registerCommand("bal", new WBalCommand());
         }
-        registerCommand("worldserver", new WorldServerCommand());
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
         registerListener(new WorldEconomyListener());
 
-        new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, Option.AUTO_UPDATER);
+        elevator = new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, Option.AUTO_UPDATER);
 
         Metrics metrics = new Metrics(this, 13856);
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
@@ -97,6 +97,16 @@ public class WorldServer extends ViPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             WorldPlayer.register(player);
         }
+
+        Task.create(this) // save data every 5 minutes
+                .delay(5 * 60 * 20)
+                .repeat(5 * 60 * 20)
+                .execute(() -> {
+                    for (WorldPlayer player : WorldPlayer.getPlayers().values()) {
+                        player.save(true);
+                    }
+                })
+                .run();
 
         logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }
@@ -123,6 +133,10 @@ public class WorldServer extends ViPlugin {
 
     public static Configuration getConfiguration() {
         return configuration;
+    }
+
+    public static GitElevator getElevator() {
+        return elevator;
     }
 
     public static WorldServer getPlugin() {

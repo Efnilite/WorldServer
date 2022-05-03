@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.github.ViStudios</groupId>
             <artifactId>vilib</artifactId>
-            <version>721fc4421b</version>
+            <version>3be719995d</version>
             <scope>provided</scope>
         </dependency>
 

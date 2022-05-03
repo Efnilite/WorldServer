@@ -16,7 +16,7 @@ public class GeneralHandler implements EventWatcher {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.isOp() && WorldServer.IS_OUTDATED) {
+        if (player.isOp() && WorldServer.getElevator().isOutdated()) {
             if (Version.isHigherOrEqual(Version.V1_16)) {
                 Message.send(player, "");
                 Message.send(player,

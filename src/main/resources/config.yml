@@ -83,7 +83,7 @@ economy-switch-notification: true
 # -= Economy balance notification format =-
 # Set the format of the message players get if they switch worlds.
 # This will only be set if economy and economy switch notifications are enabled.
-economy-switch-format: '<gray>You now have <#1FB4DE>%amount% eurodollars<gray>.'
+economy-switch-format: '<white>You now have <#4DF019>€$%amount%<gray>.'
 
 # -= Economy currency symbol =-
 # The economy currency symbol.
