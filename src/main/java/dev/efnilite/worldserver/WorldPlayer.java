@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.eco.BalCache;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,6 +21,9 @@ import java.util.UUID;
 public class WorldPlayer {
 
     @Expose
+    public String name;
+    
+    @Expose
     public boolean spyMode;
 
     @Expose
@@ -31,8 +35,6 @@ public class WorldPlayer {
 
     public WorldPlayer(Player player) {
         this.player = player;
-        this.spyMode = false;
-        this.balances = new HashMap<>();
     }
 
     /**
@@ -147,12 +149,13 @@ public class WorldPlayer {
             }
 
             FileReader reader = new FileReader(file);
-            WorldPlayer valueContainer = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
+            WorldPlayer container = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
             WorldPlayer newWp = new WorldPlayer(player);
 
-            if (valueContainer == null) {
+            if (container == null) {
                 WorldPlayer def = new WorldPlayer(player);
 
+                def.name = player.getName();
                 def.spyMode = false;
                 def.balances = new HashMap<>();
 
@@ -160,8 +163,9 @@ public class WorldPlayer {
                 return def;
             }
 
-            newWp.setSpyMode(valueContainer.spyMode);
-            newWp.setBalances(valueContainer.balances);
+            newWp.name = container.name != null && !container.name.isEmpty() ? container.name : player.getName();
+            newWp.spyMode = container.spyMode;
+            newWp.balances = container.balances != null ? container.balances : new HashMap<>();
 
             reader.close();
             return newWp;
@@ -179,6 +183,7 @@ public class WorldPlayer {
 
     public void setBalance(double amount, String group) {
         balances.put(group, amount);
+        BalCache.save(player.getUniqueId(), group, amount);
     }
 
     public double getBalance() {
@@ -205,6 +210,7 @@ public class WorldPlayer {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) - amount;
+        BalCache.save(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
     }
@@ -218,20 +224,13 @@ public class WorldPlayer {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) + amount;
+        BalCache.save(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
     }
 
     public static Map<UUID, WorldPlayer> getPlayers() {
         return players;
-    }
-
-    public void setBalances(Map<String, Double> balances) {
-        this.balances = balances;
-    }
-
-    public void setSpyMode(boolean spyMode) {
-        this.spyMode = spyMode;
     }
 
     public World getWorld() {

@@ -11,12 +11,14 @@ import java.util.UUID;
 
 public class BalCache {
 
-    private static Map<UUID, Map<String, Double>> balances;
+    private static final Map<UUID, Balance> balances = new HashMap<>();
 
     public static void save(UUID uuid, String group, double amount) {
-        Map<String, Double> data = new HashMap<>();
+        Balance balance;
         if (balances.containsKey(uuid)) {
-            data = balances.get(uuid);
+            balance = balances.get(uuid);
+        } else {
+            balance = new Balance()
         }
 
         data.put(group, amount);
@@ -38,8 +40,8 @@ public class BalCache {
                     continue;
                 }
 
-                String name = file.getName();
-                UUID uuid = UUID.fromString(name.substring(0, name.lastIndexOf('.')));
+                String fName = file.getName();
+                UUID uuid = UUID.fromString(fName.substring(0, fName.lastIndexOf('.')));
 
                 balances.put(uuid, from.balances != null ? from.balances : new HashMap<>());
                 reader.close();
@@ -52,5 +54,12 @@ public class BalCache {
     public static double get(UUID uuid, String group) {
         Map<String, Double> data = balances.getOrDefault(uuid, new HashMap<>());
         return data.getOrDefault(group, 0D);
+    }
+
+    static class Balance {
+
+        public String name;
+        public Map<String, Double> bals;
+
     }
 }

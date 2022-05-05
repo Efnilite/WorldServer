@@ -21,18 +21,17 @@ public class WorldServerMenu {
         WorldPlayer wp = WorldPlayer.getPlayer(player);
 
         if (player.hasPermission("ws.spy")) {
-            WorldPlayer finalWp = wp;
             menu
                     .item(9, new SliderItem()
                             .initial(wp.spyMode() ? 0 : 1)
                             .add(0, new Item(Material.LIME_STAINED_GLASS_PANE, "<#0DCB07><bold>Spy mode enabled")
                                     .lore("<gray>See what every player", "<gray>in every world is saying."), (event) -> {
-                                finalWp.setSpyMode(true);
+                                wp.spyMode = true;
                                 return true;
                             })
                             .add(1, new Item(Material.RED_STAINED_GLASS_PANE, "<red><bold>Spy mode disabled")
                                     .lore("<gray>See what every player", "<gray>in every world is saying."), (event) -> {
-                                finalWp.setSpyMode(false);
+                                wp.spyMode = false;
                                 return true;
                             }));
         }

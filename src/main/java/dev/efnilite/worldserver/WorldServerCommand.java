@@ -114,36 +114,31 @@ public class WorldServerCommand extends ViCommand {
                         return true;
                 }
                 return true;
-            case 4:
-            case 5:
-                Player p = Bukkit.getPlayer(args[2]);
-
-                if (p == null) {
-                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
-                    return true;
-                }
-
-                double amount;
-                try {
-                    amount = Double.parseDouble(args[3]);
-                } catch (NumberFormatException ex) {
-                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
-                    return true;
-                }
-
-                WorldPlayer to = WorldPlayer.getPlayer(p);
-                String group = to.getWorldGroup();
-
-                if (args.length == 5) {
-                    group = args[4];
-                }
-
-                if (Option.getWorlds(group).isEmpty()) {
-                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
-                    return true;
-                }
-
+            case 3:
                 if (args[0].equalsIgnoreCase("pay") && sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+                    Player p = Bukkit.getPlayerExact(args[1]);
+
+                    if (p == null) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        return true;
+                    }
+
+                    double amount;
+                    try {
+                        amount = Double.parseDouble(args[2]);
+                    } catch (NumberFormatException ex) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        return true;
+                    }
+
+                    WorldPlayer to = WorldPlayer.getPlayer(p);
+                    String group = to.getWorldGroup();
+
+                    if (Option.getWorlds(group).isEmpty()) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        return true;
+                    }
+
                     if (!(sender instanceof Player)) {
                         return true;
                     }
@@ -160,7 +155,38 @@ public class WorldServerCommand extends ViCommand {
                     from.send(Option.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
                     to.send(Option.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
                     return true;
-                } else if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                }
+                return true;
+            case 4:
+            case 5:
+                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                    Player p = Bukkit.getPlayerExact(args[2]);
+
+                    if (p == null) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        return true;
+                    }
+
+                    double amount;
+                    try {
+                        amount = Double.parseDouble(args[3]);
+                    } catch (NumberFormatException ex) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        return true;
+                    }
+
+                    WorldPlayer to = WorldPlayer.getPlayer(p);
+                    String group = to.getWorldGroup();
+
+                    if (args.length == 5) {
+                        group = args[4];
+                    }
+
+                    if (Option.getWorlds(group).isEmpty()) {
+                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        return true;
+                    }
+
                     switch (args[1].toLowerCase()) {
                         case "set":
                             to.setBalance(amount, group);
@@ -207,7 +233,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[0], completions);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
                     completions.add("set");
                     completions.add("add");
                     completions.add("remove");
@@ -216,7 +242,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[1], completions);
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         completions.add(player.getName());
                     }
