@@ -4,6 +4,7 @@ import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.menu.WorldServerMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

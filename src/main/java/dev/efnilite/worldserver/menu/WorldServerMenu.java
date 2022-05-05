@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver;
+package dev.efnilite.worldserver.menu;
 
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.inventory.Menu;
@@ -7,6 +7,8 @@ import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.SliderItem;
 import dev.efnilite.vilib.inventory.item.TimedItem;
 import dev.efnilite.vilib.util.Time;
+import dev.efnilite.worldserver.WorldPlayer;
+import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.Option;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

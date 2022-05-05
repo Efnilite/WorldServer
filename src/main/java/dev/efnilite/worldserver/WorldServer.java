@@ -9,6 +9,10 @@ import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.eco.BalCache;
+import dev.efnilite.worldserver.eco.BalCommand;
+import dev.efnilite.worldserver.eco.BaltopCommand;
+import dev.efnilite.worldserver.eco.PayCommand;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -16,9 +20,7 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.vault.BalCommand;
-import dev.efnilite.worldserver.vault.VChat;
-import dev.efnilite.worldserver.vault.VEco;
+import dev.efnilite.worldserver.vault.*;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -76,6 +78,12 @@ public class WorldServer extends ViPlugin {
         if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             registerCommand("bal", new BalCommand());
         }
+        if (Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
+            registerCommand("pay", new PayCommand());
+        }
+        if (Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
+            registerCommand("baltop", new BaltopCommand());
+        }
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
@@ -100,6 +108,11 @@ public class WorldServer extends ViPlugin {
                         player.save(true);
                     }
                 })
+                .run();
+
+        Task.create(this) // read existing balance caches
+                .async()
+                .execute(BalCache::read)
                 .run();
 
         // Vault setups

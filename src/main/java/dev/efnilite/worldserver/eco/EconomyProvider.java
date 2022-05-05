@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.vault;
+package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;

@@ -20,10 +20,10 @@ import java.util.UUID;
 public class WorldPlayer {
 
     @Expose
-    private boolean spyMode;
+    public boolean spyMode;
 
     @Expose
-    private Map<String, Double> balances;
+    public Map<String, Double> balances;
 
     private final Player player;
 

@@ -2,6 +2,7 @@ package dev.efnilite.worldserver.vault;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
+import dev.efnilite.worldserver.eco.EconomyProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
