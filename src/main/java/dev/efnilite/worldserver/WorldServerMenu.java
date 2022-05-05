@@ -18,11 +18,6 @@ public class WorldServerMenu {
 
         WorldPlayer wp = WorldPlayer.getPlayer(player);
 
-        // in case somehow registration messed up
-        if (wp == null) {
-            wp = WorldPlayer.register(player);
-        }
-
         if (player.hasPermission("ws.spy")) {
             WorldPlayer finalWp = wp;
             menu

@@ -16,6 +16,7 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
+import dev.efnilite.worldserver.vault.BalCommand;
 import dev.efnilite.worldserver.vault.VChat;
 import dev.efnilite.worldserver.vault.VEco;
 import org.bstats.bukkit.Metrics;
@@ -31,6 +32,11 @@ public class WorldServer extends ViPlugin {
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
+
+    @Override
+    public void onLoad() {
+        VEco.register(this);
+    }
 
     @Override
     public void enable() {
@@ -67,6 +73,9 @@ public class WorldServer extends ViPlugin {
         }
 
         registerCommand("worldserver", new WorldServerCommand());
+        if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
+            registerCommand("bal", new BalCommand());
+        }
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
@@ -95,7 +104,6 @@ public class WorldServer extends ViPlugin {
 
         // Vault setups
         VChat.register();
-        VEco.register();
 
         logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }

@@ -38,6 +38,10 @@ public class Option {
     public static List<String> ECONOMY_CURRENCY_NAMES;
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
     public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
+    public static boolean ECONOMY_OVERRIDE_PAY_COMMAND;
+    public static String ECONOMY_PAY_NO_FUNDS_FORMAT;
+    public static String ECONOMY_PAY_SEND_FORMAT;
+    public static String ECONOMY_PAY_RECEIVE_FORMAT;
     public static boolean ECONOMY_OVERRIDE_BALTOP_COMMAND;
 
     public static void init() {
@@ -86,10 +90,12 @@ public class Option {
             }
         }
         ECONOMY_OVERRIDE_BALANCE_COMMAND = config.getBoolean("economy-override-balance-command");
+        ECONOMY_OVERRIDE_PAY_COMMAND = config.getBoolean("economy-override-pay-command");
+        ECONOMY_PAY_NO_FUNDS_FORMAT = config.getString("economy-pay-no-funds-format");
+        ECONOMY_PAY_SEND_FORMAT = config.getString("economy-pay-send-format");
+        ECONOMY_PAY_RECEIVE_FORMAT = config.getString("economy-pay-receive-format");
         ECONOMY_OVERRIDE_BALTOP_COMMAND = config.getBoolean("economy-override-baltop-command");
     }
-
-    // Gets the worlds from a group name
 
     /**
      * Gets the worlds from a group name. If there is no associated group, it returns a single-item list with the World instead.

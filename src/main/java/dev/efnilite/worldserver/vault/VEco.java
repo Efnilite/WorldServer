@@ -5,20 +5,21 @@ import dev.efnilite.worldserver.WorldServer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 
 public class VEco {
 
     private static Economy eco;
 
-    public static void register() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            return;
-        }
+    public static void register(Plugin plugin) {
+        try {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+            eco = new EconomyProvider();
+            Bukkit.getServer().getServicesManager().register(Economy.class, eco, plugin, ServicePriority.High);
+            plugin.getLogger().info("Registered with Vault!");
+        } catch (ClassNotFoundException ignored) {
 
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-        if (rsp != null) {
-            eco = rsp.getProvider();
         }
     }
 

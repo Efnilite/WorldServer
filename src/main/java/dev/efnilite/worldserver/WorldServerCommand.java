@@ -27,16 +27,16 @@ public class WorldServerCommand extends ViCommand {
                     Message.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
                 if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws bal [player] [world/group]<dark_gray>- View a player's balance. World/group and player optional.");
+                    Message.send(sender, "<gray>/ws bal [player] <dark_gray>- View a player's balance. Player optional.");
                 }
                 if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws pay <player> [world/group]<dark_gray>- Pay another player. World/group optional.");
+                    Message.send(sender, "<gray>/ws pay <player> <dark_gray>- Pay another player.");
                 }
                 if (sender.hasPermission("ws.eco.admin.edit") && Option.ECONOMY_ENABLED) {
                     Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
                 if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws transfer [player] <world/group><dark_gray>- View a player's balance. World/group and player optional.");
+                    Message.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
                 }
                 if (sender.hasPermission("ws.reload")) {
                     Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
@@ -80,73 +80,80 @@ public class WorldServerCommand extends ViCommand {
                         return true;
                     case "bal":
                     case "balance":
-                        if (sender.hasPermission("ws.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
+                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
                             Player p = (Player) sender;
                             WorldPlayer player = WorldPlayer.getPlayer(p);
-
-                            if (player == null) {
-                                player = WorldPlayer.register(p);
-                            }
-
                             player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
                         }
                     case "top":
                     case "baltop":
-                        if (sender.hasPermission("ws.top") && Option.ECONOMY_ENABLED) {
+                        if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
 
                         }
                 }
                 break;
             case 4:
             case 5:
-                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
-                    Player p = Bukkit.getPlayer(args[2]);
+                Player p = Bukkit.getPlayer(args[2]);
 
-                    if (p == null) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                if (p == null) {
+                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                    return true;
+                }
+
+                double amount;
+                try {
+                    amount = Double.parseDouble(args[3]);
+                } catch (NumberFormatException ex) {
+                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                    return true;
+                }
+
+                WorldPlayer to = WorldPlayer.getPlayer(p);
+                String group = to.getWorldGroup();
+
+                if (args.length == 5) {
+                    group = args[4];
+                }
+
+                if (Option.getWorlds(group).isEmpty()) {
+                    Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                    return true;
+                }
+
+                if (args[0].equalsIgnoreCase("pay") && sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+                    if (!(sender instanceof Player)) {
+                        return true;
+                    }
+                    WorldPlayer from = WorldPlayer.getPlayer(((Player) sender));
+
+                    if (from.getBalance(group) < amount) {
+                        from.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT);
                         return true;
                     }
 
-                    double amount;
-                    try {
-                        amount = Double.parseDouble(args[3]);
-                    } catch (NumberFormatException ex) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
-                        return true;
-                    }
+                    from.withdraw(amount); // withdraw from sender
+                    to.deposit(amount);
 
-                    WorldPlayer player = WorldPlayer.getPlayer(p);
-
-                    if (player == null) {
-                        player = WorldPlayer.register(p);
-                    }
-
-                    String group = player.getWorldGroup();
-
-                    if (args.length == 5) {
-                        group = args[4];
-                    }
-
-                    if (Option.getWorlds(group).isEmpty()) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
-                        return true;
-                    }
-
+                    from.send(Option.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
+                    to.send(Option.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
+                    return true;
+                } else if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
                     switch (args[1].toLowerCase()) {
                         case "set":
-                            player.setBalance(amount, group);
+                            to.setBalance(amount, group);
                             Message.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully set " + player.getPlayer().getName() + "'s balance to " + amount);
+                                    "Successfully set " + to.getPlayer().getName() + "'s balance to " + amount);
                             return true;
                         case "add":
-                            player.deposit(group, amount);
+                            to.deposit(group, amount);
                             Message.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully added " + amount + " to " + player.getPlayer().getName() + "'s balance");
+                                    "Successfully added " + amount + " to " + to.getPlayer().getName() + "'s balance");
                             return true;
                         case "remove":
-                            player.withdraw(group, amount);
+                            to.withdraw(group, amount);
                             Message.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully removed " + amount + " from " + player.getPlayer().getName() + "'s balance");
+                                    "Successfully removed " + amount + " from " + to.getPlayer().getName() + "'s balance");
                             return true;
                     }
                 }

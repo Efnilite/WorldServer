@@ -45,7 +45,7 @@ public class WorldPlayer {
      */
     public static WorldPlayer register(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
-        WorldPlayer oldWp = getPlayer(player);
+        WorldPlayer oldWp = players.get(player.getUniqueId());
         if (oldWp == null) {
             WorldPlayer wp = read(player);
 
@@ -64,7 +64,7 @@ public class WorldPlayer {
      */
     public static void unregister(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
-        WorldPlayer wp = getPlayer(player);
+        WorldPlayer wp = players.get(player.getUniqueId());
         if (wp == null) {
             return;
         }
@@ -82,9 +82,10 @@ public class WorldPlayer {
      *
      * @return the WorldPlayer instance
      */
-    @Nullable
+    @NotNull
     public static WorldPlayer getPlayer(@NotNull Player player) {
-        return players.get(player.getUniqueId());
+        WorldPlayer p = players.get(player.getUniqueId());
+        return p != null ? p : register(player);
     }
 
     /**
