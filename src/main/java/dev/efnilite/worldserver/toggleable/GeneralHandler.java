@@ -21,7 +21,7 @@ public class GeneralHandler implements EventWatcher {
                 Message.send(player, "");
                 Message.send(player,
                         WorldServer.MESSAGE_PREFIX + "Your version is outdated. " +
-                                "Please <underline>visit the Spigot page<reset><gray> to update.");
+                                "Please visit the Spigot page to update.");
                 Message.send(player, "");
             } else {
                 Message.send(player, "");

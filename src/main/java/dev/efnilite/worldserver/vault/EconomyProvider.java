@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.eco;
+package dev.efnilite.worldserver.vault;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
-public class WEconomyProvider extends AbstractEconomy {
+public class EconomyProvider extends AbstractEconomy {
 
     @Override
     public boolean isEnabled() {

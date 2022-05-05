@@ -9,7 +9,7 @@ import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.eco.WBalCommand;
+import dev.efnilite.worldserver.vault.BalCommand;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -17,12 +17,15 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.eco.WEconomyProvider;
+import dev.efnilite.worldserver.vault.EconomyProvider;
+import dev.efnilite.worldserver.vault.VChat;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 public class WorldServer extends ViPlugin {
@@ -36,13 +39,7 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void onLoad() {
-        try {
-            Class.forName("net.milkbowl.vault.economy.Economy");
-            getServer().getServicesManager().register(Economy.class, new WEconomyProvider(), this, ServicePriority.High);
-            getLogger().info("Registered with Vault!");
-        } catch (ClassNotFoundException ignored) {
-
-        }
+        VChat.registerEco(this);
     }
 
     @Override
@@ -81,7 +78,7 @@ public class WorldServer extends ViPlugin {
 
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            registerCommand("bal", new WBalCommand());
+            registerCommand("bal", new BalCommand());
         }
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
@@ -93,6 +90,7 @@ public class WorldServer extends ViPlugin {
         Metrics metrics = new Metrics(this, 13856);
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
         metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
+        metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(Option.ECONOMY_ENABLED)));
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             WorldPlayer.register(player);
@@ -107,6 +105,9 @@ public class WorldServer extends ViPlugin {
                     }
                 })
                 .run();
+
+        // Vault setups
+        VChat.registerChat();
 
         logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }

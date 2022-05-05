@@ -21,6 +21,15 @@
 # It's highly recommended to keep this on!
 auto-updater: true
 
+# -= World groups =-
+# Group together worlds to share the tab list and chat
+# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
+groups:
+    example:
+        - 'World-1'
+        - 'World-2'
+        - 'Nether'
+
 # -= Enable per world tab list =-
 # True: players not in the same world will be hidden
 # False: every player will be visible
@@ -53,15 +62,6 @@ global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 # Change this by using /ws menu.
 spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
-# -= World groups =-
-# Group together worlds to share the tab list and chat
-# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
-groups:
-    example:
-        - 'World-1'
-        - 'World-2'
-        - 'Nether'
-
 # -= World chat format =-
 # Change the chat format for a group of worlds or a specific world
 # If conflict happens, groups are prioritized over worlds.
@@ -69,6 +69,10 @@ groups:
 chat-format:
     example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
     MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
+
+# -= Chat affixes =-
+# Whether custom chat should use Vault-provided player prefixes and suffixes.
+chat-affixes: true
 
 # -= Enable per world economy =-
 # True: players will have a different balance, depending on which World or World Group they are in.

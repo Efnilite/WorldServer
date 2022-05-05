@@ -23,24 +23,6 @@ public class Util {
         CURRENCY_FORMAT.setMaximumFractionDigits(2);
     }
 
-    public static List<String> colour(List<String> strings) {
-        List<String> ret = new ArrayList<>();
-        for (String string : strings) {
-            ret.add(Util.colour(string));
-        }
-        return ret;
-    }
-
-    /**
-     * Color something
-     */
-    public static String colour(String string) {
-        if (!string.equals("")) {
-            return ChatColor.translateAlternateColorCodes('&', Message.parseFormatting(string));
-        }
-        return string;
-    }
-
     /**
      * Gets the size of a ConfigurationSection
      *

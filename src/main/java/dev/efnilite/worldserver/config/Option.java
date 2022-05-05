@@ -15,6 +15,8 @@ public class Option {
 
     public static boolean AUTO_UPDATER;
 
+    public static HashMap<String, List<String>> GROUPS;
+
     /* Tab options */
     public static boolean TAB_ENABLED;
 
@@ -25,7 +27,8 @@ public class Option {
     public static String SPY_FORMAT;
     public static String GLOBAL_CHAT_FORMAT;
     public static HashMap<String, String> CHAT_FORMAT;
-    public static HashMap<String, List<String>> GROUPS;
+
+    public static boolean CHAT_AFFIXES;
 
     /* Eco options */
     public static boolean ECONOMY_ENABLED;
@@ -41,13 +44,6 @@ public class Option {
 
         AUTO_UPDATER = config.getBoolean("auto-updater");
 
-        TAB_ENABLED = config.getBoolean("tab-enabled");
-
-        CHAT_ENABLED = config.getBoolean("chat-enabled");
-        GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
-        GLOBAL_CHAT_PREFIX = config.getString("global-chat-prefix");
-        GLOBAL_CHAT_FORMAT = config.getString("global-chat-format");
-        SPY_FORMAT = config.getString("spy-format");
         GROUPS = new HashMap<>();
         List<String> node = Util.getNode(config, "groups");
         if (node != null) {
@@ -56,6 +52,15 @@ public class Option {
                 GROUPS.put(group, worlds);
             }
         }
+
+        TAB_ENABLED = config.getBoolean("tab-enabled");
+
+        CHAT_ENABLED = config.getBoolean("chat-enabled");
+        GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
+        GLOBAL_CHAT_PREFIX = config.getString("global-chat-prefix");
+        GLOBAL_CHAT_FORMAT = config.getString("global-chat-format");
+        SPY_FORMAT = config.getString("spy-format");
+
         CHAT_FORMAT = new HashMap<>();
         node = Util.getNode(config, "chat-format");
         if (node != null) {
@@ -64,6 +69,7 @@ public class Option {
                 CHAT_FORMAT.put(world, format);
             }
         }
+        CHAT_AFFIXES = config.getBoolean("chat-affixes");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");
         ECONOMY_SWITCH_NOTIFICATION = config.getBoolean("economy-switch-notification");

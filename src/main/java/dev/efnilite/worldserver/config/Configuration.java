@@ -73,40 +73,4 @@ public class Configuration {
         }
         return config;
     }
-
-    /**
-     * Gets a coloured string
-     *
-     * @param   file
-     *          The file
-     * @param   path
-     *          The path
-     *
-     * @return a coloured string
-     */
-    public @Nullable List<String> getStringList(String file, String path) {
-        List<String> string = getFile(file).getStringList(path);
-        if (string.isEmpty()) {
-            return null;
-        }
-        return Util.colour(string);
-    }
-
-    /**
-     * Gets a coloured string
-     *
-     * @param   file
-     *          The file
-     * @param   path
-     *          The path
-     *
-     * @return a coloured string
-     */
-    public @Nullable String getString(String file, String path) {
-        String string = getFile(file).getString(path);
-        if (string == null) {
-            return null;
-        }
-        return Util.colour(string);
-    }
 }
