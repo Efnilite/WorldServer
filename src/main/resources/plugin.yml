@@ -14,3 +14,7 @@ commands:
   bal:
     aliases: [balance]
     description: Gets your current balance
+
+  baltop:
+    aliases: [baltop]
+    description: Gets the current balance leaderboard

@@ -26,8 +26,17 @@ public class WorldServerCommand extends ViCommand {
                 if (sender.hasPermission("ws.menu")) {
                     Message.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
-                if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> <dark_gray>- Admin commands for setting player balances");
+                if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
+                    Message.send(sender, "<gray>/ws bal [player] [world/group]<dark_gray>- View a player's balance. World/group and player optional.");
+                }
+                if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+                    Message.send(sender, "<gray>/ws pay <player> [world/group]<dark_gray>- Pay another player. World/group optional.");
+                }
+                if (sender.hasPermission("ws.eco.admin.edit") && Option.ECONOMY_ENABLED) {
+                    Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
+                }
+                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
+                    Message.send(sender, "<gray>/ws transfer [player] <world/group><dark_gray>- View a player's balance. World/group and player optional.");
                 }
                 if (sender.hasPermission("ws.reload")) {
                     Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
@@ -61,8 +70,10 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
                         Message.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
-                        Message.send(sender, "<gray>ws.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
-                        Message.send(sender, "<gray>ws.eco <dark_gray>- For using the /ws eco command");
+                        Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
+                        Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
+                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
+                        Message.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
                         Message.send(sender, "");
                         Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
                         Message.send(sender, "");
@@ -78,6 +89,11 @@ public class WorldServerCommand extends ViCommand {
                             }
 
                             player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
+                        }
+                    case "top":
+                    case "baltop":
+                        if (sender.hasPermission("ws.top") && Option.ECONOMY_ENABLED) {
+
                         }
                 }
                 break;

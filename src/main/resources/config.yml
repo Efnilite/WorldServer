@@ -107,6 +107,14 @@ economy-starting-amount:
   MyWorld: 69.69
 
 # -= Economy override balance command =-
-# Whether WorldServer should use register /bal and /balance.
+# Whether WorldServer should register /bal and /balance.
 # This will override any plugin who is already using this command.
 economy-override-balance-command: true
+
+# -= Economy override baltop command =-
+# Whether WorldServer should register /baltop and /balancetop.
+# This will override any plugin who is already using this command.
+economy-override-baltop-command: true
+
+# -= Economy baltop format =-
+economy-baltop-format: ''

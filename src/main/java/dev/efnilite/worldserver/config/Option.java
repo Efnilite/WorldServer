@@ -38,6 +38,7 @@ public class Option {
     public static List<String> ECONOMY_CURRENCY_NAMES;
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
     public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
+    public static boolean ECONOMY_OVERRIDE_BALTOP_COMMAND;
 
     public static void init() {
         FileConfiguration config = WorldServer.getConfiguration().getFile("config");
@@ -85,6 +86,7 @@ public class Option {
             }
         }
         ECONOMY_OVERRIDE_BALANCE_COMMAND = config.getBoolean("economy-override-balance-command");
+        ECONOMY_OVERRIDE_BALTOP_COMMAND = config.getBoolean("economy-override-baltop-command");
     }
 
     // Gets the worlds from a group name

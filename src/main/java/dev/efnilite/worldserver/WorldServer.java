@@ -9,7 +9,6 @@ import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.vault.BalCommand;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -17,16 +16,12 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.vault.EconomyProvider;
 import dev.efnilite.worldserver.vault.VChat;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
+import dev.efnilite.worldserver.vault.VEco;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 
 public class WorldServer extends ViPlugin {
 
@@ -36,11 +31,6 @@ public class WorldServer extends ViPlugin {
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
-
-    @Override
-    public void onLoad() {
-        VChat.registerEco(this);
-    }
 
     @Override
     public void enable() {
@@ -77,9 +67,6 @@ public class WorldServer extends ViPlugin {
         }
 
         registerCommand("worldserver", new WorldServerCommand());
-        if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            registerCommand("bal", new BalCommand());
-        }
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
         registerListener(new WorldSwitchListener());
@@ -107,7 +94,8 @@ public class WorldServer extends ViPlugin {
                 .run();
 
         // Vault setups
-        VChat.registerChat();
+        VChat.register();
+        VEco.register();
 
         logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
     }
