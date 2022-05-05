@@ -36,9 +36,9 @@ public class WorldServerCommand extends ViCommand {
                 if (sender.hasPermission("ws.eco.admin.edit") && Option.ECONOMY_ENABLED) {
                     Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
-                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
-                }
+//                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
+//                    Message.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
+//                } todo
                 if (sender.hasPermission("ws.reload")) {
                     Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
                 }
@@ -73,7 +73,7 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
                         Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
                         Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
-                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
+//                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command"); todo
                         Message.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
                         Message.send(sender, "");
                         Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
@@ -86,13 +86,34 @@ public class WorldServerCommand extends ViCommand {
                             WorldPlayer player = WorldPlayer.getPlayer(p);
                             player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
                         }
+                        return true;
                     case "top":
                     case "baltop":
                         if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
-
+//                            EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender)); todo
                         }
+                        return true;
                 }
                 break;
+            case 2:
+                switch (args[0].toLowerCase()) {
+                    case "bal":
+                    case "balance":
+                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
+                            Player of = Bukkit.getPlayer(args[1]);
+
+                            if (of == null) {
+                                Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                                return true;
+                            }
+
+                            Message.send(sender, Option.ECONOMY_BALANCE_FORMAT
+                                    .replace("%player%", of.getName())
+                                    .replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
+                        }
+                        return true;
+                }
+                return true;
             case 4:
             case 5:
                 Player p = Bukkit.getPlayer(args[2]);
@@ -158,7 +179,7 @@ public class WorldServerCommand extends ViCommand {
                             return true;
                     }
                 }
-                break;
+                return true;
         }
         return true;
     }
@@ -171,7 +192,13 @@ public class WorldServerCommand extends ViCommand {
             if (sender.hasPermission("ws.menu")) {
                 completions.add("menu");
             }
-            if (sender.hasPermission("ws.eco") && Option.ECONOMY_ENABLED) {
+            if (sender.hasPermission("ws.eco.bal")) {
+                completions.add("bal");
+            }
+            if (sender.hasPermission("ws.eco.pay")) {
+                completions.add("pay");
+            }
+            if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
                 completions.add("eco");
             }
             if (sender.hasPermission("ws.reload")) {

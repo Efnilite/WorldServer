@@ -2,9 +2,11 @@ package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.worldserver.config.Option;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
@@ -26,7 +28,13 @@ public class PayCommand extends ViCommand {
     }
 
     @Override
-    public List<String> tabComplete(CommandSender commandSender, String[] strings) {
-        return Collections.emptyList();
+    public List<String> tabComplete(CommandSender sender, String[] args) {
+        List<String> completions = new ArrayList<>();
+        if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                completions.add(player.getName());
+            }
+        }
+        return completions(args[0], completions);
     }
 }

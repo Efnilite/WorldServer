@@ -111,20 +111,16 @@ economy-starting-amount:
 # This will override any plugin who is already using this command.
 economy-override-balance-command: true
 
+# -= Economy balance format =-
+# The message format of the /bal command.
+economy-balance-format: '%player% has €$%amount%'
+
 # -= Economy override pay command =-
 # Whether WorldServer should register /pay
 # This will override any plugin who is already using this command.
 economy-override-pay-command: true
 
 # -= Economy pay formats =-
-economy-pay-no-funds-format: 'You don't have enough €$ to do that!'
+economy-pay-no-funds-format: 'You don''t have enough €$ to do that!'
 economy-pay-send-format: 'You sent %player% €$%amount%'
 economy-pay-receive-format: '%player% sent you €$%amount%'
-
-# -= Economy override baltop command =-
-# Whether WorldServer should register /baltop and /balancetop.
-# This will override any plugin who is already using this command.
-economy-override-baltop-command: true
-
-# -= Economy baltop format =-
-economy-baltop-format: ''
