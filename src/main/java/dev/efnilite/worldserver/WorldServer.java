@@ -36,7 +36,6 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void onLoad() {
-        Time.timerStart("enableWS");
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             try {
                 Class.forName("net.milkbowl.vault.economy.Economy");
@@ -50,8 +49,8 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void enable() {
+        Time.timerStart("enableWS");
         instance = this;
-        logging = new Logging(this);
         configuration = new Configuration(this);
         Option.init();
 

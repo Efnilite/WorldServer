@@ -66,6 +66,7 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # Change the chat format for a group of worlds or a specific world
 # If conflict happens, groups are prioritized over worlds.
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
+# Learn more about colouring: https://github.com/ViStudios/vilib/wiki/Colouring
 chat-format:
     example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
     MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
@@ -120,13 +121,13 @@ economy-balance-format: '%player% has €$%amount%'
 # This will override any plugin who is already using this command.
 economy-override-pay-command: true
 
-# -= Economy pay no funds format =-
+# -= Economy pay format =-
+# Learn more about colouring: https://github.com/ViStudios/vilib/wiki/Colouring
+
 # The format for when a player does not have enough funds to pay someone.
 economy-pay-no-funds-format: 'You don''t have enough €$ to do that!'
-
 # The format for when a player sends another player money.
 economy-pay-send-format: 'You sent %player% €$%amount%'
-
 # The format for when a player receives money from another player.
 economy-pay-receive-format: '%player% sent you €$%amount%'
 
