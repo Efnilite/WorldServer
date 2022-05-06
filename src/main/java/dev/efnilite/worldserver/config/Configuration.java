@@ -2,17 +2,14 @@ package dev.efnilite.worldserver.config;
 
 import com.tchristofferson.configupdater.ConfigUpdater;
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * An utilities class for the Configuration

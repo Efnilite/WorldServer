@@ -19,10 +19,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class WorldPlayer {
-
-    @Expose
-    public String name;
-    
     @Expose
     public boolean spyMode;
 
@@ -155,7 +151,6 @@ public class WorldPlayer {
             if (container == null) {
                 WorldPlayer def = new WorldPlayer(player);
 
-                def.name = player.getName();
                 def.spyMode = false;
                 def.balances = new HashMap<>();
 
@@ -163,7 +158,6 @@ public class WorldPlayer {
                 return def;
             }
 
-            newWp.name = container.name != null && !container.name.isEmpty() ? container.name : player.getName();
             newWp.spyMode = container.spyMode;
             newWp.balances = container.balances != null ? container.balances : new HashMap<>();
 

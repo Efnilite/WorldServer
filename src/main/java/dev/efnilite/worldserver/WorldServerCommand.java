@@ -4,6 +4,7 @@ import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -73,7 +74,7 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
                         Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
                         Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
-//                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command"); todo
+                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
                         Message.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
                         Message.send(sender, "");
                         Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
@@ -90,7 +91,7 @@ public class WorldServerCommand extends ViCommand {
                     case "top":
                     case "baltop":
                         if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
-//                            EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender)); todo
+                            EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender));
                         }
                         return true;
                 }
@@ -218,10 +219,13 @@ public class WorldServerCommand extends ViCommand {
             if (sender.hasPermission("ws.menu")) {
                 completions.add("menu");
             }
-            if (sender.hasPermission("ws.eco.bal")) {
+            if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
                 completions.add("bal");
             }
-            if (sender.hasPermission("ws.eco.pay")) {
+            if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
+                completions.add("top");
+            }
+            if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
                 completions.add("pay");
             }
             if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {

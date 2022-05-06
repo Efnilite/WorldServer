@@ -96,7 +96,7 @@ public class Option {
         ECONOMY_PAY_NO_FUNDS_FORMAT = config.getString("economy-pay-no-funds-format");
         ECONOMY_PAY_SEND_FORMAT = config.getString("economy-pay-send-format");
         ECONOMY_PAY_RECEIVE_FORMAT = config.getString("economy-pay-receive-format");
-        ECONOMY_OVERRIDE_BALTOP_COMMAND = false; // todo, config.getBoolean("economy-override-baltop-command")
+        ECONOMY_OVERRIDE_BALTOP_COMMAND = config.getBoolean("economy-override-baltop-command");
     }
 
     /**

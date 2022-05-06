@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 

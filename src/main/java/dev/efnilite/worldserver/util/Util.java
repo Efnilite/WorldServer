@@ -1,16 +1,12 @@
 package dev.efnilite.worldserver.util;
 
-import dev.efnilite.vilib.chat.Message;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Util {
 
@@ -38,5 +34,17 @@ public class Util {
             return null;
         }
         return new ArrayList<>(section.getKeys(false));
+    }
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }

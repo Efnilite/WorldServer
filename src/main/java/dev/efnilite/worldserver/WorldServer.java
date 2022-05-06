@@ -9,10 +9,7 @@ import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.eco.BalCache;
-import dev.efnilite.worldserver.eco.BalCommand;
-import dev.efnilite.worldserver.eco.BaltopCommand;
-import dev.efnilite.worldserver.eco.PayCommand;
+import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -20,11 +17,13 @@ import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.vault.*;
+import dev.efnilite.worldserver.vault.VChat;
+import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 
 public class WorldServer extends ViPlugin {
 
@@ -37,21 +36,26 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void onLoad() {
-        VEco.register(this);
+        Time.timerStart("enableWS");
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+            try {
+                Class.forName("net.milkbowl.vault.economy.Economy");
+                getServer().getServicesManager().register(Economy.class, new EconomyProvider(), this, ServicePriority.High);
+                getLogger().info("Registered with Vault!");
+            } catch (NoClassDefFoundError | ClassNotFoundException ignored) {
+
+            }
+        }
     }
 
     @Override
     public void enable() {
         instance = this;
-
         logging = new Logging(this);
-
-        Time.timerStart("enable");
-
-        logging.info("Registered under version " + Version.getPrettyVersion());
-
         configuration = new Configuration(this);
         Option.init();
+
+        logging.info("Registered under version " + Version.getPrettyVersion());
 
         switch (version) {
             case V1_18:
@@ -118,7 +122,7 @@ public class WorldServer extends ViPlugin {
         // Vault setups
         VChat.register();
 
-        logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enable")  + "ms!");
+        logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enableWS")  + "ms!");
     }
 
     @Override
