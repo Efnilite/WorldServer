@@ -74,7 +74,7 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
                         Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
                         Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
-                        Message.send(sender, "<gray>ws.eco.baltop <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
+                        Message.send(sender, "<gray>ws.eco.top <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
                         Message.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
                         Message.send(sender, "");
                         Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
