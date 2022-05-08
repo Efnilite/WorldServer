@@ -97,6 +97,11 @@ chat-affixes: true
 # False: players will share
 economy-enabled: true
 
+# -= Economy global =-
+# True: the economy will be shared across the entire server
+# False: if economy is enabled, each world or world group will have a different economy.
+economy-global-enabled: false
+
 # -= Economy switch notification =-
 # True: players will receive a message when they switch worlds (or join) detailing how much balance they have
 # False: players won't get a message

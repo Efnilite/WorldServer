@@ -176,12 +176,20 @@ public class WorldPlayer {
     }
 
     public void setBalance(double amount, String group) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
         balances.put(group, amount);
         BalCache.save(player.getUniqueId(), group, amount);
     }
 
     public double getBalance() {
         String group = getWorldGroup();
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
         if (!balances.containsKey(group)) {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
@@ -189,6 +197,10 @@ public class WorldPlayer {
     }
 
     public double getBalance(String group) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
         if (!balances.containsKey(group)) {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
@@ -196,10 +208,19 @@ public class WorldPlayer {
     }
 
     public void withdraw(double amount) {
-        withdraw(getWorldGroup(), amount);
+        String group = getWorldGroup();
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
+        withdraw(group, amount);
     }
 
     public void withdraw(String group, double amount) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
         if (!balances.containsKey(group)) {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
@@ -210,10 +231,19 @@ public class WorldPlayer {
     }
 
     public void deposit(double amount) {
-        deposit(getWorldGroup(), amount);
+        String group = getWorldGroup();
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
+        deposit(group, amount);
     }
 
     public void deposit(String group, double amount) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
+            group = "global";
+        }
+
         if (!balances.containsKey(group)) {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }

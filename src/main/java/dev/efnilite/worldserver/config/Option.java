@@ -34,6 +34,7 @@ public class Option {
 
     /* Eco options */
     public static boolean ECONOMY_ENABLED;
+    public static boolean ECONOMY_GLOBAL_ENABLED;
     public static boolean ECONOMY_SWITCH_NOTIFICATION;
     public static String ECONOMY_SWITCH_FORMAT;
     public static String ECONOMY_CURRENCY_SYMBOL;
@@ -77,6 +78,7 @@ public class Option {
                 CHAT_FORMAT.put(world, format);
             }
         }
+
         CHAT_COOLDOWN = new HashMap<>();
         node = Util.getNode(config, "chat-cooldown");
         if (node != null) {
@@ -89,6 +91,7 @@ public class Option {
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");
+        ECONOMY_GLOBAL_ENABLED = config.getBoolean("economy-global-enabled");
         ECONOMY_SWITCH_NOTIFICATION = config.getBoolean("economy-switch-notification");
         ECONOMY_SWITCH_FORMAT = config.getString("economy-switch-format");
         ECONOMY_CURRENCY_SYMBOL = config.getString("economy-currency-symbol");
