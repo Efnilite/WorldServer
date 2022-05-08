@@ -10,9 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class WorldChatListener extends Toggleable implements EventWatcher {
+
+    protected Map<String, Map<UUID, Long>> lastExecuted = new HashMap<>();
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
@@ -27,6 +32,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         if (Option.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
             event.setFormat(getChatFormatted(player, Option.GLOBAL_CHAT_FORMAT));
             event.setMessage(message.replaceFirst(prefix, ""));
+
+            cooldown(event, "global");
             return;
         }
 
@@ -58,6 +65,22 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
         if (format != null) {
             event.setFormat(getChatFormatted(player, format));
+            cooldown(event, group);
+        }
+    }
+
+    private void cooldown(AsyncPlayerChatEvent event, String group) {
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        double cooldown = Option.CHAT_COOLDOWN.getOrDefault(group, 0D);
+        Map<UUID, Long> map = lastExecuted.getOrDefault(group, new HashMap<>());
+
+        long last = map.get(uuid);
+        if (System.currentTimeMillis() - last < cooldown * 1000) { // if cooldown is longer than last time, cancel message
+            event.setCancelled(true);
+        } else {
+            map.put(uuid, System.currentTimeMillis());
+            lastExecuted.put(group, map);
         }
     }
 

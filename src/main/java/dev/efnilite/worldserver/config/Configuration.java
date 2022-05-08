@@ -41,7 +41,8 @@ public class Configuration {
         }
         for (String file : defaultFiles) {
             try {
-                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups", "chat-format", "economy-currency-names"));
+                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file),
+                        Arrays.asList("groups", "chat-format", "chat-cooldown", "economy-currency-names"));
             } catch (IOException ex) {
                 ex.printStackTrace();
                 WorldServer.logging().error("Error while trying to update config");

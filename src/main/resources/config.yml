@@ -25,10 +25,10 @@ auto-updater: true
 # Group together worlds to share the tab list and chat
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 groups:
-    example:
-        - 'World-1'
-        - 'World-2'
-        - 'Nether'
+  example:
+    - 'World-1'
+    - 'World-2'
+    - 'Nether'
 
 # -= Enable per world tab list =-
 # True: players not in the same world will be hidden
@@ -68,8 +68,28 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 # Learn more about colouring: https://github.com/ViStudios/vilib/wiki/Colouring
 chat-format:
-    example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
-    MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
+  example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
+  MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
+
+# -= World chat cooldown =-
+# The chat cooldown per world group or world.
+# This is in seconds. Time cheat sheet:
+# 1 minute = 60 seconds
+# 1 hour = 3600 seconds
+# 1 day = 86400 seconds
+chat-cooldown:
+  global: 5
+  example: 1
+  MyWorld: 2.5
+
+# -= World chat hover =-
+# Set a hover message when a player sends a message.
+chat-hover:
+  example:
+    - '<gray>This message was sent by <green>%player%<gray> at <green>%time%'
+    - '<gray>Click to message this player.'
+  MyWorld:
+    - '<gray>Click to message!'
 
 # -= Chat affixes =-
 # Whether custom chat should use Vault-provided player prefixes and suffixes.

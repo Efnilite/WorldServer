@@ -138,7 +138,7 @@ public class WorldPlayer {
     @Nullable
     public static WorldPlayer read(Player player) {
         try {
-            File file = new File(WorldServer.getPlugin().getDataFolder() + "/players/" + player.getUniqueId() + ".json");
+            File file = new File(WorldServer.getPlugin().getDataFolder(), "players/" + player.getUniqueId() + ".json");
 
             if (!file.exists()) {
                 file.createNewFile();

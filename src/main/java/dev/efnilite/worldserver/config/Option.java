@@ -26,7 +26,8 @@ public class Option {
     public static String GLOBAL_CHAT_PREFIX;
     public static String SPY_FORMAT;
     public static String GLOBAL_CHAT_FORMAT;
-    public static HashMap<String, String> CHAT_FORMAT;
+    public static Map<String, String> CHAT_FORMAT;
+    public static Map<String, Double> CHAT_COOLDOWN;
 
     public static boolean CHAT_AFFIXES;
 
@@ -73,6 +74,14 @@ public class Option {
             for (String world : node) {
                 String format = config.getString("chat-format." + world);
                 CHAT_FORMAT.put(world, format);
+            }
+        }
+        CHAT_COOLDOWN = new HashMap<>();
+        node = Util.getNode(config, "chat-cooldown");
+        if (node != null) {
+            for (String world : node) {
+                double format = config.getDouble("chat-cooldown." + world);
+                CHAT_COOLDOWN.put(world, format);
             }
         }
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
