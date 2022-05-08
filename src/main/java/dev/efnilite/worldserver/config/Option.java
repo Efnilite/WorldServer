@@ -28,6 +28,7 @@ public class Option {
     public static String GLOBAL_CHAT_FORMAT;
     public static Map<String, String> CHAT_FORMAT;
     public static Map<String, Double> CHAT_COOLDOWN;
+    public static String CHAT_COOLDOWN_FORMAT;
 
     public static boolean CHAT_AFFIXES;
 
@@ -84,6 +85,7 @@ public class Option {
                 CHAT_COOLDOWN.put(world, format);
             }
         }
+        CHAT_COOLDOWN_FORMAT = config.getString("chat-cooldown-format");
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");

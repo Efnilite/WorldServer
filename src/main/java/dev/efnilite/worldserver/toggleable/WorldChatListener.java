@@ -65,19 +65,29 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
         if (format != null) {
             event.setFormat(getChatFormatted(player, format));
-            cooldown(event, group);
         }
+
+        cooldown(event, group);
     }
 
+    // checks if this message should by cancelled by the cooldown
     private void cooldown(AsyncPlayerChatEvent event, String group) {
-        UUID uuid = event.getPlayer().getUniqueId();
+        Player player = event.getPlayer();
+        if (player.hasPermission("ws.chat.cooldown.bypass")) {
+            return;
+        }
+        UUID uuid = player.getUniqueId();
 
         double cooldown = Option.CHAT_COOLDOWN.getOrDefault(group, 0D);
         Map<UUID, Long> map = lastExecuted.getOrDefault(group, new HashMap<>());
 
-        long last = map.get(uuid);
-        if (System.currentTimeMillis() - last < cooldown * 1000) { // if cooldown is longer than last time, cancel message
+        long remaining = System.currentTimeMillis() - map.getOrDefault(uuid, 0L);
+        if (remaining < cooldown * 1000) { // if cooldown is longer than last time, cancel message
             event.setCancelled(true);
+
+            Message.send(player, Option.CHAT_COOLDOWN_FORMAT
+                    .replace("%remaining%", String.format("%.2f", cooldown - (remaining / 1000D)))
+                    .replace("%time%", String.format("%.2f", cooldown)));
         } else {
             map.put(uuid, System.currentTimeMillis());
             lastExecuted.put(group, map);

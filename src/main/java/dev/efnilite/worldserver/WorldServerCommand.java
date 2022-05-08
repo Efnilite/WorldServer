@@ -71,6 +71,7 @@ public class WorldServerCommand extends ViCommand {
                         Message.send(sender, "<gray>ws.spy <dark_gray>- For spying on what everyone in every world is saying. This requires the ws.menu permission.");
                         Message.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
                         Message.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
+                        Message.send(sender, "<gray>ws.chat.cooldown.bypass <dark_gray>- For bypassing the chat cooldowns");
                         Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
                         Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
                         Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");

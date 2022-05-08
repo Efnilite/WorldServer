@@ -82,14 +82,11 @@ chat-cooldown:
   example: 1
   MyWorld: 2.5
 
-# -= World chat hover =-
-# Set a hover message when a player sends a message.
-chat-hover:
-  example:
-    - '<gray>This message was sent by <green>%player%<gray> at <green>%time%'
-    - '<gray>Click to message this player.'
-  MyWorld:
-    - '<gray>Click to message!'
+# -= World chat cooldown format =-
+# The message players get when they are on chat cooldown.
+# %remaining% - the time remaining
+# %time% - the total cooldown time
+chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds until you can send another message!'
 
 # -= Chat affixes =-
 # Whether custom chat should use Vault-provided player prefixes and suffixes.
