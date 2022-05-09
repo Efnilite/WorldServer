@@ -34,6 +34,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
             event.setMessage(message.replaceFirst(prefix, ""));
 
             cooldown(event, "global");
+            blocked(event);
             return;
         }
 
@@ -68,6 +69,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         cooldown(event, group);
+        blocked(event);
     }
 
     // checks if this message should by cancelled by the cooldown
@@ -91,6 +93,18 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         } else {
             map.put(uuid, System.currentTimeMillis());
             lastExecuted.put(group, map);
+        }
+    }
+
+    // check blocked messages
+    private void blocked(AsyncPlayerChatEvent event) {
+        String message = event.getMessage();
+        for (String blocked : Option.CHAT_BLOCKED) {
+            if (message.toLowerCase().contains(blocked.toLowerCase())) {
+                event.setCancelled(true);
+                Message.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
+                return;
+            }
         }
     }
 

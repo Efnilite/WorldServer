@@ -88,6 +88,16 @@ chat-cooldown:
 # %time% - the total cooldown time
 chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds until you can send another message!'
 
+# -= Chat blocked =-
+# Words which will be banned in chat.
+# These are case insensitive.
+chat-blocked:
+  - "bad word"
+
+# -= Chat blocked format =-
+# The message players get when their message contains a blocked word.
+chat-blocked-format: '<gray>You can''t say mean things :('
+
 # -= Chat affixes =-
 # Whether custom chat should use Vault-provided player prefixes and suffixes.
 chat-affixes: true

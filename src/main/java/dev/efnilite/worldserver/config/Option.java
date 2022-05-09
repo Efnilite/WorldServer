@@ -29,7 +29,8 @@ public class Option {
     public static Map<String, String> CHAT_FORMAT;
     public static Map<String, Double> CHAT_COOLDOWN;
     public static String CHAT_COOLDOWN_FORMAT;
-
+    public static List<String> CHAT_BLOCKED;
+    public static String CHAT_BLOCKED_FORMAT;
     public static boolean CHAT_AFFIXES;
 
     /* Eco options */
@@ -88,6 +89,8 @@ public class Option {
             }
         }
         CHAT_COOLDOWN_FORMAT = config.getString("chat-cooldown-format");
+        CHAT_BLOCKED = config.getStringList("chat-blocked");
+        CHAT_BLOCKED_FORMAT = config.getString("chat-blocked-format");
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");
