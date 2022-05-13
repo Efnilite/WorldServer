@@ -142,6 +142,7 @@ economy-starting-amount:
 # -= Economy override balance command =-
 # Whether WorldServer should register /bal and /balance.
 # This will override any plugin who is already using this command.
+# Requires a restart to take effect.
 economy-override-balance-command: true
 
 # -= Economy balance format =-
@@ -151,6 +152,7 @@ economy-balance-format: '%player% has €$%amount%'
 # -= Economy override pay command =-
 # Whether WorldServer should register /pay
 # This will override any plugin who is already using this command.
+# Requires a restart to take effect.
 economy-override-pay-command: true
 
 # -= Economy pay format =-
@@ -166,4 +168,5 @@ economy-pay-receive-format: '%player% sent you €$%amount%'
 # -= Economy override baltop command =-
 # Whether WorldServer should register /baltop and /balancetop
 # This will override any plugin who is already using this command.
+# Requires a restart to take effect.
 economy-override-baltop-command: true

@@ -13,7 +13,8 @@ import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
-import dev.efnilite.worldserver.toggleable.WorldSwitchListener;
+import dev.efnilite.worldserver.toggleable.WorldTabListener;
+import dev.efnilite.worldserver.util.Util;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
@@ -79,17 +80,20 @@ public class WorldServer extends ViPlugin {
 
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            registerCommand("bal", new BalCommand());
+            Util.registerToMap("bal", new BalCommand());
+            Util.registerToMap("balance", new BalCommand());
         }
         if (Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
-            registerCommand("pay", new PayCommand());
+            Util.registerToMap("pay", new PayCommand());
+            Util.registerToMap("transfer", new PayCommand());
         }
         if (Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
-            registerCommand("baltop", new BaltopCommand());
+            Util.registerToMap("baltop", new BaltopCommand());
+            Util.registerToMap("balancetop", new BaltopCommand());
         }
         registerListener(new GeneralHandler());
         registerListener(new WorldChatListener());
-        registerListener(new WorldSwitchListener());
+        registerListener(new WorldTabListener());
         registerListener(new WorldEconomyListener());
 
         elevator = new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, Option.AUTO_UPDATER);

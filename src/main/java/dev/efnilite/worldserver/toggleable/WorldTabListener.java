@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public class WorldSwitchListener extends Toggleable implements EventWatcher {
+public class WorldTabListener extends Toggleable implements EventWatcher {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void join(PlayerJoinEvent event) {
@@ -25,8 +25,10 @@ public class WorldSwitchListener extends Toggleable implements EventWatcher {
         for (Player pl : Bukkit.getOnlinePlayers()) {
             if (inGroup.contains(pl)) {
                 visibilityHandler.show(player, pl);
+                visibilityHandler.show(pl, player);
             } else {
                 visibilityHandler.hide(player, pl);
+                visibilityHandler.hide(pl, player);
             }
         }
     }

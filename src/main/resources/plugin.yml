@@ -1,7 +1,7 @@
 name: 'WorldServer'
 author: 'Efnilite'
 main: 'dev.efnilite.worldserver.WorldServer'
-version: '1.4.2'
+version: '1.4.3'
 api-version: '1.16'
 description: 'Separate chat and tab list in the worlds in your server.'
 depend: ['vilib']
@@ -10,15 +10,3 @@ commands:
   worldserver:
     aliases: [ws]
     description: The main command of WorldServer
-
-  bal:
-    aliases: [balance]
-    description: Gets your current balance
-
-  pay:
-    aliases: [transfer]
-    description: Pay another player
-
-  baltop:
-    aliases: [balancetop]
-    description: Gets the current balance leaderboard

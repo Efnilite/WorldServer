@@ -6,6 +6,7 @@ import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
+import dev.efnilite.worldserver.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -86,7 +87,7 @@ public class WorldServerCommand extends ViCommand {
                         if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
                             Player p = (Player) sender;
                             WorldPlayer player = WorldPlayer.getPlayer(p);
-                            player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
+                            player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Util.CURRENCY_FORMAT.format(player.getBalance())));
                         }
                         return true;
                     case "top":
