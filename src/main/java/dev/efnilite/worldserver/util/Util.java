@@ -1,13 +1,17 @@
 package dev.efnilite.worldserver.util;
 
+import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.worldserver.WorldServer;
+import dev.efnilite.worldserver.hook.PlaceholderHook;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -27,6 +31,10 @@ public class Util {
         CURRENCY_FORMAT.setGroupingUsed(true);
         CURRENCY_FORMAT.setMinimumFractionDigits(2);
         CURRENCY_FORMAT.setMaximumFractionDigits(2);
+    }
+
+    public static void send(Player player, String message) {
+        Message.send(player, PlaceholderHook.translate(player, message));
     }
 
     /**

@@ -10,6 +10,7 @@ import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.*;
+import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
 import dev.efnilite.worldserver.toggleable.WorldChatListener;
 import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
@@ -18,7 +19,7 @@ import dev.efnilite.worldserver.util.Util;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
-import dev.efnilite.worldserver.vault.VChat;
+import dev.efnilite.worldserver.hook.VaultHook;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -123,7 +124,8 @@ public class WorldServer extends ViPlugin {
                 .run();
 
         // Vault setups
-        VChat.register();
+        VaultHook.register();
+        PlaceholderHook.register();
 
         logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enableWS")  + "ms!");
     }

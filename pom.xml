@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.4.4</version>
+    <version>1.5.0</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
@@ -71,6 +71,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -99,6 +103,13 @@
             <groupId>com.github.ViStudios</groupId>
             <artifactId>vilib</artifactId>
             <version>v1.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.10</version>
             <scope>provided</scope>
         </dependency>
 

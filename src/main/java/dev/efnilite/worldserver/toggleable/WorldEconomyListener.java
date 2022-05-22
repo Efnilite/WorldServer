@@ -2,7 +2,9 @@ package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldPlayer;
+import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.hook.VaultHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

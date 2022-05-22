@@ -31,6 +31,8 @@ public class Option {
     public static String CHAT_COOLDOWN_FORMAT;
     public static List<String> CHAT_BLOCKED;
     public static String CHAT_BLOCKED_FORMAT;
+    public static Map<String, String> CHAT_JOIN_FORMATS;
+    public static Map<String, String> CHAT_LEAVE_FORMATS;
     public static boolean CHAT_AFFIXES;
 
     /* Eco options */
@@ -91,6 +93,25 @@ public class Option {
         CHAT_COOLDOWN_FORMAT = config.getString("chat-cooldown-format");
         CHAT_BLOCKED = config.getStringList("chat-blocked");
         CHAT_BLOCKED_FORMAT = config.getString("chat-blocked-format");
+
+        CHAT_JOIN_FORMATS = new HashMap<>();
+        node = Util.getNode(config, "chat-join-formats");
+        if (node != null) {
+            for (String world : node) {
+                String format = config.getString("chat-join-formats." + world);
+                CHAT_JOIN_FORMATS.put(world, format);
+            }
+        }
+
+        CHAT_LEAVE_FORMATS = new HashMap<>();
+        node = Util.getNode(config, "chat-leave-formats");
+        if (node != null) {
+            for (String world : node) {
+                String format = config.getString("chat-leave-formats." + world);
+                CHAT_LEAVE_FORMATS.put(world, format);
+            }
+        }
+
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");

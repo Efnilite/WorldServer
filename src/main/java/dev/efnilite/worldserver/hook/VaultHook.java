@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.vault;
+package dev.efnilite.worldserver.hook;
 
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -7,7 +7,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class VChat {
+public class VaultHook {
 
     private static @Nullable Chat chat;
 

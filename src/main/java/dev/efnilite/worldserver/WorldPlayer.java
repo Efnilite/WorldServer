@@ -5,6 +5,8 @@ import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
+import dev.efnilite.worldserver.hook.PlaceholderHook;
+import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -171,7 +173,7 @@ public class WorldPlayer {
 
     public void send(String... message) {
         for (String s : message) {
-            Message.send(player, s);
+            Util.send(player, s);
         }
     }
 

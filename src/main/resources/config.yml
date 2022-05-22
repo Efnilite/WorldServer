@@ -65,6 +65,7 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # -= World chat format =-
 # Change the chat format for a group of worlds or a specific world
 # If conflict happens, groups are prioritized over worlds.
+# These messages support PlaceholderAPI placeholders.
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 # Learn more about colouring: https://github.com/ViStudios/vilib/wiki/Colouring
 chat-format:
@@ -97,6 +98,20 @@ chat-blocked:
 # -= Chat blocked format =-
 # The message players get when their message contains a blocked word.
 chat-blocked-format: '<gray>You can''t say mean things :('
+
+# -= World chat join formats =-
+# Add a custom join message per world chat.
+# %player% - the player
+chat-join-formats:
+  example: '<green><bold>+ <gray>%player%'
+  MyWorld: '<gray>%player% joined.'
+
+# -= World chat leave formats =-
+# Add a custom leave message per world chat.
+# %player% - the player
+chat-leave-formats:
+  example: '<red><bold>- <gray>%player%'
+  MyWorld: '<gray>%player% left.'
 
 # -= Chat affixes =-
 # Whether custom chat should use Vault-provided player prefixes and suffixes.
@@ -156,6 +171,7 @@ economy-balance-format: '%player% has €$%amount%'
 economy-override-pay-command: true
 
 # -= Economy pay format =-
+# These messages support PlaceholderAPI placeholders.
 # Learn more about colouring: https://github.com/ViStudios/vilib/wiki/Colouring
 
 # The format for when a player does not have enough funds to pay someone.

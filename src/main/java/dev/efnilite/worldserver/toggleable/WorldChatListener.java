@@ -4,11 +4,14 @@ import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.vault.VChat;
+import dev.efnilite.worldserver.hook.PlaceholderHook;
+import dev.efnilite.worldserver.hook.VaultHook;
+import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +21,32 @@ import java.util.UUID;
 public class WorldChatListener extends Toggleable implements EventWatcher {
 
     protected Map<String, Map<UUID, Long>> lastExecuted = new HashMap<>();
+
+    @EventHandler
+    public void switchWorld(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        World from = event.getFrom();
+        World to = player.getWorld();
+
+        String fromGroup = Option.getGroupFromWorld(from);
+        String toGroup = Option.getGroupFromWorld(to);
+
+        String fromMessage = Option.CHAT_JOIN_FORMATS.get(fromGroup);
+        String toMessage = Option.CHAT_LEAVE_FORMATS.get(toGroup);
+
+        if (fromMessage == null || toMessage == null) {
+            return;
+        }
+
+        for (Player pl : getPlayersInWorldGroup(from)) {
+            Message.send(pl, fromMessage.replace("%player%",
+                    Option.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+        }
+        for (Player pl : getPlayersInWorldGroup(to)) {
+            Message.send(pl, toMessage.replace("%player%",
+                    Option.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+        }
+    } // todo add joining/leaving support
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
@@ -87,7 +116,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         if (remaining < cooldown * 1000) { // if cooldown is longer than last time, cancel message
             event.setCancelled(true);
 
-            Message.send(player, Option.CHAT_COOLDOWN_FORMAT
+            Util.send(player, Option.CHAT_COOLDOWN_FORMAT
                     .replace("%remaining%", String.format("%.2f", cooldown - (remaining / 1000D)))
                     .replace("%time%", String.format("%.2f", cooldown)));
         } else {
@@ -102,15 +131,15 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         for (String blocked : Option.CHAT_BLOCKED) {
             if (message.toLowerCase().contains(blocked.toLowerCase())) {
                 event.setCancelled(true);
-                Message.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
+                Util.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
                 return;
             }
         }
     }
 
     private String getChatFormatted(Player player, String format) {
-        return Message.parseFormatting(format
-                .replace("%player%", Option.CHAT_AFFIXES ? VChat.getPrefix(player) + "%s" + VChat.getSuffix(player) : "%s")
+        return Message.parseFormatting(PlaceholderHook.translate(player, format)
+                .replace("%player%", Option.CHAT_AFFIXES ? VaultHook.getPrefix(player) + "%s" + VaultHook.getSuffix(player) : "%s")
                 .replace("%message%", "%s"));
     }
 }
