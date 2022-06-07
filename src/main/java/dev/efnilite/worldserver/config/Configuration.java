@@ -54,9 +54,11 @@ public class Configuration {
     }
 
     public void reload() {
+        ConfigValue.invalidateCaches();
+
         files.put("config", YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/config.yml")));
 
-        Option.init();
+        ConfigValue.init();
     }
 
     /**

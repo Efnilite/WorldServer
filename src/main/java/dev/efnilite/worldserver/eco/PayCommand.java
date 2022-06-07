@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.vilib.command.ViCommand;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ public class PayCommand extends ViCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+        if (sender instanceof Player && sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
 
             StringJoiner joiner = new StringJoiner(" ");
             for (String arg : args) {
@@ -29,7 +29,7 @@ public class PayCommand extends ViCommand {
     @Override
     public List<String> tabComplete(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+        if (sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 completions.add(player.getName());
             }

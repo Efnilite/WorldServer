@@ -1,11 +1,9 @@
 package dev.efnilite.worldserver;
 
 import com.google.gson.annotations.Expose;
-import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.util.Task;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.eco.BalCache;
-import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -178,7 +176,7 @@ public class WorldPlayer {
     }
 
     public void setBalance(double amount, String group) {
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -188,30 +186,30 @@ public class WorldPlayer {
 
     public double getBalance() {
         String group = getWorldGroup();
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         return balances.get(group);
     }
 
     public double getBalance(String group) {
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         return balances.get(group);
     }
 
     public void withdraw(double amount) {
         String group = getWorldGroup();
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -219,12 +217,12 @@ public class WorldPlayer {
     }
 
     public void withdraw(String group, double amount) {
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) - amount;
         BalCache.save(player.getUniqueId(), group, updated);
@@ -234,7 +232,7 @@ public class WorldPlayer {
 
     public void deposit(double amount) {
         String group = getWorldGroup();
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -242,12 +240,12 @@ public class WorldPlayer {
     }
 
     public void deposit(String group, double amount) {
-        if (Option.ECONOMY_GLOBAL_ENABLED) {
+        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) + amount;
         BalCache.save(player.getUniqueId(), group, updated);
@@ -268,7 +266,7 @@ public class WorldPlayer {
     }
 
     public String getWorldGroup() {
-        return Option.getGroupFromWorld(getWorld());
+        return ConfigValue.getGroupFromWorld(getWorld());
     }
 
     public boolean spyMode() {

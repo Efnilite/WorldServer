@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Option {
+public class ConfigValue {
 
     public static boolean AUTO_UPDATER;
 
@@ -137,6 +137,9 @@ public class Option {
         ECONOMY_OVERRIDE_BALTOP_COMMAND = config.getBoolean("economy-override-baltop-command");
     }
 
+
+    private static final Map<String, List<World>> groupWorldsCache = new HashMap<>();
+
     /**
      * Gets the worlds from a group name. If there is no associated group, it returns a single-item list with the World instead.
      *
@@ -146,6 +149,10 @@ public class Option {
      * @return a list with worlds belonging to the specified group/world.
      */
     public static List<World> getWorlds(String group) {
+        if (groupWorldsCache.containsKey(group)) {
+            return groupWorldsCache.get(group);
+        }
+
         List<World> worlds = new ArrayList<>();
         List<String> worldNames = GROUPS.get(group);
 
@@ -161,8 +168,12 @@ public class Option {
             worlds.add(Bukkit.getWorld(group));
         }
 
+        groupWorldsCache.put(group, worlds);
+
         return worlds;
     }
+
+    private static final Map<World, String> worldGroupCache = new HashMap<>();
 
     /**
      * Gets a group from a world name.
@@ -174,20 +185,35 @@ public class Option {
      * @return the World Group, or the world name if it is not in a group
      */
     public static String getGroupFromWorld(World world) {
+        if (worldGroupCache.containsKey(world)) {
+            return worldGroupCache.get(world);
+        }
+
         String name = world.getName();
+
         for (String group : GROUPS.keySet()) {
             List<String> names = GROUPS.get(group);
 
             if (names == null) {
+                worldGroupCache.put(world, name);
                 return name;
             }
 
             for (String loopWorld : names) {
                 if (name.equals(loopWorld)) {
+                    worldGroupCache.put(world, group);
                     return group;
                 }
             }
         }
         return name;
+    }
+
+    /**
+     * Invalidates all caches
+     */
+    public static void invalidateCaches() {
+        worldGroupCache.clear();
+        groupWorldsCache.clear();
     }
 }

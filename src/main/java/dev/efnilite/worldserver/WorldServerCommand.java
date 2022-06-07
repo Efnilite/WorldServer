@@ -3,7 +3,7 @@ package dev.efnilite.worldserver;
 import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Time;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
 import dev.efnilite.worldserver.util.Util;
@@ -29,13 +29,13 @@ public class WorldServerCommand extends ViCommand {
                 if (sender.hasPermission("ws.menu")) {
                     Message.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
-                if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.bal") && ConfigValue.ECONOMY_ENABLED) {
                     Message.send(sender, "<gray>/ws bal [player] <dark_gray>- View a player's balance. Player optional.");
                 }
-                if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
                     Message.send(sender, "<gray>/ws pay <player> <dark_gray>- Pay another player.");
                 }
-                if (sender.hasPermission("ws.eco.admin.edit") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.admin.edit") && ConfigValue.ECONOMY_ENABLED) {
                     Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
 //                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
@@ -84,15 +84,15 @@ public class WorldServerCommand extends ViCommand {
                         return true;
                     case "bal":
                     case "balance":
-                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
+                        if (sender.hasPermission("ws.eco.bal") && ConfigValue.ECONOMY_ENABLED && sender instanceof Player) {
                             Player p = (Player) sender;
                             WorldPlayer player = WorldPlayer.getPlayer(p);
-                            player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Util.CURRENCY_FORMAT.format(player.getBalance())));
+                            player.send(ConfigValue.ECONOMY_SWITCH_FORMAT.replace("%amount%", Util.CURRENCY_FORMAT.format(player.getBalance())));
                         }
                         return true;
                     case "top":
                     case "baltop":
-                        if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
+                        if (sender.hasPermission("ws.eco.top") && ConfigValue.ECONOMY_ENABLED) {
                             EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender));
                         }
                         return true;
@@ -102,7 +102,7 @@ public class WorldServerCommand extends ViCommand {
                 switch (args[0].toLowerCase()) {
                     case "bal":
                     case "balance":
-                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
+                        if (sender.hasPermission("ws.eco.bal") && ConfigValue.ECONOMY_ENABLED) {
                             Player of = Bukkit.getPlayer(args[1]);
 
                             if (of == null) {
@@ -110,7 +110,7 @@ public class WorldServerCommand extends ViCommand {
                                 return true;
                             }
 
-                            Message.send(sender, Option.ECONOMY_BALANCE_FORMAT
+                            Message.send(sender, ConfigValue.ECONOMY_BALANCE_FORMAT
                                     .replace("%player%", of.getName())
                                     .replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
                         }
@@ -118,7 +118,7 @@ public class WorldServerCommand extends ViCommand {
                 }
                 return true;
             case 3:
-                if (args[0].equalsIgnoreCase("pay") && sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+                if (args[0].equalsIgnoreCase("pay") && sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
                     Player p = Bukkit.getPlayerExact(args[1]);
 
                     if (p == null) {
@@ -137,7 +137,7 @@ public class WorldServerCommand extends ViCommand {
                     WorldPlayer to = WorldPlayer.getPlayer(p);
                     String group = to.getWorldGroup();
 
-                    if (Option.getWorlds(group).isEmpty()) {
+                    if (ConfigValue.getWorlds(group).isEmpty()) {
                         Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
@@ -148,21 +148,21 @@ public class WorldServerCommand extends ViCommand {
                     WorldPlayer from = WorldPlayer.getPlayer(((Player) sender));
 
                     if (from.getBalance(group) < amount) {
-                        from.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT);
+                        from.send(ConfigValue.ECONOMY_PAY_NO_FUNDS_FORMAT);
                         return true;
                     }
 
                     from.withdraw(amount); // withdraw from sender
                     to.deposit(amount);
 
-                    from.send(Option.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
-                    to.send(Option.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
+                    from.send(ConfigValue.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
+                    to.send(ConfigValue.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
                     return true;
                 }
                 return true;
             case 4:
             case 5:
-                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && ConfigValue.ECONOMY_ENABLED) {
                     Player p = Bukkit.getPlayerExact(args[2]);
 
                     if (p == null) {
@@ -185,7 +185,7 @@ public class WorldServerCommand extends ViCommand {
                         group = args[4];
                     }
 
-                    if (Option.getWorlds(group).isEmpty()) {
+                    if (ConfigValue.getWorlds(group).isEmpty()) {
                         Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
@@ -221,16 +221,16 @@ public class WorldServerCommand extends ViCommand {
             if (sender.hasPermission("ws.menu")) {
                 completions.add("menu");
             }
-            if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
+            if (sender.hasPermission("ws.eco.bal") && ConfigValue.ECONOMY_ENABLED) {
                 completions.add("bal");
             }
-            if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
+            if (sender.hasPermission("ws.eco.top") && ConfigValue.ECONOMY_ENABLED) {
                 completions.add("top");
             }
-            if (sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+            if (sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
                 completions.add("pay");
             }
-            if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+            if (sender.hasPermission("ws.eco.admin") && ConfigValue.ECONOMY_ENABLED) {
                 completions.add("eco");
             }
             if (sender.hasPermission("ws.reload")) {
@@ -239,7 +239,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[0], completions);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.admin") && ConfigValue.ECONOMY_ENABLED) {
                     completions.add("set");
                     completions.add("add");
                     completions.add("remove");
@@ -248,7 +248,7 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[1], completions);
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("eco")) {
-                if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                if (sender.hasPermission("ws.eco.admin") && ConfigValue.ECONOMY_ENABLED) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         completions.add(player.getName());
                     }

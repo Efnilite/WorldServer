@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -23,9 +23,9 @@ public abstract class Toggleable {
     // Gets players in the world group if present or in a single world
     protected List<Player> getPlayersInWorldGroup(World world) {
         List<Player> players = new ArrayList<>();
-        String group = Option.getGroupFromWorld(world);
+        String group = ConfigValue.getGroupFromWorld(world);
 
-        for (World loopWorld : Option.getWorlds(group)) {
+        for (World loopWorld : ConfigValue.getWorlds(group)) {
             players.addAll(loopWorld.getPlayers());
         }
         return players;

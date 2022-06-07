@@ -8,7 +8,7 @@ import dev.efnilite.vilib.util.SkullSetter;
 import dev.efnilite.vilib.util.Unicodes;
 import dev.efnilite.vilib.util.collections.Sorting;
 import dev.efnilite.worldserver.WorldPlayer;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.eco.BalCache;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,7 +36,7 @@ public class EcoTopMenu {
 
         int rank = 1;
         Item base = new Item(Material.PLAYER_HEAD, "<#6693E7><bold>#%rank% - %player%")
-                .lore("<#5574AF>Amount: <gray>" + Option.ECONOMY_CURRENCY_SYMBOL + "%amount%");
+                .lore("<#5574AF>Amount: <gray>" + ConfigValue.ECONOMY_CURRENCY_SYMBOL + "%amount%");
 
         Set<UUID> uuids = BalCache.getUUIDs();
         Map<UUID, Double> values = new HashMap<>();

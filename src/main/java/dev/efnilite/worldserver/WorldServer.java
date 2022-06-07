@@ -8,7 +8,7 @@ import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.Configuration;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.toggleable.GeneralHandler;
@@ -54,7 +54,7 @@ public class WorldServer extends ViPlugin {
         Time.timerStart("enableWS");
         instance = this;
         configuration = new Configuration(this);
-        Option.init();
+        ConfigValue.init();
 
         logging.info("Registered under version " + Version.getPrettyVersion());
 
@@ -80,15 +80,15 @@ public class WorldServer extends ViPlugin {
         }
 
         registerCommand("worldserver", new WorldServerCommand());
-        if (Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
+        if (ConfigValue.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             Util.registerToMap("bal", new BalCommand());
             Util.registerToMap("balance", new BalCommand());
         }
-        if (Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
+        if (ConfigValue.ECONOMY_OVERRIDE_PAY_COMMAND) {
             Util.registerToMap("pay", new PayCommand());
             Util.registerToMap("transfer", new PayCommand());
         }
-        if (Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
+        if (ConfigValue.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
             Util.registerToMap("baltop", new BaltopCommand());
             Util.registerToMap("balancetop", new BaltopCommand());
         }
@@ -97,12 +97,12 @@ public class WorldServer extends ViPlugin {
         registerListener(new WorldTabListener());
         registerListener(new WorldEconomyListener());
 
-        elevator = new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, Option.AUTO_UPDATER);
+        elevator = new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, ConfigValue.AUTO_UPDATER);
 
         Metrics metrics = new Metrics(this, 13856);
-        metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
-        metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
-        metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(Option.ECONOMY_ENABLED)));
+        metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
+        metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
+        metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(ConfigValue.ECONOMY_ENABLED)));
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             WorldPlayer.register(player);

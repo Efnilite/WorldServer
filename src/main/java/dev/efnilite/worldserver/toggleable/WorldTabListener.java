@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.vilib.event.EventWatcher;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class WorldTabListener extends Toggleable implements EventWatcher {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void join(PlayerJoinEvent event) {
-        if (!Option.TAB_ENABLED) {
+        if (!ConfigValue.TAB_ENABLED) {
             return;
         }
         Player player = event.getPlayer();
@@ -35,7 +35,7 @@ public class WorldTabListener extends Toggleable implements EventWatcher {
 
     @EventHandler
     public void switchWorld(PlayerChangedWorldEvent event) {
-        if (!Option.TAB_ENABLED) {
+        if (!ConfigValue.TAB_ENABLED) {
             return;
         }
         Player player = event.getPlayer();

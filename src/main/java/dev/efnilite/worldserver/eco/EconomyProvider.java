@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.worldserver.WorldPlayer;
-import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.util.Util;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -16,7 +16,7 @@ public class EconomyProvider extends AbstractEconomy {
 
     @Override
     public boolean isEnabled() {
-        return Option.ECONOMY_ENABLED;
+        return ConfigValue.ECONOMY_ENABLED;
     }
 
     @Override
@@ -36,17 +36,17 @@ public class EconomyProvider extends AbstractEconomy {
 
     @Override
     public String format(double amount) {
-        return Option.ECONOMY_CURRENCY_SYMBOL + Util.CURRENCY_FORMAT.format(amount);
+        return ConfigValue.ECONOMY_CURRENCY_SYMBOL + Util.CURRENCY_FORMAT.format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return Option.ECONOMY_CURRENCY_NAMES.get(1);
+        return ConfigValue.ECONOMY_CURRENCY_NAMES.get(1);
     }
 
     @Override
     public String currencyNameSingular() {
-        return Option.ECONOMY_CURRENCY_NAMES.get(0);
+        return ConfigValue.ECONOMY_CURRENCY_NAMES.get(0);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class EconomyProvider extends AbstractEconomy {
             return "";
         }
 
-        return Option.getGroupFromWorld(world);
+        return ConfigValue.getGroupFromWorld(world);
     }
 
     private WorldPlayer getPlayer(String name) {
