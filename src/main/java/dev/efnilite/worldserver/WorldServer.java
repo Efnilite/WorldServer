@@ -25,12 +25,15 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 
 public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
+    public static final String REQUIRED_VILIB_VERSION = "v1.0.7";
+
     private static GitElevator elevator;
     private static WorldServer instance;
     private static Configuration configuration;
@@ -51,8 +54,41 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void enable() {
-        Time.timerStart("enableWS");
         instance = this;
+
+        // ----- Check vilib -----
+
+        Plugin vilib = getServer().getPluginManager().getPlugin("vilib");
+        if (vilib == null || !vilib.isEnabled()) {
+            getLogger().severe("##");
+            getLogger().severe("## WorldServer requires vilib to work!");
+            getLogger().severe("##");
+            getLogger().severe("## Please download it here:");
+            getLogger().severe("## https://github.com/ViStudios/vilib/releases/latest");
+            getLogger().severe("##");
+
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (!Util.isLatest(REQUIRED_VILIB_VERSION, vilib.getDescription().getVersion())) {
+            getLogger().severe("##");
+            getLogger().severe("## WorldServer requires *a newer version* of vilib to work!");
+            getLogger().severe("##");
+            getLogger().severe("## Please download it here:");
+            getLogger().severe("## https://github.com/ViStudios/vilib/releases/latest");
+            getLogger().severe("##");
+
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        // ----- Start time -----
+
+        Time.timerStart("enableWS");
+
+        // ----- Configurations -----
+
         configuration = new Configuration(this);
         ConfigValue.init();
 
