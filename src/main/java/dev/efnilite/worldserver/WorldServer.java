@@ -95,6 +95,7 @@ public class WorldServer extends ViPlugin {
         logging.info("Registered under version " + Version.getPrettyVersion());
 
         switch (version) {
+            case V1_19:
             case V1_18:
             case V1_17:
             case V1_16:
