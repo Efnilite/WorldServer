@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,45 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
             Message.send(pl, toMessage.replace("%player%",
                     ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
         }
-    } // todo add joining/leaving support
+    }
+
+    @EventHandler
+    public void join(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        World world = player.getWorld();
+        String group = ConfigValue.getGroupFromWorld(world);
+
+        String message = ConfigValue.CHAT_JOIN_FORMATS.get(group);
+
+        if (message == null) {
+            return;
+        }
+        event.setJoinMessage(null);
+
+        for (Player pl : getPlayersInWorldGroup(world)) {
+            Message.send(pl, message.replace("%player%",
+                    ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+        }
+    }
+
+    @EventHandler
+    public void leave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        World world = player.getWorld();
+        String group = ConfigValue.getGroupFromWorld(world);
+
+        String message = ConfigValue.CHAT_LEAVE_FORMATS.get(group);
+
+        if (message == null) {
+            return;
+        }
+        event.setQuitMessage(null);
+
+        for (Player pl : getPlayersInWorldGroup(world)) {
+            Message.send(pl, message.replace("%player%",
+                    ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+        }
+    }
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
