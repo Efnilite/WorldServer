@@ -34,8 +34,13 @@ public class BalCache {
             return;
         }
 
+        File[] files = folder.listFiles();
+        if (files == null) {
+            return;
+        }
+
         try {
-            for (File file : folder.listFiles()) {
+            for (File file : files) {
                 FileReader reader = new FileReader(file);
                 WorldPlayer from = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
                 if (from == null) {

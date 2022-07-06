@@ -49,7 +49,7 @@ public class VaultHook {
         return chat != null ? chat.getPlayerSuffix(player.getWorld().getName(), player) : "";
     }
 
-    public static Chat getChat() {
+    public static @Nullable Chat getChat() {
         return chat;
     }
 }

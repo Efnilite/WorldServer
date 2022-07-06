@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
  */
 public abstract class VisibilityHandler {
 
-    protected Plugin plugin;
+    protected final Plugin plugin;
 
     public VisibilityHandler() {
         this.plugin = WorldServer.getPlugin();

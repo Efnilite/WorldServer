@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class WorldChatListener extends Toggleable implements EventWatcher {
 
-    protected Map<String, Map<UUID, Long>> lastExecuted = new HashMap<>();
+    protected final Map<String, Map<UUID, Long>> lastExecuted = new HashMap<>();
 
     @EventHandler
     public void switchWorld(PlayerChangedWorldEvent event) {

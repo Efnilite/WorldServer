@@ -7,7 +7,6 @@ import dev.efnilite.worldserver.hook.PlaceholderHook;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,16 +56,13 @@ public class Util {
     /**
      * Registers a command to the CommandMap, making it show up as a command
      *
-     * @param   alias
-     *          The name of the command
-     *
-     * @param   command
-     *          The details associated with this aliased command.
+     * @param alias   The name of the command
+     * @param command The details associated with this aliased command.
      */
-    public static Command registerToMap(String alias, ViCommand command) {
+    public static void registerToMap(String alias, ViCommand command) {
         BukkitCommand pluginCommand = new BukkitCommand(alias, command);
 
-        return addToKnown(alias, pluginCommand, retrieveMap());
+        addToKnown(alias, pluginCommand, retrieveMap());
     }
 
 
@@ -93,18 +89,11 @@ public class Util {
      * Adds a command to the Command Map
      * Source: Efnilite/CommandFactory
      *
-     * @param   alias
-     *          The alias
-     *
-     * @param   command
-     *          The command instance
-     *
-     * @param   map
-     *          The commandmap instance to write this to
-     *
-     * @return the command that was added
+     * @param alias   The alias
+     * @param command The command instance
+     * @param map     The commandmap instance to write this to
      */
-    public static Command addToKnown(String alias, Command command, CommandMap map) {
+    public static void addToKnown(String alias, Command command, CommandMap map) {
         try {
             Field field = SimpleCommandMap.class.getDeclaredField("knownCommands");
             field.setAccessible(true);
@@ -116,16 +105,13 @@ public class Util {
 
             field.set(map, knownCommands);
 
-            return prev1 == null ? prev2 : prev1;
         } catch (NoSuchFieldException ex) {
             WorldServer.logging().stack("knownCommands field not found for registry",
                     "update your server or switch to a supported server platform", ex);
-            return null;
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             WorldServer.logging().error("There was an error while trying to register your command to the Command Map");
             WorldServer.logging().error("It might not show up in-game in the auto-complete, but it does work.");
-            return null;
         }
     }
 

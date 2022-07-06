@@ -1,12 +1,8 @@
 package dev.efnilite.worldserver.hook;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderHook {
 

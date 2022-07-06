@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class Toggleable {
 
-    protected VisibilityHandler visibilityHandler;
+    protected final VisibilityHandler visibilityHandler;
 
     public Toggleable() {
         this.visibilityHandler = WorldServer.getVisibilityHandler();
