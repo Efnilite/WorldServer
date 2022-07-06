@@ -100,11 +100,10 @@ public class Util {
 
             Map<String, Command> knownCommands = (Map<String, Command>) field.get(map);
 
-            Command prev1 = knownCommands.put("ws:" + alias, command);
-            Command prev2 = knownCommands.put(alias, command);
+            knownCommands.put("ws:" + alias, command);
+            knownCommands.put(alias, command);
 
             field.set(map, knownCommands);
-
         } catch (NoSuchFieldException ex) {
             WorldServer.logging().stack("knownCommands field not found for registry",
                     "update your server or switch to a supported server platform", ex);
