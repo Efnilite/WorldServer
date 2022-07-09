@@ -64,7 +64,7 @@ public class WorldServer extends ViPlugin {
             getLogger().severe("## WorldServer requires vilib to work!");
             getLogger().severe("##");
             getLogger().severe("## Please download it here:");
-            getLogger().severe("## https://github.com/ViStudios/vilib/releases/latest");
+            getLogger().severe("## https://github.com/Efnilite/vilib/releases/latest");
             getLogger().severe("##");
 
             getServer().getPluginManager().disablePlugin(this);
@@ -76,7 +76,7 @@ public class WorldServer extends ViPlugin {
             getLogger().severe("## WorldServer requires *a newer version* of vilib to work!");
             getLogger().severe("##");
             getLogger().severe("## Please download it here:");
-            getLogger().severe("## https://github.com/ViStudios/vilib/releases/latest");
+            getLogger().severe("## https://github.com/Efnilite/vilib/releases/latest");
             getLogger().severe("##");
 
             getServer().getPluginManager().disablePlugin(this);
