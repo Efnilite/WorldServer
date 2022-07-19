@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.5.5</version>
+    <version>1.5.6</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>com.github.Efnilite</groupId>
             <artifactId>vilib</artifactId>
-            <version>v1.0.8</version>
+            <version>v1.0.10</version>
             <scope>provided</scope>
         </dependency>
 

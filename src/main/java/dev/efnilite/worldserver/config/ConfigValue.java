@@ -6,16 +6,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigValue {
 
     public static boolean AUTO_UPDATER;
 
     public static HashMap<String, List<String>> GROUPS;
+
+    public static Map<String, List<Type>> GROUPS_SHARE;
 
     /* Tab options */
     public static boolean TAB_ENABLED;
@@ -64,6 +63,27 @@ public class ConfigValue {
                 GROUPS.put(group, worlds);
             }
         }
+
+//        // add group shares
+//        // if no setting is found, let group share all properties
+//        GROUPS_SHARE = new HashMap<>();
+//        for (String group : GROUPS.keySet()) {
+//            String types = config.getString("groups-share." + group);
+//
+//            if (types == null) {
+//                GROUPS_SHARE.put(group, Arrays.asList(Type.CHAT, Type.TAB, Type.ECO)); // add all types
+//            } else {
+//                String[] parts = types.replace(" ", "").split(",");
+//
+//                List<Type> toAdd = new ArrayList<>();
+//                for (String part : parts) {
+//                    toAdd.add(Type.valueOf(part.toUpperCase()));
+//                }
+//
+//                GROUPS_SHARE.put(group, toAdd);
+//            }
+//        }
+
 
         TAB_ENABLED = config.getBoolean("tab-enabled");
 
@@ -207,6 +227,27 @@ public class ConfigValue {
             }
         }
         return name;
+    }
+
+    /**
+     * Checks whether a specific type is shared by a world
+     *
+     * @param   world
+     *          The world
+     *
+     * @param   type
+     *          The type
+     *
+     * @return true if the world group of the world is sharing the provided type or if the group is null, false if not
+     */
+    public static boolean isSharing(World world, Type type) {
+        String group = ConfigValue.getGroupFromWorld(world);
+
+        if (group == null || !GROUPS_SHARE.containsKey(group)) {
+            return true;
+        }
+
+        return GROUPS_SHARE.get(group).contains(type);
     }
 
     /**

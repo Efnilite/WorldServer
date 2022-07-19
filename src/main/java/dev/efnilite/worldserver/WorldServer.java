@@ -32,7 +32,7 @@ public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
-    public static final String REQUIRED_VILIB_VERSION = "v1.0.7";
+    public static final String REQUIRED_VILIB_VERSION = "v1.0.9";
 
     private static GitElevator elevator;
     private static WorldServer instance;

@@ -2,6 +2,7 @@ package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -42,10 +43,11 @@ public class WorldTabListener extends Toggleable implements EventWatcher {
 
         // Previous world, uses fromWorld
         World fromWorld = event.getFrom();
-        List<Player> fromPlayers = getPlayersInWorldGroup(fromWorld);
 
         // Current world, uses currentWorld
         World toWorld = player.getWorld();
+
+        List<Player> fromPlayers = getPlayersInWorldGroup(fromWorld);
         List<Player> toPlayers = getPlayersInWorldGroup(toWorld);
 
         for (Player previousPlayer : fromPlayers) { // hide from previous world
