@@ -4,7 +4,6 @@ import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.ConfigValue;
-import dev.efnilite.worldserver.config.Type;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
@@ -48,6 +47,12 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
             for (Player pl : getPlayersInWorldGroup(from)) { // from send leave
                 Message.send(pl, fromMessage.replace("%player%",
                         ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+            }
+        }
+
+        if (ConfigValue.CLEAR_CHAT_ON_SWITCH) {
+            for (int i = 0; i < 100; i++) {
+                Message.send(player, "");
             }
         }
 

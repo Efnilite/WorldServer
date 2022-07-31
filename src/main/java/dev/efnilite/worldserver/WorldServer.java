@@ -27,14 +27,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
-    public static final String REQUIRED_VILIB_VERSION = "v1.0.9";
+    public static final String REQUIRED_VILIB_VERSION = "v1.0.11";
 
-    private static GitElevator elevator;
     private static WorldServer instance;
     private static Configuration configuration;
     private static VisibilityHandler visibilityHandler;
@@ -134,8 +134,6 @@ public class WorldServer extends ViPlugin {
         registerListener(new WorldTabListener());
         registerListener(new WorldEconomyListener());
 
-        elevator = new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, ConfigValue.AUTO_UPDATER);
-
         Metrics metrics = new Metrics(this, 13856);
         metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
         metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
@@ -171,7 +169,24 @@ public class WorldServer extends ViPlugin {
     public void disable() {
         for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
             wp.save(false);
+
+            WorldPlayer.unregister(wp.getPlayer());
         }
+    }
+
+    @Override
+    @NotNull
+    public GitElevator getElevator() {
+        return new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, ConfigValue.AUTO_UPDATER);
+    }
+
+    /**
+     * Gets the current elevator
+     *
+     * @return the current elevator
+     */
+    public static GitElevator getCurrentElevator() {
+        return getPlugin().elevator;
     }
 
     /**
@@ -189,10 +204,6 @@ public class WorldServer extends ViPlugin {
 
     public static Configuration getConfiguration() {
         return configuration;
-    }
-
-    public static GitElevator getElevator() {
-        return elevator;
     }
 
     public static WorldServer getPlugin() {

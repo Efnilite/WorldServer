@@ -6,7 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigValue {
 
@@ -33,6 +36,7 @@ public class ConfigValue {
     public static Map<String, String> CHAT_JOIN_FORMATS;
     public static Map<String, String> CHAT_LEAVE_FORMATS;
     public static boolean CHAT_AFFIXES;
+    public static boolean CLEAR_CHAT_ON_SWITCH;
 
     /* Eco options */
     public static boolean ECONOMY_ENABLED;
@@ -133,6 +137,7 @@ public class ConfigValue {
         }
 
         CHAT_AFFIXES = config.getBoolean("chat-affixes");
+        CLEAR_CHAT_ON_SWITCH = config.getBoolean("clear-chat-on-switch");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");
         ECONOMY_GLOBAL_ENABLED = config.getBoolean("economy-global-enabled");
@@ -197,7 +202,6 @@ public class ConfigValue {
 
     /**
      * Gets a group from a world name.
-     * todo caching
      *
      * @param   world
      *          The world

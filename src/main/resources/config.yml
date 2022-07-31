@@ -12,7 +12,7 @@
 
 #====================================================================================================================================#
 #                                                                                                                                    #
-#                                               (c) Efnilite 2021. Do not distribute!                                                #
+#                                               (c) Efnilite 2022. Do not distribute!                                                #
 #                                                                                                                                    #
 #====================================================================================================================================#
 
@@ -116,6 +116,10 @@ chat-leave-formats:
 # -= Chat affixes =-
 # Whether custom chat should use Vault-provided player prefixes and suffixes.
 chat-affixes: true
+
+# -= Clear chat on switch =-
+# If set to true, will clear the chat on a switch of the world.
+clear-chat-on-switch: true
 
 # -= Enable per world economy =-
 # True: players will have a different balance, depending on which World or World Group they are in.

@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.5.6</version>
+    <version>1.5.7</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.19.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.github.Efnilite</groupId>
             <artifactId>vilib</artifactId>
-            <version>v1.0.10</version>
+            <version>v1.0.11</version>
             <scope>provided</scope>
         </dependency>
 
