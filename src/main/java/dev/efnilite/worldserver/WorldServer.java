@@ -162,7 +162,7 @@ public class WorldServer extends ViPlugin {
         VaultHook.register();
         PlaceholderHook.register();
 
-        logging.info("Loaded WorldServer " + getDescription().getVersion() + " in " + Time.timerEnd("enableWS")  + "ms!");
+        logging.info("Loaded WorldServer v" + getDescription().getVersion() + " in " + Time.timerEnd("enableWS")  + "ms!");
     }
 
     @Override
@@ -180,13 +180,13 @@ public class WorldServer extends ViPlugin {
         return new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, ConfigValue.AUTO_UPDATER);
     }
 
-    /**
-     * Gets the current elevator
-     *
-     * @return the current elevator
-     */
-    public static GitElevator getCurrentElevator() {
-        return getPlugin().elevator;
+    @NotNull
+    public GitElevator getElevatorInstance() {
+        if (elevator == null) {
+            elevator = getElevator();
+        }
+
+        return elevator;
     }
 
     /**

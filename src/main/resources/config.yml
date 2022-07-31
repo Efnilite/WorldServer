@@ -119,7 +119,7 @@ chat-affixes: true
 
 # -= Clear chat on switch =-
 # If set to true, will clear the chat on a switch of the world.
-clear-chat-on-switch: true
+clear-chat-on-switch: false
 
 # -= Enable per world economy =-
 # True: players will have a different balance, depending on which World or World Group they are in.

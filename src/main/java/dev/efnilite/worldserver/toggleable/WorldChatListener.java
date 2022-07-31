@@ -166,7 +166,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         blocked(event);
     }
 
-    // checks if this message should by cancelled by the cooldown
+    // checks if this message should be cancelled by the cooldown
     private void cooldown(AsyncPlayerChatEvent event, String group) {
         Player player = event.getPlayer();
         if (player.hasPermission("ws.chat.cooldown.bypass")) {
