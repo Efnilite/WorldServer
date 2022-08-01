@@ -175,9 +175,9 @@ economy-balance-change: true
 # -= Economy balance change format =-
 # The message a player receives when their balance is changed.
 # Use %amount% for the given amount.
-# Use %formatted% for the given amount, but with a + or - added to the front.
-# Example: '<#abcdef>%formatted% eurodollars' -> '+10 eurodollars'
-economy-balance-change-format: '%formatted% eurodollars'
+# Use %prefix% to get a + or -, depending on whether the amount is added or removed.
+# Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
+economy-balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
 
 # -= Economy override pay command =-
 # Whether WorldServer should register /pay

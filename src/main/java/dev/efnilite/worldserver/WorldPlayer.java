@@ -231,8 +231,8 @@ public class WorldPlayer {
 
         if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
             send(ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
-                    .replace("%amount%", Double.toString(amount))
-                    .replace("%formatted%", Util.getFormatted(amount)));
+                    .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
+                    .replace("%prefix%", "-"));
         }
     }
 
@@ -260,8 +260,8 @@ public class WorldPlayer {
 
         if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
             send(ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
-                    .replace("%amount%", Double.toString(amount))
-                    .replace("%formatted%", Util.getFormatted(amount)));
+                    .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
+                    .replace("%prefix%", "+"));
         }
     }
 
