@@ -200,11 +200,23 @@ public class WorldServerCommand extends ViCommand {
                             to.deposit(group, amount);
                             Message.send(sender, WorldServer.MESSAGE_PREFIX +
                                     "Successfully added " + amount + " to " + to.getPlayer().getName() + "'s balance");
+
+                            if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
+                                Message.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                                        .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
+                                        .replace("%prefix%", "+"));
+                            }
                             return true;
                         case "remove":
                             to.withdraw(group, amount);
                             Message.send(sender, WorldServer.MESSAGE_PREFIX +
                                     "Successfully removed " + amount + " from " + to.getPlayer().getName() + "'s balance");
+
+                            if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
+                                Message.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                                        .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
+                                        .replace("%prefix%", "-"));
+                            }
                             return true;
                     }
                 }
