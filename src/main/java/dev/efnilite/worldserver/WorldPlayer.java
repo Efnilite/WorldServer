@@ -228,6 +228,12 @@ public class WorldPlayer {
         BalCache.save(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
+
+        if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
+            send(ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                    .replace("%amount%", Double.toString(amount))
+                    .replace("%formatted%", Util.getFormatted(amount)));
+        }
     }
 
     public void deposit(double amount) {
@@ -251,6 +257,12 @@ public class WorldPlayer {
         BalCache.save(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
+
+        if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
+            send(ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                    .replace("%amount%", Double.toString(amount))
+                    .replace("%formatted%", Util.getFormatted(amount)));
+        }
     }
 
     public static Map<UUID, WorldPlayer> getPlayers() {

@@ -32,6 +32,16 @@ public class Util {
         CURRENCY_FORMAT.setMaximumFractionDigits(2);
     }
 
+    public static String getFormatted(double amount) {
+        String prefix = amount > 0 ? "+" : "-";
+
+        if (amount == 0) {
+            prefix = "";
+        }
+
+        return prefix + amount;
+    }
+
     public static void send(Player player, String message) {
         Message.send(player, PlaceholderHook.translate(player, message));
     }

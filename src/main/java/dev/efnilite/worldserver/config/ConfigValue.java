@@ -48,6 +48,8 @@ public class ConfigValue {
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
     public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
     public static String ECONOMY_BALANCE_FORMAT;
+    public static boolean ECONOMY_BALANCE_CHANGE;
+    public static String ECONOMY_BALANCE_CHANGE_FORMAT;
     public static boolean ECONOMY_OVERRIDE_PAY_COMMAND;
     public static String ECONOMY_PAY_NO_FUNDS_FORMAT;
     public static String ECONOMY_PAY_SEND_FORMAT;
@@ -155,6 +157,8 @@ public class ConfigValue {
         }
         ECONOMY_OVERRIDE_BALANCE_COMMAND = config.getBoolean("economy-override-balance-command");
         ECONOMY_BALANCE_FORMAT = config.getString("economy-balance-format");
+        ECONOMY_BALANCE_CHANGE = config.getBoolean("economy-balance-change");
+        ECONOMY_BALANCE_CHANGE_FORMAT = config.getString("economy-balance-change-format");
         ECONOMY_OVERRIDE_PAY_COMMAND = config.getBoolean("economy-override-pay-command");
         ECONOMY_PAY_NO_FUNDS_FORMAT = config.getString("economy-pay-no-funds-format");
         ECONOMY_PAY_SEND_FORMAT = config.getString("economy-pay-send-format");

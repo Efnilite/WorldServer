@@ -139,7 +139,7 @@ economy-switch-notification: true
 # -= Economy balance notification format =-
 # Set the format of the message players get if they switch worlds.
 # This will only be set if economy and economy switch notifications are enabled.
-economy-switch-format: '<white>You now have <#4DF019>€$%amount%<gray>.'
+economy-switch-format: '<white>You now have <#4DF019>€$ %amount%<gray>.'
 
 # -= Economy currency symbol =-
 # The economy currency symbol.
@@ -166,7 +166,18 @@ economy-override-balance-command: true
 
 # -= Economy balance format =-
 # The message format of the /bal command.
-economy-balance-format: '%player% has €$%amount%'
+economy-balance-format: '%player% has €$ %amount%'
+
+# -= Economy balance change =-
+# Sends a message to the player when their balance changes.
+economy-balance-change: true
+
+# -= Economy balance change format =-
+# The message a player receives when their balance is changed.
+# Use %amount% for the given amount.
+# Use %formatted% for the given amount, but with a + or - added to the front.
+# Example: '<#abcdef>%formatted% eurodollars' -> '+10 eurodollars'
+economy-balance-change-format: '%formatted% eurodollars'
 
 # -= Economy override pay command =-
 # Whether WorldServer should register /pay
@@ -181,9 +192,9 @@ economy-override-pay-command: true
 # The format for when a player does not have enough funds to pay someone.
 economy-pay-no-funds-format: 'You don''t have enough €$ to do that!'
 # The format for when a player sends another player money.
-economy-pay-send-format: 'You sent %player% €$%amount%'
+economy-pay-send-format: 'You sent %player% €$ %amount%'
 # The format for when a player receives money from another player.
-economy-pay-receive-format: '%player% sent you €$%amount%'
+economy-pay-receive-format: '%player% sent you €$ %amount%'
 
 # -= Economy override baltop command =-
 # Whether WorldServer should register /baltop and /balancetop
