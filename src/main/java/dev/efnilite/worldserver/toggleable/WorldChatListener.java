@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.toggleable;
 
-import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.event.EventWatcher;
+import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
@@ -45,20 +45,20 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (fromMessage != null) {
             for (Player pl : getPlayersInWorldGroup(from)) { // from send leave
-                Message.send(pl, fromMessage.replace("%player%",
+                Util.send(pl, fromMessage.replace("%player%",
                         ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
             }
         }
 
         if (ConfigValue.CLEAR_CHAT_ON_SWITCH) {
             for (int i = 0; i < 100; i++) {
-                Message.send(player, "");
+                Util.send(player, "");
             }
         }
 
         if (toMessage != null) {
             for (Player pl : getPlayersInWorldGroup(to)) {
-                Message.send(pl, toMessage.replace("%player%",
+                Util.send(pl, toMessage.replace("%player%",
                         ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
             }
         }
@@ -83,7 +83,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Message.send(pl, message.replace("%player%",
+            Util.send(pl, message.replace("%player%",
                     ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
         }
     }
@@ -107,7 +107,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Message.send(pl, message.replace("%player%",
+            Util.send(pl, message.replace("%player%",
                     ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
         }
     }
@@ -203,7 +203,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
     }
 
     private String getChatFormatted(Player player, String format) {
-        return Message.parseFormatting(PlaceholderHook.translate(player, format)
+        return Strings.colour(PlaceholderHook.translate(player, format)
                 .replace("%player%", ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + "%s" + VaultHook.getSuffix(player) : "%s")
                 .replace("%message%", "%s"));
     }

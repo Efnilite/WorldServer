@@ -1,6 +1,6 @@
 package dev.efnilite.worldserver.config;
 
-import com.tchristofferson.configupdater.ConfigUpdater;
+import dev.efnilite.vilib.lib.configupdater.configupdater.ConfigUpdater;
 import dev.efnilite.worldserver.WorldServer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

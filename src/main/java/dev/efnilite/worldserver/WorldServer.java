@@ -1,6 +1,8 @@
 package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.ViPlugin;
+import dev.efnilite.vilib.lib.bstats.bukkit.Metrics;
+import dev.efnilite.vilib.lib.bstats.charts.SimplePie;
 import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
@@ -21,19 +23,20 @@ import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
 import net.milkbowl.vault.economy.Economy;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 public class WorldServer extends ViPlugin {
 
-    public static final String NAME = "<gradient:#3D626F>WorldServer</gradient:#0EACE2>";
+    public static final String NAME = "<#3D626F>WorldServer";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
-    public static final String REQUIRED_VILIB_VERSION = "v1.0.11";
+    public static final String REQUIRED_VILIB_VERSION = "v1.1.0";
 
     private static WorldServer instance;
     private static Configuration configuration;
@@ -41,7 +44,9 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void onLoad() {
-        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+
+        if (c.getBoolean("economy-enabled") && getServer().getPluginManager().getPlugin("Vault") != null) {
             try {
                 Class.forName("net.milkbowl.vault.economy.Economy");
                 getServer().getServicesManager().register(Economy.class, new EconomyProvider(), this, ServicePriority.High);
@@ -177,7 +182,7 @@ public class WorldServer extends ViPlugin {
     @Override
     @NotNull
     public GitElevator getElevator() {
-        return new GitElevator("Efnilite/WorldServer", this, VersionComparator.FROM_SEMANTIC, ConfigValue.AUTO_UPDATER);
+        return new GitElevator("Efnilite/WorldServer", this, VersionComparator.EQUAL, ConfigValue.AUTO_UPDATER);
     }
 
     @NotNull

@@ -1,6 +1,5 @@
 package dev.efnilite.worldserver;
 
-import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.ConfigValue;
@@ -21,32 +20,32 @@ public class WorldServerCommand extends ViCommand {
     public boolean execute(CommandSender sender, String[] args) {
         switch (args.length) {
             case 0:
-                Message.send(sender, "");
-                Message.send(sender, "<dark_gray><strikethrough>-----------&r " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
-                Message.send(sender, "");
-                Message.send(sender, "<gray>/ws <dark_gray>- The main command");
-                Message.send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
+                Util.send(sender, "");
+                Util.send(sender, "<dark_gray><strikethrough>-----------&r " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
+                Util.send(sender, "");
+                Util.send(sender, "<gray>/ws <dark_gray>- The main command");
+                Util.send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
                 if (sender.hasPermission("ws.menu")) {
-                    Message.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
+                    Util.send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
                 if (sender.hasPermission("ws.eco.bal") && ConfigValue.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws bal [player] <dark_gray>- View a player's balance. Player optional.");
+                    Util.send(sender, "<gray>/ws bal [player] <dark_gray>- View a player's balance. Player optional.");
                 }
                 if (sender.hasPermission("ws.eco.pay") && ConfigValue.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws pay <player> <dark_gray>- Pay another player.");
+                    Util.send(sender, "<gray>/ws pay <player> <dark_gray>- Pay another player.");
                 }
                 if (sender.hasPermission("ws.eco.admin.edit") && ConfigValue.ECONOMY_ENABLED) {
-                    Message.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
+                    Util.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
 //                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
-//                    Message.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
+//                    Util.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
 //                } todo
                 if (sender.hasPermission("ws.reload")) {
-                    Message.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
+                    Util.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
                 }
-                Message.send(sender, "");
-                Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
-                Message.send(sender, "");
+                Util.send(sender, "");
+                Util.send(sender, "<dark_gray><strikethrough>---------------------------------");
+                Util.send(sender, "");
                 return true;
             case 1:
                 switch (args[0].toLowerCase()) {
@@ -56,7 +55,7 @@ public class WorldServerCommand extends ViCommand {
                         }
                         Time.timerStart("reload");
                         WorldServer.getConfiguration().reload();
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
                         return true;
                     case "menu":
                         if (sender instanceof Player && sender.hasPermission("ws.menu")) {
@@ -64,23 +63,23 @@ public class WorldServerCommand extends ViCommand {
                         }
                         return true;
                     case "permissions":
-                        Message.send(sender, "");
-                        Message.send(sender, "<dark_gray><strikethrough>-----------&r <gradient:#3D626F>Permissions</gradient:#0EACE2> <dark_gray><strikethrough>-----------");
-                        Message.send(sender, "");
-                        Message.send(sender, "<gray>ws.reload <dark_gray>- Reloads the config");
-                        Message.send(sender, "<gray>ws.menu <dark_gray>- For opening and viewing the menu");
-                        Message.send(sender, "<gray>ws.spy <dark_gray>- For spying on what everyone in every world is saying. This requires the ws.menu permission.");
-                        Message.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
-                        Message.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
-                        Message.send(sender, "<gray>ws.chat.cooldown.bypass <dark_gray>- For bypassing the chat cooldowns");
-                        Message.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
-                        Message.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
-                        Message.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
-                        Message.send(sender, "<gray>ws.eco.top <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
-                        Message.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
-                        Message.send(sender, "");
-                        Message.send(sender, "<dark_gray><strikethrough>---------------------------------");
-                        Message.send(sender, "");
+                        Util.send(sender, "");
+                        Util.send(sender, "<dark_gray><strikethrough>-----------<reset> <gradient:#3D626F>Permissions</gradient:#0EACE2> <dark_gray><strikethrough>-----------");
+                        Util.send(sender, "");
+                        Util.send(sender, "<gray>ws.reload <dark_gray>- Reloads the config");
+                        Util.send(sender, "<gray>ws.menu <dark_gray>- For opening and viewing the menu");
+                        Util.send(sender, "<gray>ws.spy <dark_gray>- For spying on what everyone in every world is saying. This requires the ws.menu permission.");
+                        Util.send(sender, "<gray>ws.option.global-chat <dark_gray>- For changing global chat settings");
+                        Util.send(sender, "<gray>ws.option.chat <dark_gray>- For changing chat settings");
+                        Util.send(sender, "<gray>ws.chat.cooldown.bypass <dark_gray>- For bypassing the chat cooldowns");
+                        Util.send(sender, "<gray>ws.option.tab <dark_gray>- For changing tab settings");
+                        Util.send(sender, "<gray>ws.eco.bal <dark_gray>- For using the /ws bal, /bal or /balance command");
+                        Util.send(sender, "<gray>ws.eco.pay <dark_gray>- For using the /ws pay or /pay command");
+                        Util.send(sender, "<gray>ws.eco.top <dark_gray>- For using the /ws baltop, /baltop or /balancetop command");
+                        Util.send(sender, "<gray>ws.eco.admin <dark_gray>- For using the /ws eco command");
+                        Util.send(sender, "");
+                        Util.send(sender, "<dark_gray><strikethrough>---------------------------------");
+                        Util.send(sender, "");
                         return true;
                     case "bal":
                     case "balance":
@@ -106,11 +105,11 @@ public class WorldServerCommand extends ViCommand {
                             Player of = Bukkit.getPlayer(args[1]);
 
                             if (of == null) {
-                                Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                                Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
                                 return true;
                             }
 
-                            Message.send(sender, ConfigValue.ECONOMY_BALANCE_FORMAT
+                            Util.send(sender, ConfigValue.ECONOMY_BALANCE_FORMAT
                                     .replace("%player%", of.getName())
                                     .replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
                         }
@@ -122,7 +121,7 @@ public class WorldServerCommand extends ViCommand {
                     Player p = Bukkit.getPlayerExact(args[1]);
 
                     if (p == null) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
                         return true;
                     }
 
@@ -130,7 +129,7 @@ public class WorldServerCommand extends ViCommand {
                     try {
                         amount = Double.parseDouble(args[2]);
                     } catch (NumberFormatException ex) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
                         return true;
                     }
 
@@ -138,7 +137,7 @@ public class WorldServerCommand extends ViCommand {
                     String group = to.getWorldGroup();
 
                     if (ConfigValue.getWorlds(group).isEmpty()) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
 
@@ -166,7 +165,7 @@ public class WorldServerCommand extends ViCommand {
                     Player p = Bukkit.getPlayerExact(args[2]);
 
                     if (p == null) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
                         return true;
                     }
 
@@ -174,7 +173,7 @@ public class WorldServerCommand extends ViCommand {
                     try {
                         amount = Double.parseDouble(args[3]);
                     } catch (NumberFormatException ex) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
                         return true;
                     }
 
@@ -186,34 +185,34 @@ public class WorldServerCommand extends ViCommand {
                     }
 
                     if (ConfigValue.getWorlds(group).isEmpty()) {
-                        Message.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
 
                     switch (args[1].toLowerCase()) {
                         case "set":
                             to.setBalance(amount, group);
-                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
                                     "Successfully set " + to.getPlayer().getName() + "'s balance to " + amount);
                             return true;
                         case "add":
                             to.deposit(group, amount);
-                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
                                     "Successfully added " + amount + " to " + to.getPlayer().getName() + "'s balance");
 
                             if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
-                                Message.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                                Util.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
                                         .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
                                         .replace("%prefix%", "+"));
                             }
                             return true;
                         case "remove":
                             to.withdraw(group, amount);
-                            Message.send(sender, WorldServer.MESSAGE_PREFIX +
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
                                     "Successfully removed " + amount + " from " + to.getPlayer().getName() + "'s balance");
 
                             if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
-                                Message.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
+                                Util.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
                                         .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
                                         .replace("%prefix%", "-"));
                             }

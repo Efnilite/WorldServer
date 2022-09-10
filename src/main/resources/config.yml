@@ -67,7 +67,7 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # If conflict happens, groups are prioritized over worlds.
 # These messages support PlaceholderAPI placeholders.
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
-# Learn more about colouring: https://github.com/Efnilite/vilib/wiki/Colouring
+# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
 chat-format:
   example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
   MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
@@ -187,7 +187,7 @@ economy-override-pay-command: true
 
 # -= Economy pay format =-
 # These messages support PlaceholderAPI placeholders.
-# Learn more about colouring: https://github.com/Efnilite/vilib/wiki/Colouring
+# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
 
 # The format for when a player does not have enough funds to pay someone.
 economy-pay-no-funds-format: 'You don''t have enough €$ to do that!'

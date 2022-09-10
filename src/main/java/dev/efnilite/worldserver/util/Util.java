@@ -1,12 +1,13 @@
 package dev.efnilite.worldserver.util;
 
-import dev.efnilite.vilib.chat.Message;
 import dev.efnilite.vilib.command.ViCommand;
+import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,8 +43,8 @@ public class Util {
         return prefix + amount;
     }
 
-    public static void send(Player player, String message) {
-        Message.send(player, PlaceholderHook.translate(player, message));
+    public static void send(CommandSender sender, String message) {
+        sender.sendMessage(Strings.colour(sender instanceof Player ? PlaceholderHook.translate((Player) sender, message) : message));
     }
 
     /**
