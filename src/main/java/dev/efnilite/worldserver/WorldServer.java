@@ -173,9 +173,7 @@ public class WorldServer extends ViPlugin {
     @Override
     public void disable() {
         for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
-            wp.save(false);
-
-            WorldPlayer.unregister(wp.getPlayer());
+            WorldPlayer.unregister(wp.getPlayer(), false);
         }
     }
 

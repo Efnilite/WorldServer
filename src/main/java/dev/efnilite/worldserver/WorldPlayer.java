@@ -60,14 +60,14 @@ public class WorldPlayer {
      * @param   player
      *          The player
      */
-    public static void unregister(@NotNull Player player) {
+    public static void unregister(@NotNull Player player, boolean saveAsync) {
         UUID uuid = player.getUniqueId();
         WorldPlayer wp = players.get(player.getUniqueId());
         if (wp == null) {
             return;
         }
 
-        wp.save(true);
+        wp.save(saveAsync);
 
         players.remove(uuid);
     }

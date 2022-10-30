@@ -91,7 +91,7 @@ chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds u
 
 # -= Chat blocked =-
 # Words which will be banned in chat.
-# These are case insensitive.
+# These are case-insensitive.
 chat-blocked:
   - "bad word"
 

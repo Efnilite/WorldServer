@@ -7,6 +7,8 @@ import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
+import net.milkbowl.vault.chat.Chat;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -203,8 +205,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
     }
 
     private String getChatFormatted(Player player, String format) {
-        return Strings.colour(PlaceholderHook.translate(player, format)
-                .replace("%player%", ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + "%s" + VaultHook.getSuffix(player) : "%s")
-                .replace("%message%", "%s"));
+        return ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, format)
+                .replace("%player%", ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + " %s " + VaultHook.getSuffix(player) : "%s")))
+                .replace("%message%", "%s"); // color everything except for messages
     }
 }

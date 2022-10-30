@@ -26,6 +26,6 @@ public class GeneralHandler implements EventWatcher {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        WorldPlayer.unregister(event.getPlayer());
+        WorldPlayer.unregister(event.getPlayer(), true);
     }
 }
