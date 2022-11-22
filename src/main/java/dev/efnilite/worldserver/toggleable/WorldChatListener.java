@@ -7,7 +7,6 @@ import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -47,8 +46,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (fromMessage != null) {
             for (Player pl : getPlayersInWorldGroup(from)) { // from send leave
-                Util.send(pl, fromMessage.replace("%player%",
-                        ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+                Util.send(pl, getColouredMessage(player, fromMessage)
+                        .replace("%player%", player.getName()));
             }
         }
 
@@ -60,8 +59,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (toMessage != null) {
             for (Player pl : getPlayersInWorldGroup(to)) {
-                Util.send(pl, toMessage.replace("%player%",
-                        ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+                Util.send(pl, getColouredMessage(player, toMessage)
+                        .replace("%player%", player.getName()));
             }
         }
     }
@@ -85,8 +84,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Util.send(pl, message.replace("%player%",
-                    ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+            Util.send(pl, getColouredMessage(player, message)
+                    .replace("%player%", player.getName()));
         }
     }
 
@@ -109,8 +108,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Util.send(pl, message.replace("%player%",
-                    ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + player.getName() + VaultHook.getSuffix(player) : player.getName()));
+            Util.send(pl, getColouredMessage(player, message)
+                    .replace("%player%", player.getName()));
         }
     }
 
@@ -126,7 +125,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         // Global chat handling
         if (ConfigValue.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
-            event.setFormat(getChatFormatted(player, ConfigValue.GLOBAL_CHAT_FORMAT));
+            event.setFormat(getFormattedMessage(player, ConfigValue.GLOBAL_CHAT_FORMAT));
             event.setMessage(message.replaceFirst(prefix, ""));
 
             cooldown(event, "global");
@@ -161,7 +160,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
             format = ConfigValue.CHAT_FORMAT.get(group);
         }
         if (format != null) {
-            event.setFormat(getChatFormatted(player, format));
+            event.setFormat(getFormattedMessage(player, format));
         }
 
         cooldown(event, group);
@@ -204,9 +203,17 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
     }
 
-    private String getChatFormatted(Player player, String format) {
-        return ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, format)
-                .replace("%player%", ConfigValue.CHAT_AFFIXES ? VaultHook.getPrefix(player) + " %s " + VaultHook.getSuffix(player) : "%s")))
+    private String getColouredMessage(Player player, String string) {
+        return ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, string)
+                .replace("%player%",
+                        ConfigValue.CHAT_AFFIXES
+                        ? VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)
+                        : "%s")));
+    }
+
+    private String getFormattedMessage(Player player, String format) {
+        return getColouredMessage(player, format)
+                .replace("%player%", player.getName())
                 .replace("%message%", "%s"); // color everything except for messages
     }
 }
