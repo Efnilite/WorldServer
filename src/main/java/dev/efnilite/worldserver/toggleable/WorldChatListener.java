@@ -46,7 +46,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (fromMessage != null) {
             for (Player pl : getPlayersInWorldGroup(from)) { // from send leave
-                Util.send(pl, getColouredMessage(player, fromMessage)
+                pl.sendMessage(getColouredMessage(player, fromMessage)
                         .replace("%player%", player.getName()));
             }
         }
@@ -59,7 +59,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (toMessage != null) {
             for (Player pl : getPlayersInWorldGroup(to)) {
-                Util.send(pl, getColouredMessage(player, toMessage)
+                pl.sendMessage(getColouredMessage(player, toMessage)
                         .replace("%player%", player.getName()));
             }
         }
@@ -84,7 +84,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Util.send(pl, getColouredMessage(player, message)
+            pl.sendMessage(getColouredMessage(player, message)
                     .replace("%player%", player.getName()));
         }
     }
@@ -108,7 +108,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            Util.send(pl, getColouredMessage(player, message)
+            pl.sendMessage(getColouredMessage(player, message)
                     .replace("%player%", player.getName()));
         }
     }
