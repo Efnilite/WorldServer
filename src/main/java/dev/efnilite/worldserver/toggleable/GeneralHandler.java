@@ -1,6 +1,7 @@
 package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.vilib.event.EventWatcher;
+import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.util.Util;
@@ -15,7 +16,9 @@ public class GeneralHandler implements EventWatcher {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.isOp() && WorldServer.getPlugin().getElevatorInstance().isOutdated()) {
+        GitElevator elevator = WorldServer.getPlugin().getElevatorInstance();
+
+        if (player.isOp() && elevator != null && elevator.isOutdated()) {
             Util.send(player, "");
             Util.send(player, WorldServer.MESSAGE_PREFIX + "Your WorldServer version is outdated. Please update!");
             Util.send(player, "");

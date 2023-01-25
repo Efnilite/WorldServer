@@ -213,7 +213,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
     private String getFormattedMessage(Player player, String format) {
         return getColouredMessage(player, format)
-                .replace("%player%", player.getName())
+                .replace("%player%", "%s")
                 .replace("%message%", "%s"); // color everything except for messages
     }
 }

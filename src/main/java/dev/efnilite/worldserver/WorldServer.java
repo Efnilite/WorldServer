@@ -8,7 +8,6 @@ import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
-import dev.efnilite.vilib.util.elevator.VersionComparator;
 import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.eco.*;
@@ -28,7 +27,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -178,12 +177,11 @@ public class WorldServer extends ViPlugin {
     }
 
     @Override
-    @NotNull
-    public GitElevator getElevator() {
-        return new GitElevator("Efnilite/WorldServer", this, VersionComparator.EQUAL, ConfigValue.AUTO_UPDATER);
+    public @Nullable GitElevator getElevator() {
+        return null;
     }
 
-    @NotNull
+    @Nullable
     public GitElevator getElevatorInstance() {
         if (elevator == null) {
             elevator = getElevator();
