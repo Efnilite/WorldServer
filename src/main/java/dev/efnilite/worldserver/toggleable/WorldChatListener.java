@@ -207,7 +207,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         return ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, string)
                 .replace("%player%",
                         ConfigValue.CHAT_AFFIXES
-                        ? VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)
+                        ? (VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)).trim()
                         : "%s")));
     }
 
