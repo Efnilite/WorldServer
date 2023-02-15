@@ -12,7 +12,7 @@
 
 #====================================================================================================================================#
 #                                                                                                                                    #
-#                                               (c) Efnilite 2022. Do not distribute!                                                #
+#                                            (c) Efnilite 2022-2023. Do not distribute!                                              #
 #                                                                                                                                    #
 #====================================================================================================================================#
 
@@ -54,12 +54,19 @@ global-chat-prefix: '!'
 
 # -= Global chat format =-
 # The text format when a message is sent in global chat
-# %player% is used to get the player and %message% is to get the message.
+# Placeholders:
+# %world% - The group/world in which the message was sent
+# %player% - The player
+# %message% - The message
 global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 
 # -= Spy Format =-
 # The message format for when spy mode is enabled for an admin.
 # Change this by using /ws menu.
+# Placeholders:
+# %world% - The group/world in which the message was sent
+# %player% - The player
+# %message% - The message
 spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
 # -= World chat format =-
@@ -68,6 +75,10 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # These messages support PlaceholderAPI placeholders.
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
 # Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
+# Placeholders:
+# %world% - The group/world in which the message was sent
+# %player% - The player
+# %message% - The message
 chat-format:
   example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
   MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
@@ -85,6 +96,7 @@ chat-cooldown:
 
 # -= World chat cooldown format =-
 # The message players get when they are on chat cooldown.
+# Placeholders:
 # %remaining% - the time remaining
 # %time% - the total cooldown time
 chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds until you can send another message!'
@@ -101,6 +113,7 @@ chat-blocked-format: '<gray>You can''t say mean things :('
 
 # -= World chat join formats =-
 # Add a custom join message per world chat.
+# Placeholders:
 # %player% - the player
 chat-join-formats:
   example: '<green><bold>+ <gray>%player%'
@@ -139,6 +152,8 @@ economy-switch-notification: true
 # -= Economy balance notification format =-
 # Set the format of the message players get if they switch worlds.
 # This will only be set if economy and economy switch notifications are enabled.
+# Placeholders:
+# %amount% - the current amount
 economy-switch-format: '<white>You now have <#4DF019>€$ %amount%<gray>.'
 
 # -= Economy currency symbol =-
@@ -174,8 +189,9 @@ economy-balance-change: true
 
 # -= Economy balance change format =-
 # The message a player receives when their balance is changed.
-# Use %amount% for the given amount.
-# Use %prefix% to get a + or -, depending on whether the amount is added or removed.
+# Placeholders:
+# %amount% - the given amount.
+# %prefix% - a + or -, depending on whether the amount is added or removed.
 # Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
 economy-balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
 

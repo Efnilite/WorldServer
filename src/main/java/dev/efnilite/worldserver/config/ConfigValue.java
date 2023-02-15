@@ -5,6 +5,7 @@ import dev.efnilite.worldserver.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -212,6 +213,7 @@ public class ConfigValue {
      *
      * @return the World Group, or the world name if it is not in a group
      */
+    @NotNull
     public static String getGroupFromWorld(World world) {
         if (worldGroupCache.containsKey(world)) {
             return worldGroupCache.get(world);

@@ -126,13 +126,15 @@ public class Util {
     }
 
     public static boolean isLatest(String latest, String current) {
-        int latestVs = Integer.parseInt(stripLatest(latest));
-        int currentVs = Integer.parseInt(stripLatest(current));
-
-        return latestVs <= currentVs;
+        return toVersion(latest) <= toVersion(current);
     }
 
-    private static String stripLatest(String string) {
-        return string.toLowerCase().replace("v", "").replace(".", "");
+    private static double toVersion(String version) {
+        String stripped = version
+                .toLowerCase()
+                .replace("v", "")
+                .replace(".", "");
+
+        return Double.parseDouble(stripped) / stripped.length();
     }
 }

@@ -1,1 +1,7 @@
-- Fix world groups not being supported on join
+- Added "%world%" placeholder in chat messages
+- Added placeholder info for all messages
+- Fixed players being invisible to each other
+- Fixed vilib version check
+- Fixed only checking groups and not the world as fallback for join/leave/switch messages
+- Fixed invalid formatting on help message
+- Fixed leading/trailing spaces when chat-affixes are enabled but none are shown
