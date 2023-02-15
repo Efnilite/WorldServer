@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
@@ -19,9 +20,11 @@ public class WorldTabListener extends Toggleable implements EventWatcher {
         if (!ConfigValue.TAB_ENABLED) {
             return;
         }
+
         Player player = event.getPlayer();
 
         List<Player> inGroup = getPlayersInWorldGroup(player.getWorld());
+
         for (Player pl : Bukkit.getOnlinePlayers()) {
             if (inGroup.contains(pl)) {
                 visibilityHandler.show(player, pl);
@@ -30,6 +33,20 @@ public class WorldTabListener extends Toggleable implements EventWatcher {
                 visibilityHandler.hide(player, pl);
                 visibilityHandler.hide(pl, player);
             }
+        }
+    }
+
+    @EventHandler
+    public void quit(PlayerQuitEvent event) {
+        if (!ConfigValue.TAB_ENABLED) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            visibilityHandler.show(player, pl);
+            visibilityHandler.show(pl, player);
         }
     }
 
