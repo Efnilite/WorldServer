@@ -15,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,8 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         String fromGroup = ConfigValue.getGroupFromWorld(from);
         String toGroup = ConfigValue.getGroupFromWorld(to);
 
-        String fromMessage = ConfigValue.CHAT_LEAVE_FORMATS.get(fromGroup);
-        String toMessage = ConfigValue.CHAT_JOIN_FORMATS.get(toGroup);
+        String fromMessage = getMessage(from, ConfigValue.CHAT_LEAVE_FORMATS);
+        String toMessage = getMessage(to, ConfigValue.CHAT_JOIN_FORMATS);
 
         if (fromGroup.equals(toGroup)) {
             return;
@@ -46,8 +47,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (fromMessage != null) {
             for (Player pl : getPlayersInWorldGroup(from)) { // from send leave
-                pl.sendMessage(getColouredMessage(player, fromMessage)
-                        .replace("%player%", player.getName()));
+                pl.sendMessage(getColouredMessage(player, fromMessage).replace("%player%", player.getName()));
             }
         }
 
@@ -59,8 +59,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
 
         if (toMessage != null) {
             for (Player pl : getPlayersInWorldGroup(to)) {
-                pl.sendMessage(getColouredMessage(player, toMessage)
-                        .replace("%player%", player.getName()));
+                pl.sendMessage(getColouredMessage(player, toMessage).replace("%player%", player.getName()));
             }
         }
     }
@@ -72,21 +71,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
         event.setJoinMessage(null);
 
-        Player player = event.getPlayer();
-        World world = player.getWorld();
-
-        String group = ConfigValue.getGroupFromWorld(world);
-
-        String message = ConfigValue.CHAT_JOIN_FORMATS.get(group);
-
-        if (message == null) {
-            return;
-        }
-
-        for (Player pl : getPlayersInWorldGroup(world)) {
-            pl.sendMessage(getColouredMessage(player, message)
-                    .replace("%player%", player.getName()));
-        }
+        performNetworkMessage(event.getPlayer(), ConfigValue.CHAT_JOIN_FORMATS);
     }
 
     @EventHandler
@@ -96,21 +81,28 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
         event.setQuitMessage(null);
 
-        Player player = event.getPlayer();
+        performNetworkMessage(event.getPlayer(), ConfigValue.CHAT_LEAVE_FORMATS);
+    }
+
+    private void performNetworkMessage(Player player, Map<String, String> formats) {
         World world = player.getWorld();
-
-        String group = ConfigValue.getGroupFromWorld(world);
-
-        String message = ConfigValue.CHAT_LEAVE_FORMATS.get(group);
+        String message = getMessage(world, formats);
 
         if (message == null) {
             return;
         }
 
         for (Player pl : getPlayersInWorldGroup(world)) {
-            pl.sendMessage(getColouredMessage(player, message)
-                    .replace("%player%", player.getName()));
+            pl.sendMessage(getColouredMessage(player, message).replace("%player%", player.getName()));
         }
+    }
+
+    @Nullable
+    private String getMessage(World world, Map<String, String> formats) {
+        String group = ConfigValue.getGroupFromWorld(world);
+        String message = formats.get(group);
+
+        return message == null ? formats.get(world.getName()) : message;
     }
 
     @EventHandler
@@ -182,9 +174,7 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         if (remaining < cooldown * 1000) { // if cooldown is longer than last time, cancel message
             event.setCancelled(true);
 
-            Util.send(player, ConfigValue.CHAT_COOLDOWN_FORMAT
-                    .replace("%remaining%", String.format("%.2f", cooldown - (remaining / 1000D)))
-                    .replace("%time%", String.format("%.2f", cooldown)));
+            Util.send(player, ConfigValue.CHAT_COOLDOWN_FORMAT.replace("%remaining%", String.format("%.2f", cooldown - (remaining / 1000D))).replace("%time%", String.format("%.2f", cooldown)));
         } else {
             map.put(uuid, System.currentTimeMillis());
             lastExecuted.put(group, map);
@@ -203,17 +193,13 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
     }
 
-    private String getColouredMessage(Player player, String string) {
-        return ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, string)
-                .replace("%player%",
-                        ConfigValue.CHAT_AFFIXES
-                        ? (VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)).trim()
-                        : "%s")));
+    private String getColouredMessage(Player player, String message) {
+        message = ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, message)));
+
+        return message.replace("%player%", ConfigValue.CHAT_AFFIXES ? (VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)).trim() : "%player%");
     }
 
-    private String getFormattedMessage(Player player, String format) {
-        return getColouredMessage(player, format)
-                .replace("%player%", "%s")
-                .replace("%message%", "%s"); // color everything except for messages
+    private String getFormattedMessage(Player player, String message) {
+        return getColouredMessage(player, message).replace("%world%", player.getWorld().getName()).replace("%player%", "%s").replace("%message%", "%s"); // color everything except for messages
     }
 }
