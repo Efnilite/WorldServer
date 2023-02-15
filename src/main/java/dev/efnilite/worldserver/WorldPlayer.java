@@ -36,14 +36,13 @@ public class WorldPlayer {
     /**
      * Registers a player
      *
-     * @param   player
-     *          The player
-     *
+     * @param player The player
      * @return the WorldPlayer instance
      */
     public static WorldPlayer register(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
         WorldPlayer oldWp = players.get(player.getUniqueId());
+
         if (oldWp == null) {
             WorldPlayer wp = read(player);
 
@@ -57,12 +56,12 @@ public class WorldPlayer {
     /**
      * Unregisters a player
      *
-     * @param   player
-     *          The player
+     * @param player The player
      */
     public static void unregister(@NotNull Player player, boolean saveAsync) {
         UUID uuid = player.getUniqueId();
         WorldPlayer wp = players.get(player.getUniqueId());
+
         if (wp == null) {
             return;
         }
@@ -75,9 +74,7 @@ public class WorldPlayer {
     /**
      * Gets a player from the bukkit player instance
      *
-     * @param   player
-     *          The player
-     *
+     * @param player The player
      * @return the WorldPlayer instance
      */
     @NotNull
@@ -89,8 +86,7 @@ public class WorldPlayer {
     /**
      * Saves this player's file
      *
-     * @param   async
-     *          True if saving should be async
+     * @param async True if saving should be async
      */
     public void save(boolean async) {
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -118,10 +114,7 @@ public class WorldPlayer {
         };
 
         if (async) {
-            Task.create(WorldServer.getPlugin())
-                    .async()
-                    .execute(runnable)
-                    .run();
+            Task.create(WorldServer.getPlugin()).async().execute(runnable).run();
         } else {
             runnable.run();
         }
@@ -130,9 +123,7 @@ public class WorldPlayer {
     /**
      * Reads a player's file
      *
-     * @param   player
-     *          The player
-     *
+     * @param player The player
      * @return the instance of the player
      */
     @Nullable
@@ -184,18 +175,25 @@ public class WorldPlayer {
         BalCache.save(player.getUniqueId(), group, amount);
     }
 
+    /**
+     * Returns the balance of a player.
+     * Defaults to "global" group if global economy is enabled.
+     * Defaults to "economy starting amount" if the user has no registered balance.
+     *
+     * @return the balance of a player.
+     */
     public double getBalance() {
-        String group = getWorldGroup();
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
-            group = "global";
-        }
-
-        if (!balances.containsKey(group)) {
-            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
-        }
-        return balances.get(group);
+        return getBalance(getWorldGroup());
     }
 
+    /**
+     * Returns the balance of a player from a specific group.
+     *
+     * @param   group
+     *          The group name
+     *
+     * @return the balance of a player from a specific group.
+     */
     public double getBalance(String group) {
         if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
             group = "global";

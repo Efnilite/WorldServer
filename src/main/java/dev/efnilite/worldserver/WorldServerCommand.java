@@ -21,7 +21,7 @@ public class WorldServerCommand extends ViCommand {
         switch (args.length) {
             case 0:
                 Util.send(sender, "");
-                Util.send(sender, "<dark_gray><strikethrough>-----------&r " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
+                Util.send(sender, "<dark_gray><strikethrough>-----------<reset> " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
                 Util.send(sender, "");
                 Util.send(sender, "<gray>/ws <dark_gray>- The main command");
                 Util.send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
