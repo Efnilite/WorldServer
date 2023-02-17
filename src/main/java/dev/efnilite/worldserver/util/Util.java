@@ -4,6 +4,7 @@ import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
 
@@ -136,5 +139,18 @@ public class Util {
                 .replace(".", "");
 
         return Double.parseDouble(stripped) / stripped.length();
+    }
+
+    private static final Pattern HEX_PATTERN = Pattern.compile("&(#\\w{6})");
+
+    public static String colorLegacy(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(ChatColor.translateAlternateColorCodes('&', message));
+        StringBuffer buffer = new StringBuffer();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, ChatColor.of(matcher.group(1)).toString());
+        }
+
+        return matcher.appendTail(buffer).toString();
     }
 }

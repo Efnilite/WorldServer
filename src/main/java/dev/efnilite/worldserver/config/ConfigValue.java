@@ -36,7 +36,6 @@ public class ConfigValue {
     public static String CHAT_BLOCKED_FORMAT;
     public static Map<String, String> CHAT_JOIN_FORMATS;
     public static Map<String, String> CHAT_LEAVE_FORMATS;
-    public static boolean CHAT_AFFIXES;
     public static boolean CLEAR_CHAT_ON_SWITCH;
 
     /* Eco options */
@@ -139,7 +138,6 @@ public class ConfigValue {
             }
         }
 
-        CHAT_AFFIXES = config.getBoolean("chat-affixes");
         CLEAR_CHAT_ON_SWITCH = config.getBoolean("clear-chat-on-switch");
 
         ECONOMY_ENABLED = config.getBoolean("economy-enabled");

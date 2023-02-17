@@ -58,6 +58,8 @@ global-chat-prefix: '!'
 # %world% - The group/world in which the message was sent
 # %player% - The player
 # %message% - The message
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
 global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 
 # -= Spy Format =-
@@ -67,6 +69,8 @@ global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 # %world% - The group/world in which the message was sent
 # %player% - The player
 # %message% - The message
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
 spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
 # -= World chat format =-
@@ -79,6 +83,8 @@ spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 # %world% - The group/world in which the message was sent
 # %player% - The player
 # %message% - The message
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
 chat-format:
   example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
   MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
@@ -115,6 +121,8 @@ chat-blocked-format: '<gray>You can''t say mean things :('
 # Add a custom join message per world chat.
 # Placeholders:
 # %player% - the player
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
 chat-join-formats:
   example: '<green><bold>+ <gray>%player%'
   MyWorld: '<gray>%player% joined.'
@@ -122,13 +130,11 @@ chat-join-formats:
 # -= World chat leave formats =-
 # Add a custom leave message per world chat.
 # %player% - the player
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
 chat-leave-formats:
   example: '<red><bold>- <gray>%player%'
   MyWorld: '<gray>%player% left.'
-
-# -= Chat affixes =-
-# Whether custom chat should use Vault-provided player prefixes and suffixes.
-chat-affixes: true
 
 # -= Clear chat on switch =-
 # If set to true, will clear the chat on a switch of the world.

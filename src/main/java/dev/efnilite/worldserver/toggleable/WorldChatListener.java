@@ -7,7 +7,6 @@ import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -194,12 +193,15 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
     }
 
     private String getColouredMessage(Player player, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', Strings.colour(PlaceholderHook.translate(player, message)));
-
-        return message.replace("%player%", ConfigValue.CHAT_AFFIXES ? (VaultHook.getPrefix(player) + " %player% " + VaultHook.getSuffix(player)).trim() : "%player%");
+        return Util.colorLegacy(Strings.colour(PlaceholderHook.translate(player,
+                message.replace("%prefix%", VaultHook.getPrefix(player))
+                        .replace("%suffix%", VaultHook.getSuffix(player)))));
     }
 
     private String getFormattedMessage(Player player, String message) {
-        return getColouredMessage(player, message).replace("%world%", player.getWorld().getName()).replace("%player%", "%s").replace("%message%", "%s"); // color everything except for messages
+        return getColouredMessage(player, message)
+                .replace("%world%", player.getWorld().getName())
+                .replace("%player%", "%s")
+                .replace("%message%", "%s"); // color everything except for messages
     }
 }

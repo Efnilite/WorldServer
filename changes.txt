@@ -1,4 +1,5 @@
 - Added "%world%" placeholder in chat messages
+- Added "%prefix%" and "%suffix%" placeholders in chat messages. The chat affixes option has been removed.
 - Added placeholder info for all messages
 - Fixed players being invisible to each other
 - Fixed vilib version check
