@@ -2,7 +2,9 @@ package dev.efnilite.worldserver.toggleable;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.vilib.util.Strings;
+import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.WorldPlayer;
+import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
@@ -70,7 +72,19 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         }
         event.setJoinMessage(null);
 
-        performNetworkMessage(event.getPlayer(), ConfigValue.CHAT_JOIN_FORMATS);
+        Player player = event.getPlayer();
+        World initialWorld = player.getWorld();
+
+        Task.create(WorldServer.getPlugin())
+                .delay(1)
+                .execute(() -> {
+                    if (initialWorld != player.getWorld()) {
+                        return;
+                    }
+
+                    performNetworkMessage(player, ConfigValue.CHAT_JOIN_FORMATS);
+                })
+                .run();
     }
 
     @EventHandler
