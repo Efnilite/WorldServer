@@ -11,6 +11,7 @@ import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.eco.BalCache;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +58,7 @@ public class EcoTopMenu {
             }
 
             int finalRank = rank;
-            String finalOfflineName = offlineName;
+            String finalOfflineName = ChatColor.stripColor(offlineName);
             Item item = base.clone()
                     .material(Material.PLAYER_HEAD)
                     .modifyName(name -> name
@@ -72,12 +73,16 @@ public class EcoTopMenu {
             // Player head gathering
             ItemStack stack = item.build();
             stack.setType(Material.PLAYER_HEAD);
-            SkullMeta meta = (SkullMeta) stack.getItemMeta();
-            if (meta == null) {
-                continue;
+            if (rank > 36) {
+                SkullMeta meta = (SkullMeta) stack.getItemMeta();
+
+                if (meta == null) {
+                    continue;
+                }
+
+                SkullSetter.setPlayerHead(offlinePlayer, meta);
+                item.meta(meta);
             }
-            SkullSetter.setPlayerHead(offlinePlayer, meta);
-            item.meta(meta);
 
             // add player's own head
             if (uuid.equals(player.getPlayer().getUniqueId())) {

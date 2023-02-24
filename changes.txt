@@ -1,8 +1,1 @@
-- Added "%world%" placeholder in chat messages
-- Added "%prefix%" and "%suffix%" placeholders in chat messages. The chat affixes option has been removed.
-- Added placeholder info for all messages
-- Fixed players being invisible to each other
-- Fixed vilib version check
-- Fixed only checking groups and not the world as fallback for join/leave/switch messages
-- Fixed invalid formatting on help message
-- Fixed leading/trailing spaces when chat-affixes are enabled but none are shown
+- Fixed switch messages doubling up on join
