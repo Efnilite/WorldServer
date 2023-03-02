@@ -129,6 +129,10 @@ chat-join-formats:
 
 # -= World chat leave formats =-
 # Add a custom leave message per world chat.
+# Permissions:
+# To add a specific permission, add a / followed by the permission.
+# Example: MyWorld/super.cool.rank: "%player% is so cool :D"
+# Placeholders:
 # %player% - the player
 # %prefix% - The player's prefix
 # %suffix% - The player's suffix

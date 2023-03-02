@@ -18,10 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class WorldChatListener extends Toggleable implements EventWatcher {
 
@@ -164,8 +161,16 @@ public class WorldChatListener extends Toggleable implements EventWatcher {
         } else {
             format = ConfigValue.CHAT_FORMAT.get(group);
         }
+
         if (format != null) {
-            event.setFormat(getFormattedMessage(player, format));
+            String formatted = getFormattedMessage(player, format);
+
+            try {
+                event.setFormat(formatted);
+                // unknown placeholder
+            } catch (UnknownFormatConversionException ex) {
+                WorldServer.logging().stack("Unknown placeholder in message: " + formatted, "check if you spelled the placeholders correctly", ex);
+            }
         }
 
         cooldown(event, group);
