@@ -121,15 +121,15 @@ public class WorldServer extends ViPlugin {
         }
 
         registerCommand("worldserver", new WorldServerCommand());
-        if (ConfigValue.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
+        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             Util.registerToMap("bal", new BalCommand());
             Util.registerToMap("balance", new BalCommand());
         }
-        if (ConfigValue.ECONOMY_OVERRIDE_PAY_COMMAND) {
+        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_PAY_COMMAND) {
             Util.registerToMap("pay", new PayCommand());
             Util.registerToMap("transfer", new PayCommand());
         }
-        if (ConfigValue.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
+        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
             Util.registerToMap("baltop", new BaltopCommand());
             Util.registerToMap("balancetop", new BaltopCommand());
         }
