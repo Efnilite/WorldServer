@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.toggleable;
+package dev.efnilite.worldserver.group;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.vilib.util.elevator.GitElevator;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class GeneralHandler implements EventWatcher {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void join(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         GitElevator elevator = WorldServer.getPlugin().getElevatorInstance();
@@ -28,7 +28,7 @@ public class GeneralHandler implements EventWatcher {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void quit(PlayerQuitEvent event) {
         WorldPlayer.unregister(event.getPlayer(), true);
     }
 }

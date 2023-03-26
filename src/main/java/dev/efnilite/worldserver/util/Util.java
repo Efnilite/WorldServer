@@ -36,16 +36,6 @@ public class Util {
         CURRENCY_FORMAT.setMaximumFractionDigits(2);
     }
 
-    public static String getFormatted(double amount) {
-        String prefix = amount > 0 ? "+" : "-";
-
-        if (amount == 0) {
-            prefix = "";
-        }
-
-        return prefix + amount;
-    }
-
     public static void send(CommandSender sender, String message) {
         sender.sendMessage(Strings.colour(sender instanceof Player ? PlaceholderHook.translate((Player) sender, message) : message));
     }
@@ -53,11 +43,8 @@ public class Util {
     /**
      * Gets the size of a ConfigurationSection
      *
-     * @param   file
-     *          The file
-     *
-     * @param   path
-     *          The path
+     * @param file The file
+     * @param path The path
      */
     public static @Nullable List<String> getNode(FileConfiguration file, String path) {
         ConfigurationSection section = file.getConfigurationSection(path);
@@ -119,8 +106,7 @@ public class Util {
 
             field.set(map, knownCommands);
         } catch (NoSuchFieldException ex) {
-            WorldServer.logging().stack("knownCommands field not found for registry",
-                    "update your server or switch to a supported server platform", ex);
+            WorldServer.logging().stack("knownCommands field not found for registry", "update your server or switch to a supported server platform", ex);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             WorldServer.logging().error("There was an error while trying to register your command to the Command Map");
@@ -133,10 +119,7 @@ public class Util {
     }
 
     private static double toVersion(String version) {
-        String stripped = version
-                .toLowerCase()
-                .replace("v", "")
-                .replace(".", "");
+        String stripped = version.toLowerCase().replace("v", "").replace(".", "");
 
         return Double.parseDouble(stripped) / stripped.length();
     }

@@ -28,9 +28,7 @@ public class VaultHook {
     /**
      * Returns the player's prefix if the chat component of Vault is found
      *
-     * @param   player
-     *          The player
-     *
+     * @param player The player
      * @return the player prefix
      */
     public static @NotNull String getPrefix(Player player) {
@@ -40,16 +38,10 @@ public class VaultHook {
     /**
      * Returns the player's suffix if the chat component of Vault is found
      *
-     * @param   player
-     *          The player
-     *
+     * @param player The player
      * @return the player suffix
      */
     public static @NotNull String getSuffix(Player player) {
         return chat != null ? chat.getPlayerSuffix(player.getWorld().getName(), player) : "";
-    }
-
-    public static @Nullable Chat getChat() {
-        return chat;
     }
 }

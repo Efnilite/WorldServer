@@ -27,8 +27,7 @@ public class EcoTopMenu {
     /**
      * Shows the leaderboard menu
      *
-     * @param   player
-     *          The player
+     * @param player The player
      */
     public static void open(WorldPlayer player) {
         // init vars
@@ -59,14 +58,11 @@ public class EcoTopMenu {
 
             int finalRank = rank;
             String finalOfflineName = ChatColor.stripColor(offlineName);
-            Item item = base.clone()
-                    .material(Material.PLAYER_HEAD)
-                    .modifyName(name -> name
-                            .replace("%rank%", Integer.toString(finalRank))
+            Item item = base.clone().material(Material.PLAYER_HEAD)
+                    .modifyName(name -> name.replace("%rank%", Integer.toString(finalRank))
                             .replace("%player%", finalOfflineName)
                             .replace("%amount%", Double.toString(amount)))
-                    .modifyLore(line -> line
-                            .replace("%rank%", Integer.toString(finalRank))
+                    .modifyLore(line -> line.replace("%rank%", Integer.toString(finalRank))
                             .replace("%player%", finalOfflineName)
                             .replace("%amount%", Double.toString(amount)));
 
@@ -85,7 +81,7 @@ public class EcoTopMenu {
             }
 
             // add player's own head
-            if (uuid.equals(player.getPlayer().getUniqueId())) {
+            if (uuid.equals(player.player.getUniqueId())) {
                 menu.item(30, item.clone());
                 item.glowing();
             }
@@ -94,9 +90,7 @@ public class EcoTopMenu {
             rank++;
         }
 
-        menu
-                .displayRows(0, 1)
-                .addToDisplay(items)
+        menu.displayRows(0, 1).addToDisplay(items)
 
                 .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>" + Unicodes.DOUBLE_ARROW_RIGHT) // next page
                         .click(event -> menu.page(1)))
@@ -104,12 +98,9 @@ public class EcoTopMenu {
                 .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>" + Unicodes.DOUBLE_ARROW_LEFT) // previous page
                         .click(event -> menu.page(-1)))
 
-                .item(32, new Item(Material.ARROW, "<#F5A3A3><bold>Close")
-                        .click(event -> event.getPlayer().closeInventory()))
+                .item(32, new Item(Material.ARROW, "<#F5A3A3><bold>Close").click(event -> event.getPlayer().closeInventory()))
 
-                .fillBackground(Material.GRAY_STAINED_GLASS_PANE)
-                .animation(new WaveWestAnimation())
-                .open(player.getPlayer());
+                .fillBackground(Material.GRAY_STAINED_GLASS_PANE).animation(new WaveWestAnimation()).open(player.player);
     }
 
 }

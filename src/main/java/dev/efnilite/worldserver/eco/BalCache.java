@@ -12,18 +12,18 @@ import java.util.UUID;
 
 public class BalCache {
 
-    private static final Map<UUID, Map<String, Double>> balances = new HashMap<>();
+    public static final Map<UUID, Map<String, Double>> BALANCES = new HashMap<>();
 
     public static void save(UUID uuid, String group, double amount) {
         Map<String, Double> balance;
-        if (balances.containsKey(uuid)) {
-            balance = balances.get(uuid);
+        if (BALANCES.containsKey(uuid)) {
+            balance = BALANCES.get(uuid);
         } else {
             balance = new HashMap<>();
         }
 
         balance.put(group, amount);
-        balances.put(uuid, balance);
+        BALANCES.put(uuid, balance);
     }
 
     public static void read() {
@@ -50,7 +50,7 @@ public class BalCache {
                 String fName = file.getName();
                 UUID uuid = UUID.fromString(fName.substring(0, fName.lastIndexOf('.')));
 
-                balances.put(uuid, from.balances != null ? from.balances : new HashMap<>());
+                BALANCES.put(uuid, from.balances != null ? from.balances : new HashMap<>());
                 reader.close();
             }
         } catch (Throwable throwable) {
@@ -59,15 +59,11 @@ public class BalCache {
     }
 
     public static Set<UUID> getUUIDs() {
-        return balances.keySet();
+        return BALANCES.keySet();
     }
 
     public static double get(UUID uuid, String group) {
-        Map<String, Double> data = balances.getOrDefault(uuid, new HashMap<>());
+        Map<String, Double> data = BALANCES.getOrDefault(uuid, new HashMap<>());
         return data.getOrDefault(group, 0D);
-    }
-
-    public static Map<UUID, Map<String, Double>> getBalances() {
-        return balances;
     }
 }

@@ -13,10 +13,10 @@ import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
-import dev.efnilite.worldserver.toggleable.GeneralHandler;
-import dev.efnilite.worldserver.toggleable.WorldChatListener;
-import dev.efnilite.worldserver.toggleable.WorldEconomyListener;
-import dev.efnilite.worldserver.toggleable.WorldTabListener;
+import dev.efnilite.worldserver.group.GeneralHandler;
+import dev.efnilite.worldserver.group.WorldChatListener;
+import dev.efnilite.worldserver.group.WorldEconomyListener;
+import dev.efnilite.worldserver.group.WorldTabListener;
 import dev.efnilite.worldserver.util.Util;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
@@ -89,12 +89,11 @@ public class WorldServer extends ViPlugin {
 
         // ----- Start time -----
 
-        Time.timerStart("enableWS");
+        Time.timerStart("ws enable");
 
         // ----- Configurations -----
 
         configuration = new Configuration(this);
-        ConfigValue.init();
 
         logging.info("Registered under version " + Version.getPrettyVersion());
 
@@ -148,31 +147,26 @@ public class WorldServer extends ViPlugin {
         }
 
         Task.create(this) // save data every 5 minutes
-                .delay(5 * 60 * 20)
-                .repeat(5 * 60 * 20)
-                .execute(() -> {
-                    for (WorldPlayer player : WorldPlayer.getPlayers().values()) {
+                .delay(5 * 60 * 20).repeat(5 * 60 * 20).execute(() -> {
+                    for (WorldPlayer player : WorldPlayer.PLAYERS.values()) {
                         player.save(true);
                     }
-                })
-                .run();
+                }).run();
 
         Task.create(this) // read existing balance caches
-                .async()
-                .execute(BalCache::read)
-                .run();
+                .async().execute(BalCache::read).run();
 
         // Vault setups
         VaultHook.register();
         PlaceholderHook.register();
 
-        logging.info("Loaded WorldServer v" + getDescription().getVersion() + " in " + Time.timerEnd("enableWS")  + "ms!");
+        logging.info("Loaded WorldServer v" + getDescription().getVersion() + " in " + Time.timerEnd("ws enable") + "ms!");
     }
 
     @Override
     public void disable() {
-        for (WorldPlayer wp : WorldPlayer.getPlayers().values()) {
-            WorldPlayer.unregister(wp.getPlayer(), false);
+        for (WorldPlayer wp : WorldPlayer.PLAYERS.values()) {
+            WorldPlayer.unregister(wp.player, false);
         }
     }
 

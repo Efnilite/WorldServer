@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.ConfigValue;
 import dev.efnilite.worldserver.eco.BalCache;
+import dev.efnilite.worldserver.group.GroupUtil;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,15 +20,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public class WorldPlayer {
+
     @Expose
     public boolean spyMode;
 
     @Expose
     public Map<String, Double> balances;
 
-    private final Player player;
+    public final Player player;
 
-    private static final Map<UUID, WorldPlayer> players = new HashMap<>();
+    public static final Map<UUID, WorldPlayer> PLAYERS = new HashMap<>();
 
     public WorldPlayer(Player player) {
         this.player = player;
@@ -41,12 +43,12 @@ public class WorldPlayer {
      */
     public static WorldPlayer register(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
-        WorldPlayer oldWp = players.get(player.getUniqueId());
+        WorldPlayer oldWp = PLAYERS.get(player.getUniqueId());
 
         if (oldWp == null) {
             WorldPlayer wp = read(player);
 
-            players.put(uuid, wp);
+            PLAYERS.put(uuid, wp);
             return wp;
         } else {
             return oldWp;
@@ -60,7 +62,7 @@ public class WorldPlayer {
      */
     public static void unregister(@NotNull Player player, boolean saveAsync) {
         UUID uuid = player.getUniqueId();
-        WorldPlayer wp = players.get(player.getUniqueId());
+        WorldPlayer wp = PLAYERS.get(player.getUniqueId());
 
         if (wp == null) {
             return;
@@ -68,7 +70,7 @@ public class WorldPlayer {
 
         wp.save(saveAsync);
 
-        players.remove(uuid);
+        PLAYERS.remove(uuid);
     }
 
     /**
@@ -79,7 +81,7 @@ public class WorldPlayer {
      */
     @NotNull
     public static WorldPlayer getPlayer(@NotNull Player player) {
-        WorldPlayer p = players.get(player.getUniqueId());
+        WorldPlayer p = PLAYERS.get(player.getUniqueId());
         return p != null ? p : register(player);
     }
 
@@ -189,9 +191,7 @@ public class WorldPlayer {
     /**
      * Returns the balance of a player from a specific group.
      *
-     * @param   group
-     *          The group name
-     *
+     * @param group The group name
      * @return the balance of a player from a specific group.
      */
     public double getBalance(String group) {
@@ -251,23 +251,7 @@ public class WorldPlayer {
         balances.put(group, updated);
     }
 
-    public static Map<UUID, WorldPlayer> getPlayers() {
-        return players;
-    }
-
-    public World getWorld() {
-        return player.getWorld();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
     public String getWorldGroup() {
-        return ConfigValue.getGroupFromWorld(getWorld());
-    }
-
-    public boolean spyMode() {
-        return spyMode;
+        return GroupUtil.getGroupFromWorld(player.getWorld());
     }
 }

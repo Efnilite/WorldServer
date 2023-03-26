@@ -2,6 +2,7 @@ package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.group.GroupUtil;
 import dev.efnilite.worldserver.util.Util;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -209,7 +210,7 @@ public class EconomyProvider extends AbstractEconomy {
             return "";
         }
 
-        return ConfigValue.getGroupFromWorld(world);
+        return GroupUtil.getGroupFromWorld(world);
     }
 
     private WorldPlayer getPlayer(String name) {

@@ -3,6 +3,7 @@ package dev.efnilite.worldserver;
 import dev.efnilite.vilib.command.ViCommand;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.group.GroupUtil;
 import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
 import dev.efnilite.worldserver.util.Util;
@@ -37,9 +38,9 @@ public class WorldServerCommand extends ViCommand {
                 if (sender.hasPermission("ws.eco.admin.edit") && ConfigValue.ECONOMY_ENABLED) {
                     Util.send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
-//                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
-//                    Util.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
-//                } todo
+                //                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
+                //                    Util.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
+                //                } todo
                 if (sender.hasPermission("ws.reload")) {
                     Util.send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
                 }
@@ -109,9 +110,7 @@ public class WorldServerCommand extends ViCommand {
                                 return true;
                             }
 
-                            Util.send(sender, ConfigValue.ECONOMY_BALANCE_FORMAT
-                                    .replace("%player%", of.getName())
-                                    .replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
+                            Util.send(sender, ConfigValue.ECONOMY_BALANCE_FORMAT.replace("%player%", of.getName()).replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
                         }
                         return true;
                 }
@@ -136,7 +135,7 @@ public class WorldServerCommand extends ViCommand {
                     WorldPlayer to = WorldPlayer.getPlayer(p);
                     String group = to.getWorldGroup();
 
-                    if (ConfigValue.getWorlds(group).isEmpty()) {
+                    if (GroupUtil.getWorlds(group).isEmpty()) {
                         Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
@@ -154,8 +153,10 @@ public class WorldServerCommand extends ViCommand {
                     from.withdraw(amount); // withdraw from sender
                     to.deposit(amount);
 
-                    from.send(ConfigValue.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
-                    to.send(ConfigValue.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.getPlayer().getName()).replace("%amount%", Double.toString(amount)));
+                    from.send(ConfigValue.ECONOMY_PAY_SEND_FORMAT.replace("%player%", to.player.getName())
+                            .replace("%amount%", Double.toString(amount)));
+                    to.send(ConfigValue.ECONOMY_PAY_RECEIVE_FORMAT.replace("%player%", from.player.getName())
+                            .replace("%amount%", Double.toString(amount)));
                     return true;
                 }
                 return true;
@@ -184,7 +185,7 @@ public class WorldServerCommand extends ViCommand {
                         group = args[4];
                     }
 
-                    if (ConfigValue.getWorlds(group).isEmpty()) {
+                    if (GroupUtil.getWorlds(group).isEmpty()) {
                         Util.send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
                         return true;
                     }
@@ -192,29 +193,22 @@ public class WorldServerCommand extends ViCommand {
                     switch (args[1].toLowerCase()) {
                         case "set":
                             to.setBalance(amount, group);
-                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully set " + to.getPlayer().getName() + "'s balance to " + amount);
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX + "Successfully set " + to.player.getName() + "'s balance to " + amount);
                             return true;
                         case "add":
                             to.deposit(group, amount);
-                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully added " + amount + " to " + to.getPlayer().getName() + "'s balance");
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX + "Successfully added " + amount + " to " + to.player.getName() + "'s balance");
 
                             if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
-                                Util.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
-                                        .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
-                                        .replace("%prefix%", "+"));
+                                Util.send(to.player, ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", Util.CURRENCY_FORMAT.format(amount)).replace("%prefix%", "+"));
                             }
                             return true;
                         case "remove":
                             to.withdraw(group, amount);
-                            Util.send(sender, WorldServer.MESSAGE_PREFIX +
-                                    "Successfully removed " + amount + " from " + to.getPlayer().getName() + "'s balance");
+                            Util.send(sender, WorldServer.MESSAGE_PREFIX + "Successfully removed " + amount + " from " + to.player.getName() + "'s balance");
 
                             if (ConfigValue.ECONOMY_BALANCE_CHANGE) {
-                                Util.send(to.getPlayer(), ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT
-                                        .replace("%amount%", Util.CURRENCY_FORMAT.format(amount))
-                                        .replace("%prefix%", "-"));
+                                Util.send(to.player, ConfigValue.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", Util.CURRENCY_FORMAT.format(amount)).replace("%prefix%", "-"));
                             }
                             return true;
                     }

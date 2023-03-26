@@ -37,26 +37,25 @@ public class Configuration {
             for (String file : defaultFiles) {
                 plugin.saveResource(file, false);
             }
+
             WorldServer.logging().info("Downloaded all config files");
         }
+
         for (String file : defaultFiles) {
             try {
-                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file),
-                        Arrays.asList("groups", "groups-share", "chat-format", "chat-cooldown", "chat-blocked",
-                                "economy-currency-names", "economy-starting-amount", "chat-join-formats", "chat-leave-formats"));
+                ConfigUpdater.update(plugin, file, new File(plugin.getDataFolder(), file), Arrays.asList("groups",
+                        "groups-share", "chat-format", "chat-cooldown", "chat-blocked", "economy-currency-names",
+                        "economy-starting-amount", "chat-join-formats", "chat-leave-formats"));
             } catch (IOException ex) {
-                ex.printStackTrace();
-                WorldServer.logging().error("Error while trying to update config");
+                WorldServer.logging().stack("Error while trying to update config", ex);
             }
-            FileConfiguration configuration = this.getFile(folder + "/" + file);
-            files.put(file.replaceAll("(.+/|.yml)", ""), configuration);
         }
+
+        reload();
     }
 
     public void reload() {
-        ConfigValue.invalidateCaches();
-
-        files.put("config", YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/config.yml")));
+        files.put("config", YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml")));
 
         ConfigValue.init();
     }

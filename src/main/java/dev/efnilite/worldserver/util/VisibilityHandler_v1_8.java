@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 // from 1.8 to 1.12
 @SuppressWarnings("deprecation")
-public class VisibilityHandler_v1_8 extends VisibilityHandler {
+public class VisibilityHandler_v1_8 implements VisibilityHandler {
 
     @Override
     public void show(Player player, Player show) {
