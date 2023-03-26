@@ -9,7 +9,7 @@ import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,36 +32,36 @@ public class WorldServerMenu {
         }
 
         if (player.hasPermission("ws.option.global-chat")) {
-            menu.item(10, new SliderItem().initial(ConfigValue.GLOBAL_CHAT_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Global chat enabled").lore("<gray>People can talk in global chat."), (event) -> {
-                ConfigValue.GLOBAL_CHAT_ENABLED = true;
+            menu.item(10, new SliderItem().initial(Option.GLOBAL_CHAT_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Global chat enabled").lore("<gray>People can talk in global chat."), (event) -> {
+                Option.GLOBAL_CHAT_ENABLED = true;
                 WorldServer.getConfiguration().getFile("config").set("global-chat-enabled", true);
                 return true;
             }).add(1, new Item(get("RED_STAINED_GLASS_PANE", "REDSTONE_BLOCK"), "<red><bold>Global chat disabled").lore("<gray>Global chat has been disabled."), (event) -> {
-                ConfigValue.GLOBAL_CHAT_ENABLED = false;
+                Option.GLOBAL_CHAT_ENABLED = false;
                 WorldServer.getConfiguration().getFile("config").set("global-chat-enabled", false);
                 return true;
             }));
         }
 
         if (player.hasPermission("ws.option.chat")) {
-            menu.item(11, new SliderItem().initial(ConfigValue.CHAT_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Chat handling enabled").lore("<gray>Chat is separated between worlds."), (event) -> {
-                ConfigValue.CHAT_ENABLED = true;
+            menu.item(11, new SliderItem().initial(Option.CHAT_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Chat handling enabled").lore("<gray>Chat is separated between worlds."), (event) -> {
+                Option.CHAT_ENABLED = true;
                 WorldServer.getConfiguration().getFile("config").set("chat-enabled", true);
                 return true;
             }).add(1, new Item(get("RED_STAINED_GLASS_PANE", "REDSTONE_BLOCK"), "<red><bold>Chat handling disabled").lore("<gray>Chat is the same across worlds."), (event) -> {
-                ConfigValue.CHAT_ENABLED = false;
+                Option.CHAT_ENABLED = false;
                 WorldServer.getConfiguration().getFile("config").set("chat-enabled", false);
                 return true;
             }));
         }
 
         if (player.hasPermission("ws.option.tab")) {
-            menu.item(12, new SliderItem().initial(ConfigValue.TAB_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Tab handling enabled").lore("<gray>Tab is separated between worlds."), (event) -> {
-                ConfigValue.TAB_ENABLED = true;
+            menu.item(12, new SliderItem().initial(Option.TAB_ENABLED ? 0 : 1).add(0, new Item(get("LIME_STAINED_GLASS_PANE", "EMERALD_BLOCK"), "<#0DCB07><bold>Tab handling enabled").lore("<gray>Tab is separated between worlds."), (event) -> {
+                Option.TAB_ENABLED = true;
                 WorldServer.getConfiguration().getFile("config").set("tab-enabled", true);
                 return true;
             }).add(1, new Item(get("RED_STAINED_GLASS_PANE", "REDSTONE_BLOCK"), "<red><bold>Tab handling disabled").lore("<gray>Chat is the same across worlds."), (event) -> {
-                ConfigValue.TAB_ENABLED = false;
+                Option.TAB_ENABLED = false;
                 WorldServer.getConfiguration().getFile("config").set("tab-enabled", false);
                 return true;
             }));

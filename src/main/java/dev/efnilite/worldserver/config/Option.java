@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigValue {
+public class Option {
 
     public static boolean AUTO_UPDATER;
 

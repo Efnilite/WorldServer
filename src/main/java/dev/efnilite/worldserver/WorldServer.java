@@ -8,7 +8,7 @@ import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
@@ -94,6 +94,7 @@ public class WorldServer extends ViPlugin {
         // ----- Configurations -----
 
         configuration = new Configuration(this);
+        Option.init();
 
         logging.info("Registered under version " + Version.getPrettyVersion());
 
@@ -120,15 +121,15 @@ public class WorldServer extends ViPlugin {
         }
 
         registerCommand("worldserver", new WorldServerCommand());
-        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
+        if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             Util.registerToMap("bal", new BalCommand());
             Util.registerToMap("balance", new BalCommand());
         }
-        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_PAY_COMMAND) {
+        if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
             Util.registerToMap("pay", new PayCommand());
             Util.registerToMap("transfer", new PayCommand());
         }
-        if (ConfigValue.ECONOMY_ENABLED && ConfigValue.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
+        if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
             Util.registerToMap("baltop", new BaltopCommand());
             Util.registerToMap("balancetop", new BaltopCommand());
         }
@@ -138,9 +139,9 @@ public class WorldServer extends ViPlugin {
         registerListener(new WorldEconomyListener());
 
         Metrics metrics = new Metrics(this, 13856);
-        metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
-        metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(ConfigValue.CHAT_ENABLED)));
-        metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(ConfigValue.ECONOMY_ENABLED)));
+        metrics.addCustomChart(new SimplePie("chat_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
+        metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
+        metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(Option.ECONOMY_ENABLED)));
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             WorldPlayer.register(player);

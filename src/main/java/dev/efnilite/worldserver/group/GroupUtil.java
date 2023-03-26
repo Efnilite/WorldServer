@@ -1,6 +1,6 @@
 package dev.efnilite.worldserver.group;
 
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class GroupUtil {
      */
     public static List<World> getWorlds(String groupName) {
         List<World> worlds = new ArrayList<>();
-        List<String> worldNames = ConfigValue.GROUPS.get(groupName);
+        List<String> worldNames = Option.GROUPS.get(groupName);
 
         if (worldNames != null) {
             for (String name : worldNames) {
@@ -56,8 +56,8 @@ public class GroupUtil {
     public static String getGroupFromWorld(World world) {
         String name = world.getName();
 
-        for (String group : ConfigValue.GROUPS.keySet()) {
-            List<String> names = ConfigValue.GROUPS.get(group);
+        for (String group : Option.GROUPS.keySet()) {
+            List<String> names = Option.GROUPS.get(group);
 
             if (names == null) {
                 return name;

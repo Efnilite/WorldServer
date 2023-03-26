@@ -2,7 +2,7 @@ package dev.efnilite.worldserver.group;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -24,7 +24,7 @@ public class WorldTabListener implements EventWatcher {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void join(PlayerJoinEvent event) {
-        if (!ConfigValue.TAB_ENABLED) {
+        if (!Option.TAB_ENABLED) {
             return;
         }
 
@@ -45,7 +45,7 @@ public class WorldTabListener implements EventWatcher {
 
     @EventHandler
     public void quit(PlayerQuitEvent event) {
-        if (!ConfigValue.TAB_ENABLED) {
+        if (!Option.TAB_ENABLED) {
             return;
         }
 
@@ -59,7 +59,7 @@ public class WorldTabListener implements EventWatcher {
 
     @EventHandler
     public void switchWorld(PlayerChangedWorldEvent event) {
-        if (!ConfigValue.TAB_ENABLED) {
+        if (!Option.TAB_ENABLED) {
             return;
         }
 

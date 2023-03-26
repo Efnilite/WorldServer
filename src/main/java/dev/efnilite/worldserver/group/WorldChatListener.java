@@ -5,7 +5,7 @@ import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
@@ -26,7 +26,7 @@ public class WorldChatListener implements EventWatcher {
 
     @EventHandler
     public void switchWorld(PlayerChangedWorldEvent event) {
-        if (!ConfigValue.CHAT_ENABLED) {
+        if (!Option.CHAT_ENABLED) {
             return;
         }
         Player player = event.getPlayer();
@@ -36,8 +36,8 @@ public class WorldChatListener implements EventWatcher {
         String fromGroup = GroupUtil.getGroupFromWorld(from);
         String toGroup = GroupUtil.getGroupFromWorld(to);
 
-        String fromMessage = getMessage(from, ConfigValue.CHAT_LEAVE_FORMATS);
-        String toMessage = getMessage(to, ConfigValue.CHAT_JOIN_FORMATS);
+        String fromMessage = getMessage(from, Option.CHAT_LEAVE_FORMATS);
+        String toMessage = getMessage(to, Option.CHAT_JOIN_FORMATS);
 
         if (fromGroup.equals(toGroup)) {
             return;
@@ -49,7 +49,7 @@ public class WorldChatListener implements EventWatcher {
             }
         }
 
-        if (ConfigValue.CLEAR_CHAT_ON_SWITCH) {
+        if (Option.CLEAR_CHAT_ON_SWITCH) {
             for (int i = 0; i < 100; i++) {
                 Util.send(player, "");
             }
@@ -64,7 +64,7 @@ public class WorldChatListener implements EventWatcher {
 
     @EventHandler
     public void join(PlayerJoinEvent event) {
-        if (!ConfigValue.CHAT_ENABLED) {
+        if (!Option.CHAT_ENABLED) {
             return;
         }
         event.setJoinMessage(null);
@@ -77,18 +77,18 @@ public class WorldChatListener implements EventWatcher {
                 return;
             }
 
-            performNetworkMessage(player, ConfigValue.CHAT_JOIN_FORMATS);
+            performNetworkMessage(player, Option.CHAT_JOIN_FORMATS);
         }).run();
     }
 
     @EventHandler
     public void leave(PlayerQuitEvent event) {
-        if (!ConfigValue.CHAT_ENABLED) {
+        if (!Option.CHAT_ENABLED) {
             return;
         }
         event.setQuitMessage(null);
 
-        performNetworkMessage(event.getPlayer(), ConfigValue.CHAT_LEAVE_FORMATS);
+        performNetworkMessage(event.getPlayer(), Option.CHAT_LEAVE_FORMATS);
     }
 
     private void performNetworkMessage(Player player, Map<String, String> formats) {
@@ -114,18 +114,18 @@ public class WorldChatListener implements EventWatcher {
 
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
-        if (!ConfigValue.CHAT_ENABLED) {
+        if (!Option.CHAT_ENABLED) {
             return;
         }
 
         Player player = event.getPlayer();
 
         String message = event.getMessage();
-        String prefix = ConfigValue.GLOBAL_CHAT_PREFIX;
+        String prefix = Option.GLOBAL_CHAT_PREFIX;
 
         // Global chat handling
-        if (ConfigValue.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
-            event.setFormat(getFormattedMessage(player, ConfigValue.GLOBAL_CHAT_FORMAT));
+        if (Option.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
+            event.setFormat(getFormattedMessage(player, Option.GLOBAL_CHAT_FORMAT));
             event.setMessage(message.replaceFirst(prefix, ""));
 
             cooldown(event, "global");
@@ -141,7 +141,7 @@ public class WorldChatListener implements EventWatcher {
         event.getRecipients().clear();
         event.getRecipients().addAll(sendTo);
 
-        String spy = ConfigValue.SPY_FORMAT
+        String spy = Option.SPY_FORMAT
                 .replace("%world%", world.getName())
                 .replace("%player%", player.getName())
                 .replace("%message%", event.getMessage());
@@ -153,12 +153,12 @@ public class WorldChatListener implements EventWatcher {
         }
 
         // Update possible formatting for groups and single worlds
-        String format = ConfigValue.CHAT_FORMAT.get(world.getName());
+        String format = Option.CHAT_FORMAT.get(world.getName());
         String group = GroupUtil.getGroupFromWorld(world);
 
         // prioritize worlds over groups
         if (format == null) {
-            format = ConfigValue.CHAT_FORMAT.get(group);
+            format = Option.CHAT_FORMAT.get(group);
         }
 
         if (format != null) {
@@ -184,14 +184,14 @@ public class WorldChatListener implements EventWatcher {
         }
         UUID uuid = player.getUniqueId();
 
-        double cooldown = ConfigValue.CHAT_COOLDOWN.getOrDefault(group, 0D);
+        double cooldown = Option.CHAT_COOLDOWN.getOrDefault(group, 0D);
         Map<UUID, Long> map = lastExecuted.getOrDefault(group, new HashMap<>());
 
         long remaining = System.currentTimeMillis() - map.getOrDefault(uuid, 0L);
         if (remaining < cooldown * 1000) { // if cooldown is longer than last time, cancel message
             event.setCancelled(true);
 
-            Util.send(player, ConfigValue.CHAT_COOLDOWN_FORMAT.replace("%remaining%",
+            Util.send(player, Option.CHAT_COOLDOWN_FORMAT.replace("%remaining%",
                     String.format("%.2f", cooldown - (remaining / 1000.0)))
                     .replace("%time%", String.format("%.2f", cooldown)));
         } else {
@@ -203,10 +203,10 @@ public class WorldChatListener implements EventWatcher {
     // check blocked messages
     private void blocked(AsyncPlayerChatEvent event) {
         String message = event.getMessage();
-        for (String blocked : ConfigValue.CHAT_BLOCKED) {
+        for (String blocked : Option.CHAT_BLOCKED) {
             if (message.toLowerCase().contains(blocked.toLowerCase())) {
                 event.setCancelled(true);
-                Util.send(event.getPlayer(), ConfigValue.CHAT_BLOCKED_FORMAT);
+                Util.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
                 return;
             }
         }

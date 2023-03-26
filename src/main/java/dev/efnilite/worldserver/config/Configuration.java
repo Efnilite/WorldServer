@@ -51,13 +51,13 @@ public class Configuration {
             }
         }
 
-        reload();
+        files.put("config", YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml")));
     }
 
     public void reload() {
         files.put("config", YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml")));
 
-        ConfigValue.init();
+        Option.init();
     }
 
     /**

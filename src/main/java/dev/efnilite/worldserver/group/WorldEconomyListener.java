@@ -2,7 +2,7 @@ package dev.efnilite.worldserver.group;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldPlayer;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -12,23 +12,23 @@ public class WorldEconomyListener implements EventWatcher {
 
     @EventHandler
     public void switchWorld(PlayerChangedWorldEvent event) {
-        if (!ConfigValue.ECONOMY_ENABLED || !ConfigValue.ECONOMY_SWITCH_NOTIFICATION) {
+        if (!Option.ECONOMY_ENABLED || !Option.ECONOMY_SWITCH_NOTIFICATION) {
             return;
         }
 
         WorldPlayer player = WorldPlayer.getPlayer(event.getPlayer());
 
-        player.send(ConfigValue.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
+        player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void join(PlayerJoinEvent event) {
-        if (!ConfigValue.ECONOMY_ENABLED || !ConfigValue.ECONOMY_SWITCH_NOTIFICATION) {
+        if (!Option.ECONOMY_ENABLED || !Option.ECONOMY_SWITCH_NOTIFICATION) {
             return;
         }
 
         WorldPlayer player = WorldPlayer.getPlayer(event.getPlayer());
 
-        player.send(ConfigValue.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
+        player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", Double.toString(player.getBalance())));
     }
 }

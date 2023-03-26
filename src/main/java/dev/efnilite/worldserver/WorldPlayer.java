@@ -2,11 +2,10 @@ package dev.efnilite.worldserver;
 
 import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.util.Task;
-import dev.efnilite.worldserver.config.ConfigValue;
+import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
 import dev.efnilite.worldserver.group.GroupUtil;
 import dev.efnilite.worldserver.util.Util;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -169,7 +168,7 @@ public class WorldPlayer {
     }
 
     public void setBalance(double amount, String group) {
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -195,19 +194,19 @@ public class WorldPlayer {
      * @return the balance of a player from a specific group.
      */
     public double getBalance(String group) {
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         return balances.get(group);
     }
 
     public void withdraw(double amount) {
         String group = getWorldGroup();
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -215,12 +214,12 @@ public class WorldPlayer {
     }
 
     public void withdraw(String group, double amount) {
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) - amount;
         BalCache.save(player.getUniqueId(), group, updated);
@@ -230,7 +229,7 @@ public class WorldPlayer {
 
     public void deposit(double amount) {
         String group = getWorldGroup();
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
@@ -238,12 +237,12 @@ public class WorldPlayer {
     }
 
     public void deposit(String group, double amount) {
-        if (ConfigValue.ECONOMY_GLOBAL_ENABLED) {
+        if (Option.ECONOMY_GLOBAL_ENABLED) {
             group = "global";
         }
 
         if (!balances.containsKey(group)) {
-            balances.put(group, ConfigValue.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
+            balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) + amount;
         BalCache.save(player.getUniqueId(), group, updated);
