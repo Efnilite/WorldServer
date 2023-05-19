@@ -4,10 +4,9 @@ import com.google.gson.annotations.Expose;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
-import dev.efnilite.worldserver.group.GroupUtil;
+import dev.efnilite.worldserver.util.GroupUtil;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,34 +89,25 @@ public class WorldPlayer {
      * @param async True if saving should be async
      */
     public void save(boolean async) {
-        BukkitRunnable runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    File file = new File(WorldServer.getPlugin().getDataFolder(), "players/" + player.getUniqueId() + ".json");
-                    if (!file.exists()) {
-                        File folder = new File(WorldServer.getPlugin().getDataFolder(), "players");
-                        if (!folder.exists()) {
-                            folder.mkdirs();
-                        }
-                        file.createNewFile();
-                    }
-
-                    FileWriter writer = new FileWriter(file);
-                    WorldServer.getGson().toJson(WorldPlayer.this, writer);
-
-                    writer.flush();
-                    writer.close();
-                } catch (Throwable throwable) {
-                    WorldServer.logging().stack("Error while saving file of player", "Please report this error to the developer", throwable);
-                }
-            }
-        };
-
         if (async) {
-            Task.create(WorldServer.getPlugin()).async().execute(runnable).run();
+            Task.create(WorldServer.getPlugin()).async().execute(this::_save).run();
         } else {
-            runnable.run();
+            _save();
+        }
+    }
+
+    private void _save() {
+        File file = WorldServer.getInFolder("players/" + player.getUniqueId() + ".json");
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+        }
+
+        try (FileWriter writer = new FileWriter(file)) {
+            WorldServer.getGson().toJson(WorldPlayer.this, writer);
+
+            writer.flush();
+        } catch (Throwable throwable) {
+            WorldServer.logging().stack("Error while saving file of player", "Please report this error to the developer", throwable);
         }
     }
 
@@ -129,14 +119,8 @@ public class WorldPlayer {
      */
     @Nullable
     public static WorldPlayer read(Player player) {
-        try {
-            File file = new File(WorldServer.getPlugin().getDataFolder(), "players/" + player.getUniqueId() + ".json");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileReader reader = new FileReader(file);
+        File file = WorldServer.getInFolder("players/" + player.getUniqueId() + ".json");
+        try (FileReader reader = new FileReader(file)) {
             WorldPlayer container = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
             WorldPlayer newWp = new WorldPlayer(player);
 
@@ -153,7 +137,6 @@ public class WorldPlayer {
             newWp.spyMode = container.spyMode;
             newWp.balances = container.balances != null ? container.balances : new HashMap<>();
 
-            reader.close();
             return newWp;
         } catch (Throwable throwable) {
             WorldServer.logging().stack("Error while reading file of player", "Please report this error to the developer", throwable);
@@ -161,10 +144,8 @@ public class WorldPlayer {
         }
     }
 
-    public void send(String... message) {
-        for (String s : message) {
-            Util.send(player, s);
-        }
+    public void send(String message) {
+        Util.send(player, message);
     }
 
     public void setBalance(double amount, String group) {

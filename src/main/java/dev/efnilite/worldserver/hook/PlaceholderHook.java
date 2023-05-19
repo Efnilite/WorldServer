@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 
 public class PlaceholderHook {
 
-    private static boolean papi;
+    private static boolean hasPapi;
 
     /**
      * Registers this PAPI hook
      */
     public static void register() {
-        papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+        hasPapi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 
     /**
@@ -23,6 +23,6 @@ public class PlaceholderHook {
      * @return the string if PAPI is not found. the translated string if PAPI is found.
      */
     public static String translate(Player player, String string) {
-        return papi ? PlaceholderAPI.setPlaceholders(player, string) : string;
+        return hasPapi ? PlaceholderAPI.setPlaceholders(player, string) : string;
     }
 }

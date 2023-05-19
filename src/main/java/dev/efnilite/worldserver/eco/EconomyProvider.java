@@ -2,18 +2,29 @@ package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.group.GroupUtil;
-import dev.efnilite.worldserver.util.Util;
+import dev.efnilite.worldserver.util.GroupUtil;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class EconomyProvider extends AbstractEconomy {
+
+    public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getInstance(Locale.US);
+
+    static {
+        CURRENCY_FORMAT.setRoundingMode(RoundingMode.FLOOR);
+        CURRENCY_FORMAT.setGroupingUsed(true);
+        CURRENCY_FORMAT.setMinimumFractionDigits(2);
+        CURRENCY_FORMAT.setMaximumFractionDigits(2);
+    }
 
     @Override
     public boolean isEnabled() {
@@ -37,7 +48,7 @@ public class EconomyProvider extends AbstractEconomy {
 
     @Override
     public String format(double amount) {
-        return Option.ECONOMY_CURRENCY_SYMBOL + Util.CURRENCY_FORMAT.format(amount);
+        return Option.ECONOMY_CURRENCY_SYMBOL + CURRENCY_FORMAT.format(amount);
     }
 
     @Override

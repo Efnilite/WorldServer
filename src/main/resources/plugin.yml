@@ -1,10 +1,11 @@
 name: WorldServer
 author: Efnilite
 main: dev.efnilite.worldserver.WorldServer
-version: 1.8.1
+version: 2.0.0
 api-version: 1.16
 description: Separate chat and tab list in the worlds in your server.
-softdepend: [vilib, Vault, PlaceholderAPI]
+depend: [vilib]
+softdepend: [Vault, PlaceholderAPI]
 commands:
   worldserver:
     aliases: [ws]

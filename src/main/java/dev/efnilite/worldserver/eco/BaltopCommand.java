@@ -7,20 +7,13 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class BaltopCommand extends ViCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player && sender.hasPermission("ws.eco.baltop") && Option.ECONOMY_ENABLED) {
-
-            StringJoiner joiner = new StringJoiner(" ");
-            for (String arg : args) {
-                joiner.add(arg);
-            }
-
-            ((Player) sender).performCommand("ws baltop " + joiner);
+            ((Player) sender).performCommand(String.format("ws baltop %s", String.join(" ", args)));
         }
         return true;
     }

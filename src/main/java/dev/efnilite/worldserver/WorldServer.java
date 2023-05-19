@@ -8,23 +8,18 @@ import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
+import dev.efnilite.worldserver.config.Config;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.config.Configuration;
 import dev.efnilite.worldserver.eco.*;
+import dev.efnilite.worldserver.chat.WorldChatListener;
+import dev.efnilite.worldserver.eco.WorldEconomyListener;
+import dev.efnilite.worldserver.tab.WorldTabListener;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
-import dev.efnilite.worldserver.group.GeneralHandler;
-import dev.efnilite.worldserver.group.WorldChatListener;
-import dev.efnilite.worldserver.group.WorldEconomyListener;
-import dev.efnilite.worldserver.group.WorldTabListener;
-import dev.efnilite.worldserver.util.Util;
-import dev.efnilite.worldserver.util.VisibilityHandler;
-import dev.efnilite.worldserver.util.VisibilityHandler_v1_13;
-import dev.efnilite.worldserver.util.VisibilityHandler_v1_8;
+import dev.efnilite.worldserver.util.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.Nullable;
@@ -38,8 +33,6 @@ public class WorldServer extends ViPlugin {
     public static final String REQUIRED_VILIB_VERSION = "v1.1.0";
 
     private static WorldServer instance;
-    private static Configuration configuration;
-    private static VisibilityHandler visibilityHandler;
 
     @Override
     public void onLoad() {
@@ -93,47 +86,24 @@ public class WorldServer extends ViPlugin {
 
         // ----- Configurations -----
 
-        configuration = new Configuration(this);
-        Option.init();
+        Config.reload();
 
         logging.info("Registered under version " + Version.getPrettyVersion());
 
-        switch (version) {
-            case V1_19:
-            case V1_18:
-            case V1_17:
-            case V1_16:
-            case V1_15:
-            case V1_14:
-            case V1_13:
-                visibilityHandler = new VisibilityHandler_v1_13();
-                break;
-            case V1_12:
-            case V1_11:
-            case V1_10:
-            case V1_9:
-            case V1_8:
-                visibilityHandler = new VisibilityHandler_v1_8();
-                break;
-            default:
-                logging.error("Unsupported version! Please upgrade your server :(");
-                Bukkit.getPluginManager().disablePlugin(this);
-        }
-
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            Util.registerToMap("bal", new BalCommand());
-            Util.registerToMap("balance", new BalCommand());
+            Commands.registerToMap("bal", new BalCommand());
+            Commands.registerToMap("balance", new BalCommand());
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
-            Util.registerToMap("pay", new PayCommand());
-            Util.registerToMap("transfer", new PayCommand());
+            Commands.registerToMap("pay", new PayCommand());
+            Commands.registerToMap("transfer", new PayCommand());
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
-            Util.registerToMap("baltop", new BaltopCommand());
-            Util.registerToMap("balancetop", new BaltopCommand());
+            Commands.registerToMap("baltop", new BaltopCommand());
+            Commands.registerToMap("balancetop", new BaltopCommand());
         }
-        registerListener(new GeneralHandler());
+        registerListener(new GeneralListener());
         registerListener(new WorldChatListener());
         registerListener(new WorldTabListener());
         registerListener(new WorldEconomyListener());
@@ -143,32 +113,24 @@ public class WorldServer extends ViPlugin {
         metrics.addCustomChart(new SimplePie("tab_enabled", () -> Boolean.toString(Option.CHAT_ENABLED)));
         metrics.addCustomChart(new SimplePie("eco_enabled", () -> Boolean.toString(Option.ECONOMY_ENABLED)));
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            WorldPlayer.register(player);
-        }
+        Bukkit.getOnlinePlayers().forEach(WorldPlayer::register);
 
-        Task.create(this) // save data every 5 minutes
-                .delay(5 * 60 * 20).repeat(5 * 60 * 20).execute(() -> {
-                    for (WorldPlayer player : WorldPlayer.PLAYERS.values()) {
-                        player.save(true);
-                    }
-                }).run();
+        Task.create(this).delay(5 * 60 * 20).repeat(5 * 60 * 20).execute(() -> {
+            WorldPlayer.PLAYERS.values().forEach(player -> player.save(true));
+        }).run(); // save data every 5 minutes
 
-        Task.create(this) // read existing balance caches
-                .async().execute(BalCache::read).run();
+        Task.create(this).async().execute(BalCache::read).run(); // read existing balance caches
 
         // Vault setups
         VaultHook.register();
         PlaceholderHook.register();
 
-        logging.info("Loaded WorldServer v" + getDescription().getVersion() + " in " + Time.timerEnd("ws enable") + "ms!");
+        logging.info(String.format("Loaded WorldServer v%s in %dms!", getDescription().getVersion(), Time.timerEnd("ws enable")));
     }
 
     @Override
     public void disable() {
-        for (WorldPlayer wp : WorldPlayer.PLAYERS.values()) {
-            WorldPlayer.unregister(wp.player, false);
-        }
+        WorldPlayer.PLAYERS.values().forEach(wp -> WorldPlayer.unregister(wp.player, false));
     }
 
     @Override
@@ -186,20 +148,20 @@ public class WorldServer extends ViPlugin {
     }
 
     /**
+     * @param child The file name.
+     * @return A file from within the plugin folder.
+     */
+    public static File getInFolder(String child) {
+        return new File(getPlugin().getDataFolder(), child);
+    }
+
+    /**
      * Returns the {@link Logging} belonging to this plugin.
      *
      * @return this plugin's {@link Logging} instance.
      */
     public static Logging logging() {
         return getPlugin().logging;
-    }
-
-    public static VisibilityHandler getVisibilityHandler() {
-        return visibilityHandler;
-    }
-
-    public static Configuration getConfiguration() {
-        return configuration;
     }
 
     public static WorldServer getPlugin() {

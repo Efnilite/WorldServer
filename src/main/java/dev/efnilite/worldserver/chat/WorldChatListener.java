@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.group;
+package dev.efnilite.worldserver.chat;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.vilib.util.Strings;
@@ -6,12 +6,15 @@ import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.util.GroupUtil;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.Util;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,12 +22,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 public class WorldChatListener implements EventWatcher {
 
     protected final Map<String, Map<UUID, Long>> lastExecuted = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void switchWorld(PlayerChangedWorldEvent event) {
         if (!Option.CHAT_ENABLED) {
             return;
@@ -33,36 +39,30 @@ public class WorldChatListener implements EventWatcher {
         World from = event.getFrom();
         World to = player.getWorld();
 
-        String fromGroup = GroupUtil.getGroupFromWorld(from);
-        String toGroup = GroupUtil.getGroupFromWorld(to);
+        if (GroupUtil.getGroupFromWorld(from).equals(GroupUtil.getGroupFromWorld(to))) {
+            return;
+        }
 
         String fromMessage = getMessage(from, Option.CHAT_LEAVE_FORMATS);
         String toMessage = getMessage(to, Option.CHAT_JOIN_FORMATS);
 
-        if (fromGroup.equals(toGroup)) {
-            return;
-        }
-
         if (fromMessage != null) {
-            for (Player pl : GroupUtil.getPlayersInWorldGroup(from)) { // from send leave
-                pl.sendMessage(getColouredMessage(player, fromMessage).replace("%player%", player.getName()));
-            }
+            // from send leave
+            GroupUtil.getPlayersInWorldGroup(from)
+                    .forEach(pl -> pl.sendMessage(getColouredMessage(player, fromMessage).replace("%player%", player.getName())));
         }
 
         if (Option.CLEAR_CHAT_ON_SWITCH) {
-            for (int i = 0; i < 100; i++) {
-                Util.send(player, "");
-            }
+            IntStream.range(0, 100).forEach(i -> Util.send(player, ""));
         }
 
         if (toMessage != null) {
-            for (Player pl : GroupUtil.getPlayersInWorldGroup(to)) {
-                pl.sendMessage(getColouredMessage(player, toMessage).replace("%player%", player.getName()));
-            }
+            GroupUtil.getPlayersInWorldGroup(to)
+                    .forEach(p -> p.sendMessage(getColouredMessage(player, toMessage).replace("%player%", player.getName())));
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void join(PlayerJoinEvent event) {
         if (!Option.CHAT_ENABLED) {
             return;
@@ -81,7 +81,7 @@ public class WorldChatListener implements EventWatcher {
         }).run();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void leave(PlayerQuitEvent event) {
         if (!Option.CHAT_ENABLED) {
             return;
@@ -99,20 +99,18 @@ public class WorldChatListener implements EventWatcher {
             return;
         }
 
-        for (Player pl : GroupUtil.getPlayersInWorldGroup(world)) {
-            pl.sendMessage(getColouredMessage(player, message).replace("%player%", player.getName()));
-        }
+        GroupUtil.getPlayersInWorldGroup(world)
+                .forEach(p -> p.sendMessage(getColouredMessage(player, message).replace("%player%", player.getName())));
     }
 
     @Nullable
     private String getMessage(World world, Map<String, String> formats) {
-        String group = GroupUtil.getGroupFromWorld(world);
-        String message = formats.get(group);
+        String message = formats.get(GroupUtil.getGroupFromWorld(world));
 
         return message == null ? formats.get(world.getName()) : message;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void chat(AsyncPlayerChatEvent event) {
         if (!Option.CHAT_ENABLED) {
             return;
@@ -146,11 +144,9 @@ public class WorldChatListener implements EventWatcher {
                 .replace("%player%", player.getName())
                 .replace("%message%", event.getMessage());
 
-        for (WorldPlayer wp : WorldPlayer.PLAYERS.values()) {
-            if (wp.spyMode && !sendTo.contains(wp.player)) {
-                wp.send(spy);
-            }
-        }
+        WorldPlayer.PLAYERS.values().stream()
+                .filter(wp -> wp.spyMode && !sendTo.contains(wp.player))
+                .forEach(wp -> wp.send(spy));
 
         // Update possible formatting for groups and single worlds
         String format = Option.CHAT_FORMAT.get(world.getName());
@@ -213,9 +209,22 @@ public class WorldChatListener implements EventWatcher {
     }
 
     private String getColouredMessage(Player player, String message) {
-        return Util.colorLegacy(Strings.colour(PlaceholderHook.translate(player, message
+        return colorLegacy(Strings.colour(PlaceholderHook.translate(player, message
                 .replace("%prefix%", VaultHook.getPrefix(player))
                 .replace("%suffix%", VaultHook.getSuffix(player)))));
+    }
+
+    private final Pattern HEX_PATTERN = Pattern.compile("&(#\\w{6})");
+
+    private String colorLegacy(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(ChatColor.translateAlternateColorCodes('&', message));
+        StringBuffer buffer = new StringBuffer();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, ChatColor.of(matcher.group(1)).toString());
+        }
+
+        return matcher.appendTail(buffer).toString();
     }
 
     private String getFormattedMessage(Player player, String message) {

@@ -1,16 +1,14 @@
-package dev.efnilite.worldserver.group;
+package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.vilib.util.elevator.GitElevator;
-import dev.efnilite.worldserver.WorldPlayer;
-import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class GeneralHandler implements EventWatcher {
+public class GeneralListener implements EventWatcher {
 
     @EventHandler
     public void join(PlayerJoinEvent event) {

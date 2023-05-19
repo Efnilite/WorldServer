@@ -1,9 +1,5 @@
 package dev.efnilite.worldserver.config;
 
-import dev.efnilite.worldserver.WorldServer;
-import dev.efnilite.worldserver.util.Util;
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,74 +47,62 @@ public class Option {
     public static boolean ECONOMY_OVERRIDE_BALTOP_COMMAND;
 
     public static void init() {
-        FileConfiguration config = WorldServer.getConfiguration().getFile("config");
-
-        AUTO_UPDATER = config.getBoolean("auto-updater");
+        AUTO_UPDATER = Config.CONFIG.getBoolean("auto-updater");
 
         GROUPS = new HashMap<>();
-        List<String> node = Util.getNode(config, "groups");
-        if (node != null) {
-            node.forEach(group -> GROUPS.put(group, config.getStringList("groups." + group)));
-        }
+        Config.CONFIG.getChildren("groups", false)
+                .forEach(group -> GROUPS.put(group, Config.CONFIG.getStringList("groups." + group)));
 
-        TAB_ENABLED = config.getBoolean("tab-enabled");
+        TAB_ENABLED = Config.CONFIG.getBoolean("tab-enabled");
 
-        CHAT_ENABLED = config.getBoolean("chat-enabled");
-        GLOBAL_CHAT_ENABLED = config.getBoolean("global-chat-enabled");
-        GLOBAL_CHAT_PREFIX = config.getString("global-chat-prefix");
-        GLOBAL_CHAT_FORMAT = config.getString("global-chat-format");
-        SPY_FORMAT = config.getString("spy-format");
+        CHAT_ENABLED = Config.CONFIG.getBoolean("chat-enabled");
+        GLOBAL_CHAT_ENABLED = Config.CONFIG.getBoolean("global-chat-enabled");
+        GLOBAL_CHAT_PREFIX = Config.CONFIG.getString("global-chat-prefix");
+        GLOBAL_CHAT_FORMAT = Config.CONFIG.getString("global-chat-format");
+        SPY_FORMAT = Config.CONFIG.getString("spy-format");
 
         CHAT_FORMAT = new HashMap<>();
-        node = Util.getNode(config, "chat-format");
-        if (node != null) {
-            node.forEach(world -> CHAT_FORMAT.put(world, config.getString("chat-format." + world)));
-        }
+        Config.CONFIG.getChildren("chat-format", false)
+                .forEach(world -> CHAT_FORMAT.put(world, Config.CONFIG.getString("chat-format." + world)));
 
         CHAT_COOLDOWN = new HashMap<>();
-        node = Util.getNode(config, "chat-cooldown");
-        if (node != null) {
-            node.forEach(world -> CHAT_COOLDOWN.put(world, config.getDouble("chat-cooldown." + world)));
-        }
+        Config.CONFIG.getChildren("chat-cooldown", false)
+                .forEach(world -> CHAT_COOLDOWN.put(world, Config.CONFIG.getDouble("chat-cooldown." + world)));
 
-        CHAT_COOLDOWN_FORMAT = config.getString("chat-cooldown-format");
-        CHAT_BLOCKED = config.getStringList("chat-blocked");
-        CHAT_BLOCKED_FORMAT = config.getString("chat-blocked-format");
+        CHAT_COOLDOWN_FORMAT = Config.CONFIG.getString("chat-cooldown-format");
+        CHAT_BLOCKED = Config.CONFIG.getStringList("chat-blocked");
+        CHAT_BLOCKED_FORMAT = Config.CONFIG.getString("chat-blocked-format");
 
         CHAT_JOIN_FORMATS = new HashMap<>();
-        node = Util.getNode(config, "chat-join-formats");
-        if (node != null) {
-            node.forEach(world -> CHAT_JOIN_FORMATS.put(world, config.getString("chat-join-formats." + world)));
-        }
+
+        Config.CONFIG.getChildren("chat-join-formats", false)
+                .forEach(world -> CHAT_JOIN_FORMATS.put(world, Config.CONFIG.getString("chat-join-formats." + world)));
 
         CHAT_LEAVE_FORMATS = new HashMap<>();
-        node = Util.getNode(config, "chat-leave-formats");
-        if (node != null) {
-            node.forEach(world -> CHAT_LEAVE_FORMATS.put(world, config.getString("chat-leave-formats." + world)));
-        }
+        Config.CONFIG.getChildren("chat-leave-formats", false)
+                .forEach(world -> CHAT_LEAVE_FORMATS.put(world, Config.CONFIG.getString("chat-leave-formats." + world)));
 
-        CLEAR_CHAT_ON_SWITCH = config.getBoolean("clear-chat-on-switch");
+        CLEAR_CHAT_ON_SWITCH = Config.CONFIG.getBoolean("clear-chat-on-switch");
 
-        ECONOMY_ENABLED = config.getBoolean("economy-enabled");
-        ECONOMY_GLOBAL_ENABLED = config.getBoolean("economy-global-enabled");
-        ECONOMY_SWITCH_NOTIFICATION = config.getBoolean("economy-switch-notification");
-        ECONOMY_SWITCH_FORMAT = config.getString("economy-switch-format");
-        ECONOMY_CURRENCY_SYMBOL = config.getString("economy-currency-symbol");
-        ECONOMY_CURRENCY_NAMES = config.getStringList("economy-currency-names");
+        ECONOMY_ENABLED = Config.CONFIG.getBoolean("economy-enabled");
+        ECONOMY_GLOBAL_ENABLED = Config.CONFIG.getBoolean("economy-global-enabled");
+        ECONOMY_SWITCH_NOTIFICATION = Config.CONFIG.getBoolean("economy-switch-notification");
+        ECONOMY_SWITCH_FORMAT = Config.CONFIG.getString("economy-switch-format");
+        ECONOMY_CURRENCY_SYMBOL = Config.CONFIG.getString("economy-currency-symbol");
+        ECONOMY_CURRENCY_NAMES = Config.CONFIG.getStringList("economy-currency-names");
+
         ECONOMY_STARTING_AMOUNT = new HashMap<>();
-        node = Util.getNode(config, "economy-starting-amount");
-        if (node != null) {
-            node.forEach(world -> ECONOMY_STARTING_AMOUNT.put(world, config.getDouble("economy-starting-amount." + world)));
-        }
+        Config.CONFIG.getChildren("economy-starting-amount", false)
+                .forEach(world -> ECONOMY_STARTING_AMOUNT.put(world, Config.CONFIG.getDouble("economy-starting-amount." + world)));
 
-        ECONOMY_OVERRIDE_BALANCE_COMMAND = config.getBoolean("economy-override-balance-command");
-        ECONOMY_BALANCE_FORMAT = config.getString("economy-balance-format");
-        ECONOMY_BALANCE_CHANGE = config.getBoolean("economy-balance-change");
-        ECONOMY_BALANCE_CHANGE_FORMAT = config.getString("economy-balance-change-format");
-        ECONOMY_OVERRIDE_PAY_COMMAND = config.getBoolean("economy-override-pay-command");
-        ECONOMY_PAY_NO_FUNDS_FORMAT = config.getString("economy-pay-no-funds-format");
-        ECONOMY_PAY_SEND_FORMAT = config.getString("economy-pay-send-format");
-        ECONOMY_PAY_RECEIVE_FORMAT = config.getString("economy-pay-receive-format");
-        ECONOMY_OVERRIDE_BALTOP_COMMAND = config.getBoolean("economy-override-baltop-command");
+        ECONOMY_OVERRIDE_BALANCE_COMMAND = Config.CONFIG.getBoolean("economy-override-balance-command");
+        ECONOMY_BALANCE_FORMAT = Config.CONFIG.getString("economy-balance-format");
+        ECONOMY_BALANCE_CHANGE = Config.CONFIG.getBoolean("economy-balance-change");
+        ECONOMY_BALANCE_CHANGE_FORMAT = Config.CONFIG.getString("economy-balance-change-format");
+        ECONOMY_OVERRIDE_PAY_COMMAND = Config.CONFIG.getBoolean("economy-override-pay-command");
+        ECONOMY_PAY_NO_FUNDS_FORMAT = Config.CONFIG.getString("economy-pay-no-funds-format");
+        ECONOMY_PAY_SEND_FORMAT = Config.CONFIG.getString("economy-pay-send-format");
+        ECONOMY_PAY_RECEIVE_FORMAT = Config.CONFIG.getString("economy-pay-receive-format");
+        ECONOMY_OVERRIDE_BALTOP_COMMAND = Config.CONFIG.getBoolean("economy-override-baltop-command");
     }
 }

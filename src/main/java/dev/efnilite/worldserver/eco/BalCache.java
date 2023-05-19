@@ -15,19 +15,13 @@ public class BalCache {
     public static final Map<UUID, Map<String, Double>> BALANCES = new HashMap<>();
 
     public static void save(UUID uuid, String group, double amount) {
-        Map<String, Double> balance;
-        if (BALANCES.containsKey(uuid)) {
-            balance = BALANCES.get(uuid);
-        } else {
-            balance = new HashMap<>();
-        }
-
+        Map<String, Double> balance = BALANCES.getOrDefault(uuid, new HashMap<>());
         balance.put(group, amount);
         BALANCES.put(uuid, balance);
     }
 
     public static void read() {
-        File folder = new File(WorldServer.getPlugin().getDataFolder(), "players/");
+        File folder = WorldServer.getInFolder("players/");
 
         if (!(folder.exists())) {
             folder.mkdirs();

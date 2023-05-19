@@ -1,4 +1,4 @@
-package dev.efnilite.worldserver.group;
+package dev.efnilite.worldserver.eco;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldPlayer;

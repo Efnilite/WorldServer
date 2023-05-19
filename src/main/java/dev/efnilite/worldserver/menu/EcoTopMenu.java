@@ -91,16 +91,12 @@ public class EcoTopMenu {
         }
 
         menu.displayRows(0, 1).addToDisplay(items)
-
-                .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>" + Unicodes.DOUBLE_ARROW_RIGHT) // next page
-                        .click(event -> menu.page(1)))
-
-                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>" + Unicodes.DOUBLE_ARROW_LEFT) // previous page
-                        .click(event -> menu.page(-1)))
-
+                .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>" + Unicodes.DOUBLE_ARROW_RIGHT).click(event -> menu.page(1)))
+                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>" + Unicodes.DOUBLE_ARROW_LEFT).click(event -> menu.page(-1)))
                 .item(32, new Item(Material.ARROW, "<#F5A3A3><bold>Close").click(event -> event.getPlayer().closeInventory()))
-
-                .fillBackground(Material.GRAY_STAINED_GLASS_PANE).animation(new WaveWestAnimation()).open(player.player);
+                .fillBackground(Material.GRAY_STAINED_GLASS_PANE)
+                .animation(new WaveWestAnimation())
+                .open(player.player);
     }
 
 }

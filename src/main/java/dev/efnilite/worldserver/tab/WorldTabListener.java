@@ -1,11 +1,11 @@
-package dev.efnilite.worldserver.group;
+package dev.efnilite.worldserver.tab;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.util.GroupUtil;
 import dev.efnilite.worldserver.util.VisibilityHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,14 +13,14 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Manages tab.
  */
 public class WorldTabListener implements EventWatcher {
-
-    private final VisibilityHandler visibilityHandler = WorldServer.getVisibilityHandler();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void join(PlayerJoinEvent event) {
@@ -34,11 +34,9 @@ public class WorldTabListener implements EventWatcher {
 
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (inGroup.contains(other)) {
-                visibilityHandler.show(player, other);
-                visibilityHandler.show(other, player);
+                show(player, Collections.singleton(other));
             } else {
-                visibilityHandler.hide(player, other);
-                visibilityHandler.hide(other, player);
+                hide(player, Collections.singleton(other));
             }
         }
     }
@@ -49,12 +47,7 @@ public class WorldTabListener implements EventWatcher {
             return;
         }
 
-        Player player = event.getPlayer();
-
-        for (Player other : Bukkit.getOnlinePlayers()) {
-            visibilityHandler.show(player, other);
-            visibilityHandler.show(other, player);
-        }
+        show(event.getPlayer(), Bukkit.getOnlinePlayers());
     }
 
     @EventHandler
@@ -65,18 +58,21 @@ public class WorldTabListener implements EventWatcher {
 
         Player player = event.getPlayer();
 
-        World fromWorld = event.getFrom(); // previous world
-        World toWorld = player.getWorld(); // current world
+        hide(player, GroupUtil.getPlayersInWorldGroup(event.getFrom())); // hide from previous world
+        show(player, GroupUtil.getPlayersInWorldGroup(player.getWorld())); // show to current world
+    }
 
-        List<Player> fromPlayers = GroupUtil.getPlayersInWorldGroup(fromWorld);
-        List<Player> toPlayers = GroupUtil.getPlayersInWorldGroup(toWorld);
+    private final VisibilityHandler visibilityHandler = VisibilityHandler.getInstance();
 
-        for (Player other : fromPlayers) { // hide from previous world
+    private void hide(Player player, Collection<? extends Player> others) {
+        for (Player other : others) {
             visibilityHandler.hide(other, player);
             visibilityHandler.hide(player, other);
         }
+    }
 
-        for (Player other : toPlayers) { // show to current world
+    private void show(Player player, Collection<? extends Player> others) {
+        for (Player other : others) {
             visibilityHandler.show(other, player);
             visibilityHandler.show(player, other);
         }
