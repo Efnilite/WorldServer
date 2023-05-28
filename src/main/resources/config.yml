@@ -171,8 +171,8 @@ economy-currency-symbol: '€$'
 # The names of the currency.
 # The first entry is for singular, the second for plural.
 economy-currency-names:
-  - 'eurodollar'
-  - 'eurodollars'
+  singular: 'eurodollar'
+  plural: 'eurodollars'
 
 # -= Economy starting amount =-
 # The amount of money the player will start with in a specific world group if they haven't ever joined that group.

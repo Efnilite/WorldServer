@@ -53,12 +53,12 @@ public class EconomyProvider extends AbstractEconomy {
 
     @Override
     public String currencyNamePlural() {
-        return Option.ECONOMY_CURRENCY_NAMES.get(1);
+        return Option.ECONOMY_CURRENCY_NAMES_PLURAL;
     }
 
     @Override
     public String currencyNameSingular() {
-        return Option.ECONOMY_CURRENCY_NAMES.get(0);
+        return Option.ECONOMY_CURRENCY_NAMES_SINGULAR;
     }
 
     @Override

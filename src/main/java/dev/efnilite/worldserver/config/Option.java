@@ -34,7 +34,8 @@ public class Option {
     public static boolean ECONOMY_SWITCH_NOTIFICATION;
     public static String ECONOMY_SWITCH_FORMAT;
     public static String ECONOMY_CURRENCY_SYMBOL;
-    public static List<String> ECONOMY_CURRENCY_NAMES;
+    public static String ECONOMY_CURRENCY_NAMES_SINGULAR;
+    public static String ECONOMY_CURRENCY_NAMES_PLURAL;
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
     public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
     public static String ECONOMY_BALANCE_FORMAT;
@@ -89,7 +90,9 @@ public class Option {
         ECONOMY_SWITCH_NOTIFICATION = Config.CONFIG.getBoolean("economy-switch-notification");
         ECONOMY_SWITCH_FORMAT = Config.CONFIG.getString("economy-switch-format");
         ECONOMY_CURRENCY_SYMBOL = Config.CONFIG.getString("economy-currency-symbol");
-        ECONOMY_CURRENCY_NAMES = Config.CONFIG.getStringList("economy-currency-names");
+
+        ECONOMY_CURRENCY_NAMES_SINGULAR = Config.CONFIG.getString("economy-currency-names.singular");
+        ECONOMY_CURRENCY_NAMES_PLURAL = Config.CONFIG.getString("economy-currency-names.plural");
 
         ECONOMY_STARTING_AMOUNT = new HashMap<>();
         Config.CONFIG.getChildren("economy-starting-amount", false)
