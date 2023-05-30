@@ -20,10 +20,10 @@ import java.util.UUID;
 public class WorldPlayer {
 
     @Expose
-    public boolean spyMode;
+    public boolean spyMode = false;
 
     @Expose
-    public Map<String, Double> balances;
+    public Map<String, Double> balances = new HashMap<>();
 
     public final Player player;
 
@@ -117,30 +117,31 @@ public class WorldPlayer {
      * @param player The player
      * @return the instance of the player
      */
-    @Nullable
-    public static WorldPlayer read(Player player) {
-        File file = WorldServer.getInFolder("players/" + player.getUniqueId() + ".json");
+    public static @NotNull WorldPlayer read(Player player) {
+        File file = WorldServer.getInFolder(String.format("players/%s.json", player.getUniqueId()));
+
+        WorldPlayer wp = new WorldPlayer(player);
+
+        if (!file.exists()) {
+            wp.save(true);
+            return wp;
+        }
+
         try (FileReader reader = new FileReader(file)) {
             WorldPlayer container = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
-            WorldPlayer newWp = new WorldPlayer(player);
 
             if (container == null) {
-                WorldPlayer def = new WorldPlayer(player);
-
-                def.spyMode = false;
-                def.balances = new HashMap<>();
-
-                def.save(false);
-                return def;
+                wp.save(true);
+                return wp;
             }
 
-            newWp.spyMode = container.spyMode;
-            newWp.balances = container.balances != null ? container.balances : new HashMap<>();
+            wp.spyMode = container.spyMode;
+            wp.balances = container.balances != null ? container.balances : new HashMap<>();
 
-            return newWp;
+            return wp;
         } catch (Throwable throwable) {
             WorldServer.logging().stack("Error while reading file of player", "Please report this error to the developer", throwable);
-            return null;
+            return wp;
         }
     }
 
