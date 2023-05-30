@@ -1,7 +1,6 @@
 package dev.efnilite.worldserver.tab;
 
 import dev.efnilite.vilib.event.EventWatcher;
-import dev.efnilite.worldserver.WorldServer;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.util.GroupUtil;
 import dev.efnilite.worldserver.util.VisibilityHandler;
