@@ -2,7 +2,6 @@ package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.event.EventWatcher;
 import dev.efnilite.vilib.util.elevator.GitElevator;
-import dev.efnilite.worldserver.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,9 +16,9 @@ public class GeneralListener implements EventWatcher {
         GitElevator elevator = WorldServer.getPlugin().getElevatorInstance();
 
         if (player.isOp() && elevator != null && elevator.isOutdated()) {
-            Util.send(player, "");
-            Util.send(player, WorldServer.MESSAGE_PREFIX + "Your WorldServer version is outdated. Please update!");
-            Util.send(player, "");
+            WorldServerCommand.send(player, "");
+            WorldServerCommand.send(player, "%sYour WorldServer version is outdated. Please update!".formatted(WorldServer.MESSAGE_PREFIX));
+            WorldServerCommand.send(player, "");
         }
 
         WorldPlayer.register(player);

@@ -15,8 +15,6 @@ import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.tab.WorldTabListener;
-import dev.efnilite.worldserver.util.Commands;
-import dev.efnilite.worldserver.util.Util;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,7 +30,28 @@ public class WorldServer extends ViPlugin {
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
     public static final String REQUIRED_VILIB_VERSION = "v1.1.0";
 
-    private static WorldServer instance;
+    private static WorldServer worldServer;
+    private static Logging logging;
+
+
+    /**
+     * @param child The file name.
+     * @return A file from within the plugin folder.
+     */
+    public static File getInFolder(String child) {
+        return new File(getPlugin().getDataFolder(), child);
+    }
+
+    /**
+     * @return this plugin's {@link Logging} instance.
+     */
+    public static Logging logging() {
+        return logging;
+    }
+
+    public static WorldServer getPlugin() {
+        return worldServer;
+    }
 
     @Override
     public void onLoad() {
@@ -51,7 +70,8 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void enable() {
-        instance = this;
+        worldServer = this;
+        logging = new Logging(this);
 
         // ----- Check vilib -----
 
@@ -59,18 +79,6 @@ public class WorldServer extends ViPlugin {
         if (vilib == null || !vilib.isEnabled()) {
             getLogger().severe("##");
             getLogger().severe("## WorldServer requires vilib to work!");
-            getLogger().severe("##");
-            getLogger().severe("## Please download it here:");
-            getLogger().severe("## https://github.com/Efnilite/vilib/releases/latest");
-            getLogger().severe("##");
-
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        if (!Util.isLatest(REQUIRED_VILIB_VERSION, vilib.getDescription().getVersion())) {
-            getLogger().severe("##");
-            getLogger().severe("## WorldServer requires *a newer version* of vilib to work!");
             getLogger().severe("##");
             getLogger().severe("## Please download it here:");
             getLogger().severe("## https://github.com/Efnilite/vilib/releases/latest");
@@ -92,16 +100,13 @@ public class WorldServer extends ViPlugin {
 
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            Commands.registerToMap("bal", new BalCommand());
-            Commands.registerToMap("balance", new BalCommand());
+            registerCommand("wsbal", new BalCommand());
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
-            Commands.registerToMap("pay", new PayCommand());
-            Commands.registerToMap("transfer", new PayCommand());
+            registerCommand("wspay", new PayCommand());
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
-            Commands.registerToMap("baltop", new BaltopCommand());
-            Commands.registerToMap("balancetop", new BaltopCommand());
+            registerCommand("wsbaltop", new BaltopCommand());
         }
         registerListener(new GeneralListener());
         registerListener(new WorldChatListener());
@@ -125,7 +130,7 @@ public class WorldServer extends ViPlugin {
         VaultHook.register();
         PlaceholderHook.register();
 
-        logging.info(String.format("Loaded WorldServer v%s in %dms!", getDescription().getVersion(), Time.timerEnd("ws enable")));
+        logging.info("Loaded WorldServer v%s in %dms!".formatted(getDescription().getVersion(), Time.timerEnd("ws enable")));
     }
 
     @Override
@@ -145,26 +150,5 @@ public class WorldServer extends ViPlugin {
         }
 
         return elevator;
-    }
-
-    /**
-     * @param child The file name.
-     * @return A file from within the plugin folder.
-     */
-    public static File getInFolder(String child) {
-        return new File(getPlugin().getDataFolder(), child);
-    }
-
-    /**
-     * Returns the {@link Logging} belonging to this plugin.
-     *
-     * @return this plugin's {@link Logging} instance.
-     */
-    public static Logging logging() {
-        return getPlugin().logging;
-    }
-
-    public static WorldServer getPlugin() {
-        return instance;
     }
 }

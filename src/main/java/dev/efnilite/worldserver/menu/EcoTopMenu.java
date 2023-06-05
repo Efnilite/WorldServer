@@ -5,8 +5,6 @@ import dev.efnilite.vilib.inventory.animation.WaveWestAnimation;
 import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.MenuItem;
 import dev.efnilite.vilib.util.SkullSetter;
-import dev.efnilite.vilib.util.Unicodes;
-import dev.efnilite.vilib.util.collections.Sorting;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
@@ -18,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A class containing
@@ -34,21 +33,19 @@ public class EcoTopMenu {
         PagedMenu menu = new PagedMenu(4, "<white>Balance Leaderboard");
         List<MenuItem> items = new ArrayList<>();
 
-        int rank = 1;
         Item base = new Item(Material.PLAYER_HEAD, "<#6693E7><bold>#%rank% - %player%")
                 .lore("<#5574AF>Amount: <gray>" + Option.ECONOMY_CURRENCY_SYMBOL + "%amount%");
 
-        Set<UUID> uuids = BalCache.getUUIDs();
-        Map<UUID, Double> values = new HashMap<>();
-        for (UUID uuid : uuids) {
-            double amount = BalCache.get(uuid, player.getWorldGroup());
+        Map<UUID, Double> collected = BalCache.getUUIDs().stream()
+                .collect(Collectors.toMap(k -> k, v -> BalCache.get(v, player.getWorldGroup())))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-            values.put(uuid, amount);
-        }
-        values = Sorting.mapValues(values, Comparator.reverseOrder());
-
-        for (UUID uuid : values.keySet()) {
-            double amount = values.get(uuid);
+        int rank = 1;
+        for (UUID uuid : collected.keySet()) {
+            double amount = collected.get(uuid);
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             String offlineName = offlinePlayer.getName();
@@ -91,8 +88,8 @@ public class EcoTopMenu {
         }
 
         menu.displayRows(0, 1).addToDisplay(items)
-                .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>" + Unicodes.DOUBLE_ARROW_RIGHT).click(event -> menu.page(1)))
-                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>" + Unicodes.DOUBLE_ARROW_LEFT).click(event -> menu.page(-1)))
+                .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>»").click(event -> menu.page(1)))
+                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>«" ).click(event -> menu.page(-1)))
                 .item(32, new Item(Material.ARROW, "<#F5A3A3><bold>Close").click(event -> event.getPlayer().closeInventory()))
                 .fillBackground(Material.GRAY_STAINED_GLASS_PANE)
                 .animation(new WaveWestAnimation())

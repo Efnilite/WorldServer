@@ -5,11 +5,11 @@ import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
+import dev.efnilite.worldserver.WorldServerCommand;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.util.GroupUtil;
-import dev.efnilite.worldserver.util.Util;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -53,7 +53,7 @@ public class WorldChatListener implements EventWatcher {
         }
 
         if (Option.CLEAR_CHAT_ON_SWITCH) {
-            IntStream.range(0, 100).forEach(i -> Util.send(player, ""));
+            IntStream.range(0, 100).forEach(i -> WorldServerCommand.send(player, ""));
         }
 
         if (toMessage != null) {
@@ -187,7 +187,7 @@ public class WorldChatListener implements EventWatcher {
         if (remaining < cooldown * 1000) { // if cooldown is longer than last time, cancel message
             event.setCancelled(true);
 
-            Util.send(player, Option.CHAT_COOLDOWN_FORMAT.replace("%remaining%",
+            WorldServerCommand.send(player, Option.CHAT_COOLDOWN_FORMAT.replace("%remaining%",
                     String.format("%.2f", cooldown - (remaining / 1000.0)))
                     .replace("%time%", String.format("%.2f", cooldown)));
         } else {
@@ -202,7 +202,7 @@ public class WorldChatListener implements EventWatcher {
         for (String blocked : Option.CHAT_BLOCKED) {
             if (message.toLowerCase().contains(blocked.toLowerCase())) {
                 event.setCancelled(true);
-                Util.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
+                WorldServerCommand.send(event.getPlayer(), Option.CHAT_BLOCKED_FORMAT);
                 return;
             }
         }
@@ -218,7 +218,7 @@ public class WorldChatListener implements EventWatcher {
 
     private String colorLegacy(String message) {
         Matcher matcher = HEX_PATTERN.matcher(ChatColor.translateAlternateColorCodes('&', message));
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         while (matcher.find()) {
             matcher.appendReplacement(buffer, ChatColor.of(matcher.group(1)).toString());

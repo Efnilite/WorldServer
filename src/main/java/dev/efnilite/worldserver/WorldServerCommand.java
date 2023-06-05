@@ -1,9 +1,11 @@
 package dev.efnilite.worldserver;
 
 import dev.efnilite.vilib.command.ViCommand;
+import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Config;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
 import dev.efnilite.worldserver.util.GroupUtil;
@@ -16,9 +18,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static dev.efnilite.worldserver.eco.EconomyProvider.CURRENCY_FORMAT;
-import static dev.efnilite.worldserver.util.Util.send;
 
 public class WorldServerCommand extends ViCommand {
+
+    public static void send(CommandSender sender, String message) {
+        sender.sendMessage(Strings.colour(sender instanceof Player ? PlaceholderHook.translate((Player) sender, message) : message));
+    }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {

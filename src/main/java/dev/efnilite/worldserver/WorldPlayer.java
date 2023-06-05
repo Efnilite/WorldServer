@@ -5,7 +5,6 @@ import dev.efnilite.vilib.util.Task;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
 import dev.efnilite.worldserver.util.GroupUtil;
-import dev.efnilite.worldserver.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -145,7 +144,7 @@ public class WorldPlayer {
     }
 
     public void send(String message) {
-        Util.send(player, message);
+        WorldServerCommand.send(player, message);
     }
 
     public void setBalance(double amount, String group) {

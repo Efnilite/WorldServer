@@ -9,9 +9,9 @@ import dev.efnilite.vilib.util.Time;
 import dev.efnilite.vilib.util.Version;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.WorldServer;
+import dev.efnilite.worldserver.WorldServerCommand;
 import dev.efnilite.worldserver.config.Config;
 import dev.efnilite.worldserver.config.Option;
-import dev.efnilite.worldserver.util.Util;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -70,14 +70,14 @@ public class WorldServerMenu {
 
         if (player.hasPermission("ws.reload")) {
             menu.item(13, new Item(Material.HOPPER, "<blue><bold>Reload files").lore("<gray>This will reload all files.").click((event) -> {
-                Menu cmenu = event.getMenu();
-                cmenu.item(event.getSlot(), new TimedItem(new Item(Material.BARRIER, "<red><bold>Are you sure?").lore("<gray>If you click this item again,", "<gray>all files will be reloaded").click((event1) -> {
+                Menu cmenu = event.menu();
+                cmenu.item(event.slot(), new TimedItem(new Item(Material.BARRIER, "<red><bold>Are you sure?").lore("<gray>If you click this item again,", "<gray>all files will be reloaded").click((event1) -> {
                     player.closeInventory();
                     Time.timerStart("reload");
                     Config.reload();
-                    Util.send(player, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
+                    WorldServerCommand.send(player, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
                 }), event).stay(20 * 5));
-                cmenu.updateItem(event.getSlot());
+                cmenu.updateItem(event.slot());
             }));
         }
 

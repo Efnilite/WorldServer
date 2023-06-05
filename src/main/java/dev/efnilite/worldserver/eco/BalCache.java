@@ -47,8 +47,8 @@ public class BalCache {
                 BALANCES.put(uuid, from.balances != null ? from.balances : new HashMap<>());
                 reader.close();
             }
-        } catch (Throwable throwable) {
-            WorldServer.logging().stack("Error while reading existing scores", throwable);
+        } catch (Exception ex) {
+            WorldServer.logging().stack("Error while reading existing scores", ex);
         }
     }
 

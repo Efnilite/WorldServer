@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,9 +32,9 @@ public class WorldTabListener implements EventWatcher {
 
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (inGroup.contains(other)) {
-                show(player, Collections.singleton(other));
+                show(player, List.of(other));
             } else {
-                hide(player, Collections.singleton(other));
+                hide(player, List.of(other));
             }
         }
     }
@@ -61,7 +60,7 @@ public class WorldTabListener implements EventWatcher {
         show(player, GroupUtil.getPlayersInWorldGroup(player.getWorld())); // show to current world
     }
 
-    private final VisibilityHandler visibilityHandler = VisibilityHandler.getInstance();
+    private final VisibilityHandler visibilityHandler = new VisibilityHandler();
 
     private void hide(Player player, Collection<? extends Player> others) {
         for (Player other : others) {
