@@ -27,7 +27,7 @@ public class WorldPlayer {
 
     public static final Map<UUID, WorldPlayer> PLAYERS = new HashMap<>();
 
-    public WorldPlayer(Player player) {
+    private WorldPlayer(Player player) {
         this.player = player;
     }
 
@@ -95,7 +95,7 @@ public class WorldPlayer {
     }
 
     private void _save() {
-        File file = WorldServer.getInFolder("players/" + player.getUniqueId() + ".json");
+        File file = WorldServer.getInFolder("players/%s.json".formatted(player.getUniqueId()));
         if (!file.exists()) {
             file.getParentFile().mkdirs();
         }

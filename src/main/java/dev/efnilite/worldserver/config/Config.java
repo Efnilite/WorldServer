@@ -64,7 +64,7 @@ public enum Config {
 
         if (!path.exists()) {
             WorldServer.getPlugin().saveResource(fileName, false);
-            WorldServer.logging().info(String.format("Created config file %s", fileName));
+            WorldServer.logging().info("Created config file %s".formatted(fileName));
         }
 
         update();
@@ -201,7 +201,7 @@ public enum Config {
     // checks if the specified path exists to avoid developer error
     private void check(@NotNull String path) {
         if (!isPath(path)) {
-            throw new NoSuchElementException(String.format("Unknown path %s in %s", path, fileName));
+            throw new NoSuchElementException("Unknown path %s in %s".formatted(path, fileName));
         }
     }
 }

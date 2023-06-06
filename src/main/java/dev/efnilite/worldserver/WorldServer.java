@@ -28,7 +28,6 @@ public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<#3D626F>WorldServer";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
-    public static final String REQUIRED_VILIB_VERSION = "v1.1.0";
 
     private static WorldServer worldServer;
     private static Logging logging;
