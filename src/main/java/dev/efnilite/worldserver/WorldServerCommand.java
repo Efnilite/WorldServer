@@ -28,12 +28,11 @@ public class WorldServerCommand extends ViCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         switch (args.length) {
-            case 0:
+            case 0 -> {
                 send(sender, "");
                 send(sender, "<dark_gray><strikethrough>-----------<reset> " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
                 send(sender, "");
                 send(sender, "<gray>/ws <dark_gray>- The main command");
-                send(sender, "<gray>/ws permissions<dark_gray>- Get all permissions");
                 if (sender.hasPermission("ws.menu")) {
                     send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
@@ -46,34 +45,38 @@ public class WorldServerCommand extends ViCommand {
                 if (sender.hasPermission("ws.eco.admin.edit") && Option.ECONOMY_ENABLED) {
                     send(sender, "<gray>/ws eco <set|add|remove> <player> <amount> [world/group] <dark_gray>- Edit player balances. World/group optional.");
                 }
-                //                if (sender.hasPermission("ws.eco.admin.transfer") && Option.ECONOMY_ENABLED) {
-                //                    Util.send(sender, "<gray>/ws eco transfer <player> <world 1/group 1> <world 2/group 2><dark_gray>- Transfer funds between worlds/groups.");
-                //                } todo
                 if (sender.hasPermission("ws.reload")) {
                     send(sender, "<gray>/ws reload <dark_gray>- Reload the config and commands");
+                }
+                if (sender.isOp()) {
+                    send(sender, "<gray><bold>/ws permissions<dark_gray>- Get all permissions");
                 }
                 send(sender, "");
                 send(sender, "<dark_gray><strikethrough>---------------------------------");
                 send(sender, "");
                 return true;
-            case 1:
+            }
+            case 1 -> {
                 switch (args[0].toLowerCase()) {
-                    case "reload":
+                    case "reload" -> {
                         if (!sender.hasPermission("ws.reload")) {
+                            send(sender, "<red>You don't have enough permissions to do that.");
                             return true;
                         }
                         Time.timerStart("reload");
-
                         Config.reload();
-
                         send(sender, WorldServer.MESSAGE_PREFIX + "Reloaded WorldServer in " + Time.timerEnd("reload") + "ms!");
                         return true;
-                    case "menu":
-                        if (sender instanceof Player && sender.hasPermission("ws.menu")) {
-                            WorldServerMenu.openMainMenu((Player) sender);
+                    }
+                    case "menu" -> {
+                        if (!(sender instanceof Player) || !sender.hasPermission("ws.menu")) {
+                            send(sender, "<red>You don't have enough permissions to do that.");
+                            return true;
                         }
+                        WorldServerMenu.openMainMenu((Player) sender);
                         return true;
-                    case "permissions":
+                    }
+                    case "permissions" -> {
                         send(sender, "");
                         send(sender, "<dark_gray><strikethrough>-----------<reset> <gradient:#3D626F>Permissions</gradient:#0EACE2> <dark_gray><strikethrough>-----------");
                         send(sender, "");
@@ -92,45 +95,57 @@ public class WorldServerCommand extends ViCommand {
                         send(sender, "<dark_gray><strikethrough>---------------------------------");
                         send(sender, "");
                         return true;
-                    case "bal":
-                    case "balance":
-                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED && sender instanceof Player) {
-                            Player p = (Player) sender;
-                            WorldPlayer player = WorldPlayer.getPlayer(p);
-                            player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(player.getBalance())));
+                    }
+                    case "bal", "balance" -> {
+                        if (!sender.hasPermission("ws.eco.bal") || !Option.ECONOMY_ENABLED || !(sender instanceof Player p)) {
+                            send(sender, "<red>You don't have enough permissions to do that.");
+                            return true;
                         }
+                        WorldPlayer player = WorldPlayer.getPlayer(p);
+                        player.send(Option.ECONOMY_SWITCH_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(player.getBalance())));
                         return true;
-                    case "top":
-                    case "baltop":
-                        if (sender.hasPermission("ws.eco.top") && Option.ECONOMY_ENABLED) {
-                            EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender));
+                    }
+                    case "top", "baltop" -> {
+                        if (!sender.hasPermission("ws.eco.top") || !Option.ECONOMY_ENABLED) {
+                            send(sender, "<red>You don't have enough permissions to do that.");
+                            return true;
                         }
+                        EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender));
                         return true;
+                    }
                 }
-                break;
-            case 2:
+            }
+            case 2 -> {
                 switch (args[0].toLowerCase()) {
-                    case "bal":
-                    case "balance":
-                        if (sender.hasPermission("ws.eco.bal") && Option.ECONOMY_ENABLED) {
-                            Player of = Bukkit.getPlayer(args[1]);
-
-                            if (of == null) {
-                                send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
-                                return true;
-                            }
-
-                            send(sender, Option.ECONOMY_BALANCE_FORMAT.replace("%player%", of.getName()).replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
+                    case "bal", "balance" -> {
+                        if (!sender.hasPermission("ws.eco.bal") || !Option.ECONOMY_ENABLED) {
+                            send(sender, "<red>You don't have enough permissions to do that.");
+                            return true;
                         }
+                        Player of = Bukkit.getPlayer(args[1]);
+
+                        if (of == null) {
+                            send(sender, "<red>Couldn't find that player!");
+                            return true;
+                        }
+
+                        send(sender, Option.ECONOMY_BALANCE_FORMAT.replace("%player%", of.getName()).replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
                         return true;
+                    }
                 }
                 return true;
-            case 3:
-                if (args[0].equalsIgnoreCase("pay") && sender.hasPermission("ws.eco.pay") && Option.ECONOMY_ENABLED) {
+            }
+            case 3 -> {
+                if (args[0].equalsIgnoreCase("pay") && Option.ECONOMY_ENABLED) {
+                    if (!sender.hasPermission("ws.eco.pay")) {
+                        send(sender, "<red>You don't have enough permissions to do that.");
+                        return true;
+                    }
+
                     Player p = Bukkit.getPlayerExact(args[1]);
 
                     if (p == null) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        send(sender, "<red>Couldn't find that player!");
                         return true;
                     }
 
@@ -138,7 +153,7 @@ public class WorldServerCommand extends ViCommand {
                     try {
                         amount = Double.parseDouble(args[2]);
                     } catch (NumberFormatException ex) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        send(sender, "<red>That isn't a valid number!");
                         return true;
                     }
 
@@ -146,11 +161,12 @@ public class WorldServerCommand extends ViCommand {
                     String group = to.getWorldGroup();
 
                     if (GroupUtil.getWorlds(group).isEmpty()) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        send(sender, "<red>Couldn't find that world or group!");
                         return true;
                     }
 
                     if (!(sender instanceof Player)) {
+                        send(sender, "<red>Only players can execute this command");
                         return true;
                     }
                     WorldPlayer from = WorldPlayer.getPlayer(((Player) sender));
@@ -170,13 +186,18 @@ public class WorldServerCommand extends ViCommand {
                     return true;
                 }
                 return true;
-            case 4:
-            case 5:
-                if (args[0].equalsIgnoreCase("eco") && sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+            }
+            case 4, 5 -> {
+                if (args[0].equalsIgnoreCase("eco") && Option.ECONOMY_ENABLED) {
+                    if (!sender.hasPermission("ws.eco.admin")) {
+                        send(sender, "<red>You don't have enough permissions to do that.");
+                        return true;
+                    }
+
                     Player p = Bukkit.getPlayerExact(args[2]);
 
                     if (p == null) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that player!");
+                        send(sender, "<red>Couldn't find that player!");
                         return true;
                     }
 
@@ -184,7 +205,7 @@ public class WorldServerCommand extends ViCommand {
                     try {
                         amount = Double.parseDouble(args[3]);
                     } catch (NumberFormatException ex) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "That isn't a valid number!");
+                        send(sender, "<red>That isn't a valid number!");
                         return true;
                     }
 
@@ -196,34 +217,33 @@ public class WorldServerCommand extends ViCommand {
                     }
 
                     if (GroupUtil.getWorlds(group).isEmpty()) {
-                        send(sender, WorldServer.MESSAGE_PREFIX + "Couldn't find that world or group!");
+                        send(sender, "<red>Couldn't find that world or group!");
                         return true;
                     }
 
                     switch (args[1].toLowerCase()) {
-                        case "set":
+                        case "set" -> {
                             to.setBalance(amount, group);
                             send(sender, WorldServer.MESSAGE_PREFIX + "Successfully set " + to.player.getName() + "'s balance to " + amount);
-                            return true;
-                        case "add":
+                        }
+                        case "add" -> {
                             to.deposit(group, amount);
                             send(sender, WorldServer.MESSAGE_PREFIX + "Successfully added " + amount + " to " + to.player.getName() + "'s balance");
-
                             if (Option.ECONOMY_BALANCE_CHANGE) {
                                 send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "+"));
                             }
-                            return true;
-                        case "remove":
+                        }
+                        case "remove" -> {
                             to.withdraw(group, amount);
                             send(sender, WorldServer.MESSAGE_PREFIX + "Successfully removed " + amount + " from " + to.player.getName() + "'s balance");
-
                             if (Option.ECONOMY_BALANCE_CHANGE) {
                                 send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "-"));
                             }
-                            return true;
+                        }
                     }
                 }
                 return true;
+            }
         }
         return true;
     }
@@ -232,7 +252,6 @@ public class WorldServerCommand extends ViCommand {
     public List<String> tabComplete(CommandSender sender, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            completions.add("permissions");
             if (sender.hasPermission("ws.menu")) {
                 completions.add("menu");
             }
@@ -250,6 +269,9 @@ public class WorldServerCommand extends ViCommand {
             }
             if (sender.hasPermission("ws.reload")) {
                 completions.add("reload");
+            }
+            if (sender.isOp()) {
+                completions.add("permissions");
             }
             return completions(args[0], completions);
         } else if (args.length == 2) {

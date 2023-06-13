@@ -1,3 +1,5 @@
+- Added permission messages to all commands
+- Fixed /ws permissions being visible to non-opped players
 - Fixed switch messages doubling up on join
 - Fixed eco commands being registered when eco is disabled
 - Fixed invalid placeholders not printing an error
