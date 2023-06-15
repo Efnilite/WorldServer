@@ -29,6 +29,11 @@ public class WorldServerCommand extends ViCommand {
     public boolean execute(CommandSender sender, String[] args) {
         switch (args.length) {
             case 0 -> {
+                if (Option.WS_REQUIRES_PERMISSION && !sender.hasPermission("ws")) {
+                    send(sender, "<red>You don't have enough permissions to do that.");
+                    return true;
+                }
+
                 send(sender, "");
                 send(sender, "<dark_gray><strikethrough>-----------<reset> " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
                 send(sender, "");
@@ -129,7 +134,9 @@ public class WorldServerCommand extends ViCommand {
                             return true;
                         }
 
-                        send(sender, Option.ECONOMY_BALANCE_FORMAT.replace("%player%", of.getName()).replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
+                        send(sender, Option.ECONOMY_BALANCE_FORMAT
+                                .replace("%player%", of.getName())
+                                .replace("%amount%", Double.toString(WorldPlayer.getPlayer(of).getBalance())));
                         return true;
                     }
                 }
@@ -224,18 +231,18 @@ public class WorldServerCommand extends ViCommand {
                     switch (args[1].toLowerCase()) {
                         case "set" -> {
                             to.setBalance(amount, group);
-                            send(sender, WorldServer.MESSAGE_PREFIX + "Successfully set " + to.player.getName() + "'s balance to " + amount);
+                            send(sender, "%sSuccessfully set %s's balance to %s".formatted(WorldServer.MESSAGE_PREFIX, to.player.getName(), amount));
                         }
                         case "add" -> {
                             to.deposit(group, amount);
-                            send(sender, WorldServer.MESSAGE_PREFIX + "Successfully added " + amount + " to " + to.player.getName() + "'s balance");
+                            send(sender, "%sSuccessfully added %s to %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
                             if (Option.ECONOMY_BALANCE_CHANGE) {
                                 send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "+"));
                             }
                         }
                         case "remove" -> {
                             to.withdraw(group, amount);
-                            send(sender, WorldServer.MESSAGE_PREFIX + "Successfully removed " + amount + " from " + to.player.getName() + "'s balance");
+                            send(sender, "%sSuccessfully removed %s from %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
                             if (Option.ECONOMY_BALANCE_CHANGE) {
                                 send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "-"));
                             }
@@ -286,9 +293,9 @@ public class WorldServerCommand extends ViCommand {
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("eco")) {
                 if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        completions.add(player.getName());
-                    }
+                    completions = Bukkit.getOnlinePlayers().stream()
+                            .map(Player::getName)
+                            .toList();
                 }
             }
             return completions(args[2], completions);

@@ -7,6 +7,7 @@ import java.util.Map;
 public class Option {
 
     public static boolean AUTO_UPDATER;
+    public static boolean WS_REQUIRES_PERMISSION;
 
     public static HashMap<String, List<String>> GROUPS;
 
@@ -49,6 +50,7 @@ public class Option {
 
     public static void init() {
         AUTO_UPDATER = Config.CONFIG.getBoolean("auto-updater");
+        WS_REQUIRES_PERMISSION = Config.CONFIG.getBoolean("ws-requires-permission");
 
         GROUPS = new HashMap<>();
         Config.CONFIG.getChildren("groups", false)

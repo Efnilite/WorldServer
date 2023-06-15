@@ -21,6 +21,10 @@
 # It's highly recommended to keep this on!
 auto-updater: true
 
+# -= /ws requires permission =-
+# If true, using /ws requires the "ws" permission.
+ws-requires-permission: false
+
 # -= World groups =-
 # Group together worlds to share the tab list and chat
 # Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
@@ -124,8 +128,8 @@ chat-blocked-format: '<gray>You can''t say mean things :('
 # %prefix% - The player's prefix
 # %suffix% - The player's suffix
 chat-join-formats:
-  example: '<green><bold>+ <gray>%player%'
-  MyWorld: '<gray>%player% joined.'
+  example: '<green><bold>+</bold> <#98FF89>%player%'
+  MyWorld: '<#98FF89>%player% joined.'
 
 # -= World chat leave formats =-
 # Add a custom leave message per world chat.
@@ -134,8 +138,8 @@ chat-join-formats:
 # %prefix% - The player's prefix
 # %suffix% - The player's suffix
 chat-leave-formats:
-  example: '<red><bold>- <gray>%player%'
-  MyWorld: '<gray>%player% left.'
+  example: '<red><bold>-</bold> <#98FF89>%player%'
+  MyWorld: '<#FF8888>%player% left.'
 
 # -= Clear chat on switch =-
 # If set to true, will clear the chat on a switch of the world.
@@ -161,11 +165,11 @@ economy-switch-notification: true
 # This will only be set if economy and economy switch notifications are enabled.
 # Placeholders:
 # %amount% - the current amount
-economy-switch-format: '<white>You now have <#4DF019>€$ %amount%<gray>.'
+economy-switch-format: '<white>You now have <#4DF019>E$%amount%<gray>.'
 
 # -= Economy currency symbol =-
 # The economy currency symbol.
-economy-currency-symbol: '€$'
+economy-currency-symbol: 'E$'
 
 # -= Economy currency names =-
 # The names of the currency.
@@ -188,7 +192,7 @@ economy-override-balance-command: true
 
 # -= Economy balance format =-
 # The message format of the /bal command.
-economy-balance-format: '%player% has €$ %amount%'
+economy-balance-format: '%player% has E$ %amount%'
 
 # -= Economy balance change =-
 # Sends a message to the player when their balance changes.
@@ -213,11 +217,11 @@ economy-override-pay-command: true
 # Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
 
 # The format for when a player does not have enough funds to pay someone.
-economy-pay-no-funds-format: 'You don''t have enough €$ to do that!'
+economy-pay-no-funds-format: 'You don''t have enough E$ to do that!'
 # The format for when a player sends another player money.
-economy-pay-send-format: 'You sent %player% €$ %amount%'
+economy-pay-send-format: 'You sent %player% E$ %amount%'
 # The format for when a player receives money from another player.
-economy-pay-receive-format: '%player% sent you €$ %amount%'
+economy-pay-receive-format: '%player% sent you E$ %amount%'
 
 # -= Economy override baltop command =-
 # Whether WorldServer should register /baltop and /balancetop
