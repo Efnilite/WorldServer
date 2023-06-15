@@ -1,13 +1,14 @@
 package dev.efnilite.worldserver.menu;
 
 import dev.efnilite.vilib.inventory.PagedMenu;
+import dev.efnilite.vilib.inventory.animation.WaveEastAnimation;
 import dev.efnilite.vilib.inventory.animation.WaveWestAnimation;
 import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.MenuItem;
-import dev.efnilite.vilib.util.SkullSetter;
 import dev.efnilite.worldserver.WorldPlayer;
 import dev.efnilite.worldserver.config.Option;
 import dev.efnilite.worldserver.eco.BalCache;
+import dev.efnilite.worldserver.util.OfflineSkullSetter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,7 +35,7 @@ public class EcoTopMenu {
         List<MenuItem> items = new ArrayList<>();
 
         Item base = new Item(Material.PLAYER_HEAD, "<#6693E7><bold>#%rank% - %player%")
-                .lore("<#5574AF>Amount: <gray>" + Option.ECONOMY_CURRENCY_SYMBOL + "%amount%");
+                .lore("<#5574AF>Amount: <gray>%s%%amount%%".formatted(Option.ECONOMY_CURRENCY_SYMBOL));
 
         Map<UUID, Double> collected = BalCache.getUUIDs().stream()
                 .collect(Collectors.toMap(k -> k, v -> BalCache.get(v, player.getWorldGroup())))
@@ -66,14 +67,9 @@ public class EcoTopMenu {
             // Player head gathering
             ItemStack stack = item.build();
             stack.setType(Material.PLAYER_HEAD);
-            if (rank > 36) {
+            if (rank <= 36 && !offlinePlayer.getName().startsWith(".")) {
                 SkullMeta meta = (SkullMeta) stack.getItemMeta();
-
-                if (meta == null) {
-                    continue;
-                }
-
-                SkullSetter.setPlayerHead(offlinePlayer, meta);
+                OfflineSkullSetter.setPlayerHead(offlinePlayer, meta);
                 item.meta(meta);
             }
 
@@ -89,10 +85,10 @@ public class EcoTopMenu {
 
         menu.displayRows(0, 1).addToDisplay(items)
                 .nextPage(35, new Item(Material.LIME_DYE, "<#0DCB07><bold>»").click(event -> menu.page(1)))
-                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>«" ).click(event -> menu.page(-1)))
+                .prevPage(27, new Item(Material.RED_DYE, "<#DE1F1F><bold>«").click(event -> menu.page(-1)))
                 .item(32, new Item(Material.ARROW, "<#F5A3A3><bold>Close").click(event -> event.getPlayer().closeInventory()))
                 .fillBackground(Material.GRAY_STAINED_GLASS_PANE)
-                .animation(new WaveWestAnimation())
+                .animation(new WaveEastAnimation())
                 .open(player.player);
     }
 
