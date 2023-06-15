@@ -1,8 +1,10 @@
-- Added permission messages to all commands
+**This build requires [vilib v1.2.0](https://github.com/Efnilite/vilib/releases/tag/v1.2.0) to work. ✨**
+
+- Added permission config option for /ws
+- Fixed commands not having permission messages 
 - Fixed /ws permissions being visible to non-opped players
-- Fixed switch messages doubling up on join
-- Fixed eco commands being registered when eco is disabled
-- Fixed invalid placeholders not printing an error
-- Fixed /baltop menu crashing server and colouring error
-- Fixed worlds not being prioritized over groups in join/leave messages
-- Reduced jar size
+- Fixed /baltop not displaying anything
+- Fixed /baltop causing errors with Bedrock users
+- Fixed /baltop animation direction
+- Fixed /baltop only displaying online players
+- Fixed WorldServer prefix being attached to every message

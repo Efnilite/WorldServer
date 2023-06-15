@@ -6,7 +6,6 @@ import dev.efnilite.vilib.lib.bstats.charts.SimplePie;
 import dev.efnilite.vilib.util.Logging;
 import dev.efnilite.vilib.util.Task;
 import dev.efnilite.vilib.util.Time;
-import dev.efnilite.vilib.util.Version;
 import dev.efnilite.vilib.util.elevator.GitElevator;
 import dev.efnilite.worldserver.chat.WorldChatListener;
 import dev.efnilite.worldserver.config.Config;
@@ -23,13 +22,14 @@ import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.HashSet;
 
 public class WorldServer extends ViPlugin {
 
     public static final String NAME = "<#3D626F>WorldServer";
     public static final String MESSAGE_PREFIX = NAME + " <#7B7B7B>» <gray>";
 
-    private static WorldServer worldServer;
+    private static WorldServer instance;
     private static Logging logging;
 
 
@@ -49,28 +49,31 @@ public class WorldServer extends ViPlugin {
     }
 
     public static WorldServer getPlugin() {
-        return worldServer;
+        return instance;
     }
 
     @Override
     public void onLoad() {
-        YamlConfiguration c = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        instance = this;
+        logging = new Logging(this);
 
-        if (c.getBoolean("economy-enabled") && getServer().getPluginManager().getPlugin("Vault") != null) {
-            try {
-                Class.forName("net.milkbowl.vault.economy.Economy");
-                getServer().getServicesManager().register(Economy.class, new EconomyProvider(), this, ServicePriority.High);
-                getLogger().info("Registered with Vault!");
-            } catch (NoClassDefFoundError | ClassNotFoundException ignored) {
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(getInFolder("config.yml"));
 
-            }
+        if (!c.getBoolean("economy-enabled") || getServer().getPluginManager().getPlugin("Vault") == null) {
+            return;
+        }
+
+        try {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+            getServer().getServicesManager().register(Economy.class, new EconomyProvider(), this, ServicePriority.High);
+            logging.info("Registered with Vault!");
+        } catch (NoClassDefFoundError | ClassNotFoundException ignored) {
+
         }
     }
 
     @Override
     public void enable() {
-        worldServer = this;
-        logging = new Logging(this);
 
         // ----- Check vilib -----
 
@@ -95,8 +98,6 @@ public class WorldServer extends ViPlugin {
 
         Config.reload();
 
-        logging.info("Registered under version " + Version.getPrettyVersion());
-
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
             registerCommand("wsbal", new BalCommand());
@@ -119,9 +120,11 @@ public class WorldServer extends ViPlugin {
 
         Bukkit.getOnlinePlayers().forEach(WorldPlayer::register);
 
-        Task.create(this).delay(5 * 60 * 20).repeat(5 * 60 * 20).execute(() -> {
-            WorldPlayer.PLAYERS.values().forEach(player -> player.save(true));
-        }).run(); // save data every 5 minutes
+        Task.create(this) // save data every 5 minutes
+                .delay(5 * 60 * 20)
+                .repeat(5 * 60 * 20)
+                .execute(() -> WorldPlayer.PLAYERS.values().forEach(player -> player.save(true)))
+                .run();
 
         Task.create(this).async().execute(BalCache::read).run(); // read existing balance caches
 
@@ -134,7 +137,7 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void disable() {
-        WorldPlayer.PLAYERS.values().forEach(wp -> WorldPlayer.unregister(wp.player, false));
+        new HashSet<>(WorldPlayer.PLAYERS.values()).forEach(wp -> WorldPlayer.unregister(wp.player, false));
     }
 
     @Override
