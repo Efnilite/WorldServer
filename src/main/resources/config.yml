@@ -178,6 +178,11 @@ economy-currency-names:
   singular: 'eurodollar'
   plural: 'eurodollars'
 
+# -= Economy allow negative balance =-
+# When true, WorldServer will not check if the player has enough balance when withdrawing.
+# This will allow players to have a negative balance.
+economy-allow-negative-balance: false
+
 # -= Economy starting amount =-
 # The amount of money the player will start with in a specific world group if they haven't ever joined that group.
 economy-starting-amount:

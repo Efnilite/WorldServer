@@ -110,6 +110,10 @@ public class EconomyProvider extends AbstractEconomy {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Can't withdraw negative amount");
         }
 
+        if (!Option.ECONOMY_ALLOW_NEGATIVE_BALANCE && amount > player.getBalance()) {
+            player.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT);
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Not enough balance");
+        }
         player.withdraw(amount);
         return new EconomyResponse(amount, player.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -125,6 +129,10 @@ public class EconomyProvider extends AbstractEconomy {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Can't withdraw negative amount");
         }
 
+        if (!Option.ECONOMY_ALLOW_NEGATIVE_BALANCE && amount > player.getBalance()) {
+            player.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT);
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Not enough balance");
+        }
         player.withdraw(getWorldGroup(world), amount);
         return new EconomyResponse(amount, player.getBalance(getWorldGroup(world)), EconomyResponse.ResponseType.SUCCESS, null);
     }

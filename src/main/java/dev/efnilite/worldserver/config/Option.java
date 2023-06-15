@@ -37,6 +37,7 @@ public class Option {
     public static String ECONOMY_CURRENCY_SYMBOL;
     public static String ECONOMY_CURRENCY_NAMES_SINGULAR;
     public static String ECONOMY_CURRENCY_NAMES_PLURAL;
+    public static boolean ECONOMY_ALLOW_NEGATIVE_BALANCE;
     public static Map<String, Double> ECONOMY_STARTING_AMOUNT;
     public static boolean ECONOMY_OVERRIDE_BALANCE_COMMAND;
     public static String ECONOMY_BALANCE_FORMAT;
@@ -95,6 +96,8 @@ public class Option {
 
         ECONOMY_CURRENCY_NAMES_SINGULAR = Config.CONFIG.getString("economy-currency-names.singular");
         ECONOMY_CURRENCY_NAMES_PLURAL = Config.CONFIG.getString("economy-currency-names.plural");
+
+        ECONOMY_ALLOW_NEGATIVE_BALANCE = Config.CONFIG.getBoolean("economy-allow-negative-balance");
 
         ECONOMY_STARTING_AMOUNT = new HashMap<>();
         Config.CONFIG.getChildren("economy-starting-amount", false)
