@@ -1,7 +1,7 @@
 package dev.efnilite.worldserver.menu;
 
 import dev.efnilite.vilib.inventory.Menu;
-import dev.efnilite.vilib.inventory.animation.SnakeSingleAnimation;
+import dev.efnilite.vilib.inventory.animation.RandomAnimation;
 import dev.efnilite.vilib.inventory.item.Item;
 import dev.efnilite.vilib.inventory.item.SliderItem;
 import dev.efnilite.vilib.inventory.item.TimedItem;
@@ -80,6 +80,6 @@ public class WorldServerMenu {
             }));
         }
 
-        menu.distributeRowEvenly(1).animation(new SnakeSingleAnimation()).fillBackground(Material.GRAY_STAINED_GLASS_PANE).open(player);
+        menu.distributeRowEvenly(1).animation(new RandomAnimation()).fillBackground(Material.GRAY_STAINED_GLASS_PANE).open(player);
     }
 }

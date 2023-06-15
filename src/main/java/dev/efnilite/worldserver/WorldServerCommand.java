@@ -83,7 +83,7 @@ public class WorldServerCommand extends ViCommand {
                     }
                     case "permissions" -> {
                         send(sender, "");
-                        send(sender, "<dark_gray><strikethrough>-----------<reset> <gradient:#3D626F>Permissions</gradient:#0EACE2> <dark_gray><strikethrough>-----------");
+                        send(sender, "<dark_gray><strikethrough>-----------<reset> <gradient:#3D626F:#0EACE2>Permissions<reset> <dark_gray><strikethrough>-----------");
                         send(sender, "");
                         send(sender, "<gray>ws.reload <dark_gray>- Reloads the config");
                         send(sender, "<gray>ws.menu <dark_gray>- For opening and viewing the menu");
