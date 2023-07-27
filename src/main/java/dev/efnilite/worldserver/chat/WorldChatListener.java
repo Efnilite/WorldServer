@@ -67,17 +67,23 @@ public class WorldChatListener implements EventWatcher {
         if (!Option.CHAT_ENABLED) {
             return;
         }
-        event.setJoinMessage(null);
 
         Player player = event.getPlayer();
         World initialWorld = player.getWorld();
+
+        String message = getMessage(initialWorld, Option.CHAT_JOIN_FORMATS);
+        if (message == null) {
+            return;
+        }
+
+        event.setJoinMessage(null);
 
         Task.create(WorldServer.getPlugin()).delay(1).execute(() -> {
             if (initialWorld != player.getWorld()) {
                 return;
             }
 
-            performNetworkMessage(player, Option.CHAT_JOIN_FORMATS);
+            performNetworkMessage(player, message);
         }).run();
     }
 
@@ -86,21 +92,22 @@ public class WorldChatListener implements EventWatcher {
         if (!Option.CHAT_ENABLED) {
             return;
         }
-        event.setQuitMessage(null);
 
-        performNetworkMessage(event.getPlayer(), Option.CHAT_LEAVE_FORMATS);
-    }
-
-    private void performNetworkMessage(Player player, Map<String, String> formats) {
-        World world = player.getWorld();
-        String message = getMessage(world, formats);
-
+        Player player = event.getPlayer();
+        String message = getMessage(player.getWorld(), Option.CHAT_LEAVE_FORMATS);
         if (message == null) {
             return;
         }
 
-        GroupUtil.getPlayersInWorldGroup(world)
-                .forEach(p -> p.sendMessage(getColouredMessage(player, message).replace("%player%", player.getName())));
+        event.setQuitMessage(null);
+
+        performNetworkMessage(player, message);
+    }
+
+    private void performNetworkMessage(Player player, @Nullable String message) {
+        GroupUtil.getPlayersInWorldGroup(player.getWorld())
+                .forEach(p -> p.sendMessage(getColouredMessage(player, message)
+                        .replace("%player%", player.getName())));
     }
 
     @Nullable
