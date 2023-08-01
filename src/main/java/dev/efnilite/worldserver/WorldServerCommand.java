@@ -5,17 +5,17 @@ import dev.efnilite.vilib.util.Strings;
 import dev.efnilite.vilib.util.Time;
 import dev.efnilite.worldserver.config.Config;
 import dev.efnilite.worldserver.config.Option;
+import dev.efnilite.worldserver.eco.BalCache;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.menu.EcoTopMenu;
 import dev.efnilite.worldserver.menu.WorldServerMenu;
 import dev.efnilite.worldserver.util.GroupUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static dev.efnilite.worldserver.eco.EconomyProvider.CURRENCY_FORMAT;
 
@@ -201,50 +201,112 @@ public class WorldServerCommand extends ViCommand {
                         return true;
                     }
 
-                    Player p = Bukkit.getPlayerExact(args[2]);
-
-                    if (p == null) {
-                        send(sender, "<red>Couldn't find that player!");
-                        return true;
-                    }
-
-                    double amount;
-                    try {
-                        amount = Double.parseDouble(args[3]);
-                    } catch (NumberFormatException ex) {
-                        send(sender, "<red>That isn't a valid number!");
-                        return true;
-                    }
-
-                    WorldPlayer to = WorldPlayer.getPlayer(p);
-                    String group = to.getWorldGroup();
-
-                    if (args.length == 5) {
-                        group = args[4];
-                    }
-
-                    if (GroupUtil.getWorlds(group).isEmpty()) {
-                        send(sender, "<red>Couldn't find that world or group!");
-                        return true;
-                    }
-
                     switch (args[1].toLowerCase()) {
-                        case "set" -> {
-                            to.setBalance(amount, group);
-                            send(sender, "%sSuccessfully set %s's balance to %s".formatted(WorldServer.MESSAGE_PREFIX, to.player.getName(), amount));
-                        }
-                        case "add" -> {
-                            to.deposit(group, amount);
-                            send(sender, "%sSuccessfully added %s to %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
-                            if (Option.ECONOMY_BALANCE_CHANGE) {
-                                send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "+"));
+                        case "reset" -> {
+                            String player = args[2];
+                            String group = args[3];
+
+                            if (GroupUtil.getWorlds(group).isEmpty()) {
+                                send(sender, "<red>Couldn't find that world or group!");
+                                return true;
                             }
+
+                            double defaultAmount = Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1000.0);
+
+                            BalCache.BALANCES.forEach((k, v) -> v.forEach((kk, vv) -> System.out.println("p: %s g: %s a: %s".formatted(k, kk, vv))));
+
+                            if (player.equalsIgnoreCase("everyone")) {
+                                for (UUID uuid : BalCache.getUUIDs()) {
+                                    Map<String, Double> currentBalances = BalCache.BALANCES.get(uuid);
+
+                                    if (currentBalances.containsKey(group)) {
+                                        Player onlinePlayer = Bukkit.getPlayer(uuid);
+
+                                        if (onlinePlayer != null) {
+                                            WorldPlayer worldPlayer = WorldPlayer.getPlayer(onlinePlayer);
+
+                                            // update online if player is online
+                                            worldPlayer.setBalance(defaultAmount, group);
+                                        } else {
+                                            // update in store if player is not online
+                                            BalCache.save(uuid, group, defaultAmount);
+                                        }
+                                    }
+                                }
+
+                                send(sender, "All players' balances in group %s have been reset to %s".formatted(group, defaultAmount));
+                                return true;
+                            }
+
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
+                            UUID uuid = offlinePlayer.getUniqueId();
+
+                            if (!BalCache.BALANCES.containsKey(uuid)) {
+                                send(sender, "<red>Couldn't find that player!");
+                                return true;
+                            }
+
+                            Player onlinePlayer = Bukkit.getPlayer(uuid);
+
+                            if (onlinePlayer != null) {
+                                WorldPlayer worldPlayer = WorldPlayer.getPlayer(onlinePlayer);
+
+                                // update online if player is online
+                                worldPlayer.setBalance(defaultAmount, group);
+                            } else {
+                                // update in store if player is not online
+                                BalCache.save(uuid, group, defaultAmount);
+                            }
+                            send(sender, "Set %s's balance to %s".formatted(offlinePlayer.getName(), defaultAmount));
                         }
-                        case "remove" -> {
-                            to.withdraw(group, amount);
-                            send(sender, "%sSuccessfully removed %s from %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
-                            if (Option.ECONOMY_BALANCE_CHANGE) {
-                                send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "-"));
+
+                        case "set", "add", "remove" -> {
+                            Player p = Bukkit.getPlayerExact(args[2]);
+
+                            if (p == null) {
+                                send(sender, "<red>Couldn't find that player!");
+                                return true;
+                            }
+
+                            double amount;
+                            try {
+                                amount = Double.parseDouble(args[3]);
+                            } catch (NumberFormatException ex) {
+                                send(sender, "<red>That isn't a valid number!");
+                                return true;
+                            }
+
+                            WorldPlayer to = WorldPlayer.getPlayer(p);
+                            String group = to.getWorldGroup();
+
+                            if (args.length == 5) {
+                                group = args[4];
+                            }
+
+                            if (GroupUtil.getWorlds(group).isEmpty()) {
+                                send(sender, "<red>Couldn't find that world or group!");
+                                return true;
+                            }
+
+                            switch (args[1].toLowerCase()) {
+                                case "set" -> {
+                                    to.setBalance(amount, group);
+                                    send(sender, "%sSuccessfully set %s's balance to %s".formatted(WorldServer.MESSAGE_PREFIX, to.player.getName(), amount));
+                                }
+                                case "add" -> {
+                                    to.deposit(group, amount);
+                                    send(sender, "%sSuccessfully added %s to %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
+                                    if (Option.ECONOMY_BALANCE_CHANGE) {
+                                        send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "+"));
+                                    }
+                                }
+                                case "remove" -> {
+                                    to.withdraw(group, amount);
+                                    send(sender, "%sSuccessfully removed %s from %s's balance".formatted(WorldServer.MESSAGE_PREFIX, amount, to.player.getName()));
+                                    if (Option.ECONOMY_BALANCE_CHANGE) {
+                                        send(to.player, Option.ECONOMY_BALANCE_CHANGE_FORMAT.replace("%amount%", CURRENCY_FORMAT.format(amount)).replace("%prefix%", "-"));
+                                    }
+                                }
                             }
                         }
                     }
@@ -284,6 +346,7 @@ public class WorldServerCommand extends ViCommand {
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("eco")) {
                 if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
+                    completions.add("reset");
                     completions.add("set");
                     completions.add("add");
                     completions.add("remove");
@@ -292,10 +355,14 @@ public class WorldServerCommand extends ViCommand {
             return completions(args[1], completions);
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("eco")) {
+                if (args[1].equalsIgnoreCase("reset")) {
+                    completions.add("everyone");
+                }
+
                 if (sender.hasPermission("ws.eco.admin") && Option.ECONOMY_ENABLED) {
-                    completions = Bukkit.getOnlinePlayers().stream()
+                    completions.addAll(Bukkit.getOnlinePlayers().stream()
                             .map(Player::getName)
-                            .toList();
+                            .toList());
                 }
             }
             return completions(args[2], completions);

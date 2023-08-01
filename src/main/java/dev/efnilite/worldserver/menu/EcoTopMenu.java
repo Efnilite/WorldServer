@@ -67,7 +67,7 @@ public class EcoTopMenu {
             // Player head gathering
             ItemStack stack = item.build();
             stack.setType(Material.PLAYER_HEAD);
-            if (rank <= 36 && !offlinePlayer.getName().startsWith(".")) {
+            if (rank <= 36 && !offlineName.startsWith(".")) {
                 SkullMeta meta = (SkullMeta) stack.getItemMeta();
                 OfflineSkullSetter.setPlayerHead(offlinePlayer, meta);
                 item.meta(meta);

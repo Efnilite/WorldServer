@@ -55,7 +55,7 @@ public class Option {
 
         GROUPS = new HashMap<>();
         Config.CONFIG.getChildren("groups", false)
-                .forEach(group -> GROUPS.put(group, Config.CONFIG.getStringList("groups." + group)));
+                .forEach(group -> GROUPS.put(group.toLowerCase(), Config.CONFIG.getStringList("groups." + group)));
 
         TAB_ENABLED = Config.CONFIG.getBoolean("tab-enabled");
 

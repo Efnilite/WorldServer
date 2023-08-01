@@ -5,10 +5,7 @@ import dev.efnilite.worldserver.WorldServer;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class BalCache {
 
@@ -52,8 +49,11 @@ public class BalCache {
         }
     }
 
+    /**
+     * @return An immutable list of all {@link UUID}s present in the balance sheet.
+     */
     public static Set<UUID> getUUIDs() {
-        return BALANCES.keySet();
+        return new HashSet<>(BALANCES.keySet());
     }
 
     public static double get(UUID uuid, String group) {
