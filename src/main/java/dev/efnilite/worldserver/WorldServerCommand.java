@@ -206,14 +206,12 @@ public class WorldServerCommand extends ViCommand {
                             String player = args[2];
                             String group = args[3];
 
-                            if (GroupUtil.getWorlds(group).isEmpty()) {
+                            if (Option.GROUPS.containsKey(group.toLowerCase())) {
                                 send(sender, "<red>Couldn't find that world or group!");
                                 return true;
                             }
 
                             double defaultAmount = Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1000.0);
-
-                            BalCache.BALANCES.forEach((k, v) -> v.forEach((kk, vv) -> System.out.println("p: %s g: %s a: %s".formatted(k, kk, vv))));
 
                             if (player.equalsIgnoreCase("everyone")) {
                                 for (UUID uuid : BalCache.getUUIDs()) {
@@ -229,10 +227,12 @@ public class WorldServerCommand extends ViCommand {
                                             worldPlayer.setBalance(defaultAmount, group);
                                         } else {
                                             // update in store if player is not online
-                                            BalCache.save(uuid, group, defaultAmount);
+                                            BalCache.saveAll(uuid, group, defaultAmount);
                                         }
                                     }
                                 }
+
+                                BalCache.saveAll();
 
                                 send(sender, "All players' balances in group %s have been reset to %s".formatted(group, defaultAmount));
                                 return true;
@@ -255,8 +255,9 @@ public class WorldServerCommand extends ViCommand {
                                 worldPlayer.setBalance(defaultAmount, group);
                             } else {
                                 // update in store if player is not online
-                                BalCache.save(uuid, group, defaultAmount);
+                                BalCache.saveAll(uuid, group, defaultAmount);
                             }
+
                             send(sender, "Set %s's balance to %s".formatted(offlinePlayer.getName(), defaultAmount));
                         }
 

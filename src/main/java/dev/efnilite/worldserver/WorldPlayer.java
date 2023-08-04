@@ -153,7 +153,7 @@ public class WorldPlayer {
         }
 
         balances.put(group, amount);
-        BalCache.save(player.getUniqueId(), group, amount);
+        BalCache.saveAll(player.getUniqueId(), group, amount);
     }
 
     /**
@@ -202,7 +202,7 @@ public class WorldPlayer {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) - amount;
-        BalCache.save(player.getUniqueId(), group, updated);
+        BalCache.saveAll(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
     }
@@ -225,7 +225,7 @@ public class WorldPlayer {
             balances.put(group, Option.ECONOMY_STARTING_AMOUNT.getOrDefault(group, 1D));
         }
         double updated = balances.get(group) + amount;
-        BalCache.save(player.getUniqueId(), group, updated);
+        BalCache.saveAll(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
     }

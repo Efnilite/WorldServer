@@ -78,6 +78,10 @@ public class WorldChatListener implements EventWatcher {
 
         event.setJoinMessage(null);
 
+        if (player.isInvisible()) {
+            return;
+        }
+
         Task.create(WorldServer.getPlugin()).delay(1).execute(() -> {
             if (initialWorld != player.getWorld()) {
                 return;
@@ -100,6 +104,10 @@ public class WorldChatListener implements EventWatcher {
         }
 
         event.setQuitMessage(null);
+
+        if (player.isInvisible()) {
+            return;
+        }
 
         performNetworkMessage(player, message);
     }
