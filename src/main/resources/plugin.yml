@@ -10,12 +10,3 @@ commands:
   worldserver:
     aliases: [ws]
     description: The main command of WorldServer.
-  wsbal:
-    aliases: [bal, balance]
-    description: Returns your balance.
-  wspay:
-    aliases: [pay, transfer]
-    description: Returns your balance.
-  wsbaltop:
-    aliases: [baltop, balancetop]
-    description: Returns your balance.

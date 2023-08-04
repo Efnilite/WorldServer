@@ -19,6 +19,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -48,8 +49,7 @@ public class WorldChatListener implements EventWatcher {
 
         if (fromMessage != null) {
             // from send leave
-            GroupUtil.getPlayersInWorldGroup(from)
-                    .forEach(pl -> pl.sendMessage(getColouredMessage(player, fromMessage).replace("%player%", player.getName())));
+            performNetworkMessage(player, fromMessage, from);
         }
 
         if (Option.CLEAR_CHAT_ON_SWITCH) {
@@ -57,8 +57,7 @@ public class WorldChatListener implements EventWatcher {
         }
 
         if (toMessage != null) {
-            GroupUtil.getPlayersInWorldGroup(to)
-                    .forEach(p -> p.sendMessage(getColouredMessage(player, toMessage).replace("%player%", player.getName())));
+            performNetworkMessage(player, toMessage, to);
         }
     }
 
@@ -78,20 +77,16 @@ public class WorldChatListener implements EventWatcher {
 
         event.setJoinMessage(null);
 
-        if (player.isInvisible()) {
-            return;
-        }
-
         Task.create(WorldServer.getPlugin()).delay(1).execute(() -> {
             if (initialWorld != player.getWorld()) {
                 return;
             }
 
-            performNetworkMessage(player, message);
+            performNetworkMessage(player, message, player.getWorld());
         }).run();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void leave(PlayerQuitEvent event) {
         if (!Option.CHAT_ENABLED) {
             return;
@@ -105,17 +100,18 @@ public class WorldChatListener implements EventWatcher {
 
         event.setQuitMessage(null);
 
-        if (player.isInvisible()) {
-            return;
-        }
-
-        performNetworkMessage(player, message);
+        performNetworkMessage(player, message, player.getWorld());
     }
 
-    private void performNetworkMessage(Player player, @Nullable String message) {
-        GroupUtil.getPlayersInWorldGroup(player.getWorld())
-                .forEach(p -> p.sendMessage(getColouredMessage(player, message)
-                        .replace("%player%", player.getName())));
+    private void performNetworkMessage(Player player, @NotNull String message, World world) {
+        for (Player p : GroupUtil.getPlayersInWorldGroup(world)) {
+            if (!p.canSee(player)) {
+                continue;
+            }
+
+            p.sendMessage(getColouredMessage(player, message)
+                    .replace("%player%", player.getName()));
+        }
     }
 
     @Nullable

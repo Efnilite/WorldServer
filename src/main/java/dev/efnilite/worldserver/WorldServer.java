@@ -14,8 +14,11 @@ import dev.efnilite.worldserver.eco.*;
 import dev.efnilite.worldserver.hook.PlaceholderHook;
 import dev.efnilite.worldserver.hook.VaultHook;
 import dev.efnilite.worldserver.tab.WorldTabListener;
+import dev.efnilite.worldserver.util.BukkitCommand;
+import dev.efnilite.worldserver.util.Commands;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -100,14 +103,15 @@ public class WorldServer extends ViPlugin {
 
         registerCommand("worldserver", new WorldServerCommand());
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALANCE_COMMAND) {
-            registerCommand("wsbal", new BalCommand());
+            registerCommand(new BalCommand(), "bal", "balance", "wsbal");
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_PAY_COMMAND) {
-            registerCommand("wspay", new PayCommand());
+            registerCommand(new PayCommand(), "pay", "transfer", "wspay");
         }
         if (Option.ECONOMY_ENABLED && Option.ECONOMY_OVERRIDE_BALTOP_COMMAND) {
-            registerCommand("wsbaltop", new BaltopCommand());
+            registerCommand(new BaltopCommand(), "baltop", "balancetop", "wsbaltop");
         }
+
         registerListener(new GeneralListener());
         registerListener(new WorldChatListener());
         registerListener(new WorldTabListener());
@@ -133,6 +137,12 @@ public class WorldServer extends ViPlugin {
         PlaceholderHook.register();
 
         logging.info("Loaded WorldServer v%s in %dms!".formatted(getDescription().getVersion(), Time.timerEnd("ws enable")));
+    }
+
+    private void registerCommand(CommandExecutor executor, String... aliases) {
+        for (String alias : aliases) {
+            Commands.add(alias, new BukkitCommand(alias, executor));
+        }
     }
 
     @Override
