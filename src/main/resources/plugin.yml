@@ -4,7 +4,6 @@ main: dev.efnilite.worldserver.WorldServer
 version: ${project.version}
 api-version: 1.16
 description: Separate chat, the tab list and the economy in each world.
-depend: [vilib]
 softdepend: [Vault, PlaceholderAPI]
 commands:
   worldserver:
