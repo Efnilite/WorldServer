@@ -1,6 +1,6 @@
 name: WorldServer
 author: Efnilite
-main: dev.efnilite.worldserver.WorldServer
+main: dev.efnilite.ws.WorldServer
 version: ${project.version}
 api-version: 1.16
 description: Separate chat, the tab list and the economy in each world.
