@@ -21,7 +21,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,21 +77,6 @@ public class WorldServer extends ViPlugin {
 
     @Override
     public void enable() {
-
-        // ----- Check vilib -----
-
-        Plugin vilib = getServer().getPluginManager().getPlugin("vilib");
-        if (vilib == null || !vilib.isEnabled()) {
-            getLogger().severe("##");
-            getLogger().severe("## WorldServer requires vilib to work!");
-            getLogger().severe("##");
-            getLogger().severe("## Please download it here:");
-            getLogger().severe("## https://github.com/Efnilite/vilib/releases/latest");
-            getLogger().severe("##");
-
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
 
         Menu.init(this);
 
