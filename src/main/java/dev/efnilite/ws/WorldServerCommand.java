@@ -39,6 +39,7 @@ public class WorldServerCommand extends ViCommand {
                 send(sender, "<dark_gray><strikethrough>-----------<reset> " + WorldServer.NAME + " <dark_gray><strikethrough>-----------");
                 send(sender, "");
                 send(sender, "<gray>/ws <dark_gray>- The main command");
+                send(sender, "<gray>/ws global or /ws gc <dark_gray>- Toggle global chat");
                 if (sender.hasPermission("ws.menu")) {
                     send(sender, "<gray>/ws menu <dark_gray>- Change all settings quickly");
                 }
@@ -117,6 +118,23 @@ public class WorldServerCommand extends ViCommand {
                             return true;
                         }
                         Task.create(WorldServer.getPlugin()).execute(() -> EcoTopMenu.open(WorldPlayer.getPlayer((Player) sender))).run();
+                        return true;
+                    }
+                    case "global", "gc" -> {
+                        if (!(sender instanceof Player player)) {
+                            return true;
+                        }
+
+                        var wp = WorldPlayer.getPlayer(player);
+                        var globalChat = wp.isGlobalChat();
+
+                        if (globalChat) {
+                            wp.send(Config.CONFIG.getString("global-chat-change.on"));
+                        } else {
+                            wp.send(Config.CONFIG.getString("global-chat-change.off"));
+                        }
+
+                        wp.setGlobalChat(!globalChat);
                         return true;
                     }
                 }

@@ -133,7 +133,7 @@ public class WorldChatListener implements EventWatcher {
         String prefix = Option.GLOBAL_CHAT_PREFIX;
 
         // Global chat handling
-        if (Option.GLOBAL_CHAT_ENABLED && message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
+        if (Option.GLOBAL_CHAT_ENABLED && shouldSendInGlobal(WorldPlayer.getPlayer(player), prefix, message)) {
             event.setFormat(getFormattedMessage(player, Option.GLOBAL_CHAT_FORMAT));
             event.setMessage(message.replaceFirst(prefix, ""));
 
@@ -156,7 +156,7 @@ public class WorldChatListener implements EventWatcher {
                 .replace("%message%", event.getMessage());
 
         WorldPlayer.PLAYERS.values().stream()
-                .filter(wp -> wp.spyMode && !sendTo.contains(wp.player))
+                .filter(wp -> wp.isSpyMode() && !sendTo.contains(wp.player))
                 .forEach(wp -> wp.send(spy));
 
         // Update possible formatting for groups and single worlds
@@ -181,6 +181,13 @@ public class WorldChatListener implements EventWatcher {
 
         cooldown(event, group);
         blocked(event);
+    }
+
+    private boolean shouldSendInGlobal(WorldPlayer player, String prefix, String message) {
+        var isGlobalChatAlwaysOn = player.isGlobalChat();
+        var isPrefixed = message.length() > prefix.length() && message.substring(0, prefix.length()).equalsIgnoreCase(prefix);
+
+        return isGlobalChatAlwaysOn || isPrefixed;
     }
 
     // checks if this message should be cancelled by the cooldown

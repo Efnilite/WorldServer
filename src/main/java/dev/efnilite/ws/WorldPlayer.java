@@ -20,9 +20,11 @@ public class WorldPlayer {
     public static final Map<UUID, WorldPlayer> PLAYERS = new HashMap<>();
     public final Player player;
     @Expose
-    public boolean spyMode = false;
+    private boolean spyMode = false;
     @Expose
     public Map<String, Double> balances = new HashMap<>();
+    @Expose
+    private boolean globalChat = false;
 
     private WorldPlayer(Player player) {
         this.player = player;
@@ -105,6 +107,7 @@ public class WorldPlayer {
 
             wp.spyMode = container.spyMode;
             wp.balances = container.balances != null ? container.balances : new HashMap<>();
+            wp.globalChat = container.globalChat;
 
             return wp;
         } catch (Throwable throwable) {
@@ -226,6 +229,22 @@ public class WorldPlayer {
         BalCache.saveAll(player.getUniqueId(), group, updated);
 
         balances.put(group, updated);
+    }
+
+    public boolean isGlobalChat() {
+        return globalChat;
+    }
+
+    public void setGlobalChat(boolean globalChat) {
+        this.globalChat = globalChat;
+    }
+
+    public boolean isSpyMode() {
+        return spyMode;
+    }
+
+    public void setSpyMode(boolean spyMode) {
+        this.spyMode = spyMode;
     }
 
     public String getWorldGroup() {
