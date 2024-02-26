@@ -126,15 +126,15 @@ public class WorldServerCommand extends ViCommand {
                         }
 
                         var wp = WorldPlayer.getPlayer(player);
-                        var globalChat = wp.isGlobalChat();
+                        var isGlobal = !wp.isGlobalChat();
 
-                        if (globalChat) {
-                            wp.send(Config.CONFIG.getString("global-chat-change.on"));
+                        wp.setGlobalChat(isGlobal);
+
+                        if (isGlobal) {
+                            wp.send(Config.CONFIG.getString("global-chat-change.enabled"));
                         } else {
-                            wp.send(Config.CONFIG.getString("global-chat-change.off"));
+                            wp.send(Config.CONFIG.getString("global-chat-change.disabled"));
                         }
-
-                        wp.setGlobalChat(!globalChat);
                         return true;
                     }
                 }

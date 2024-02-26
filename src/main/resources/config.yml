@@ -69,8 +69,8 @@ global-chat-format: '<#468094>[Global] <white>%player%: %message%'
 # -= Global chat change =-
 # Message on change of chat format.
 global-chat-change:
-  on: "<dark_gray>Enabled global chat."
-  off: "<dark_gray>Disabled global chat."
+  enabled: "<dark_gray>Enabled global chat."
+  disabled: "<dark_gray>Disabled global chat."
 
 # -= Spy Format =-
 # The message format for when spy mode is enabled for an admin.
