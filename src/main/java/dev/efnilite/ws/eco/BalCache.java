@@ -10,6 +10,18 @@ import java.util.*;
 
 public class BalCache {
 
+    /**
+     * @return An immutable list of all {@link java.util.UUID}s present in the balance sheet.
+     */
+    public static Set<UUID> getUUIDs() {
+        return new HashSet<>(BALANCES.keySet());
+    }
+
+    public static double get(UUID uuid, String group) {
+        Map<String, Double> data = BALANCES.getOrDefault(uuid, new HashMap<>());
+        return data.getOrDefault(group, 0D);
+    }
+
     public static final Map<UUID, Map<String, Double>> BALANCES = new HashMap<>();
 
     public static void saveAll(UUID uuid, String group, double amount) {
@@ -23,42 +35,44 @@ public class BalCache {
 
         if (!(folder.exists())) {
             folder.mkdirs();
-            return new File[] {};
+            return new File[]{};
         }
 
         File[] files = folder.listFiles();
         if (files == null) {
-            return new File[] {};
+            return new File[]{};
         }
 
         return files;
     }
 
     public static void read() {
-        try {
-            for (File file : getPlayerFiles()) {
+        for (File file : getPlayerFiles()) {
+            try {
                 FileReader reader = new FileReader(file);
+
                 WorldPlayer from = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
                 if (from == null) {
                     continue;
                 }
 
-                String fName = file.getName();
-                UUID uuid = UUID.fromString(fName.substring(0, fName.lastIndexOf('.')));
+                String name = file.getName();
+                UUID uuid = UUID.fromString(name.substring(0, name.lastIndexOf('.')));
 
                 BALANCES.put(uuid, from.balances != null ? from.balances : new HashMap<>());
                 reader.close();
+            } catch (Exception ex) {
+                WorldServer.logging().stack("Couldn't read data of %s".formatted(file.getName()), ex);
             }
-        } catch (Exception ex) {
-            WorldServer.logging().stack("Error while reading existing scores", ex);
         }
     }
 
     public static void saveAll() {
-        try {
-            for (File file : getPlayerFiles()) {
+        for (File file : getPlayerFiles()) {
+            try {
                 FileReader reader = new FileReader(file);
                 WorldPlayer from = WorldServer.getGson().fromJson(reader, WorldPlayer.class);
+
                 if (from == null) {
                     continue;
                 }
@@ -73,21 +87,9 @@ public class BalCache {
                 }
 
                 reader.close();
+            } catch (Exception ex) {
+                WorldServer.logging().stack("Couldn't write data of %s".formatted(file.getName()), ex);
             }
-        } catch (Exception ex) {
-            WorldServer.logging().stack("Error while reading existing scores", ex);
         }
-    }
-
-    /**
-     * @return An immutable list of all {@link UUID}s present in the balance sheet.
-     */
-    public static Set<UUID> getUUIDs() {
-        return new HashSet<>(BALANCES.keySet());
-    }
-
-    public static double get(UUID uuid, String group) {
-        Map<String, Double> data = BALANCES.getOrDefault(uuid, new HashMap<>());
-        return data.getOrDefault(group, 0D);
     }
 }
