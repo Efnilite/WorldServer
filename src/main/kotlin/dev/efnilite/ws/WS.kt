@@ -12,7 +12,6 @@ import dev.efnilite.ws.events.ChatEvents
 import dev.efnilite.ws.events.EcoEvents
 import dev.efnilite.ws.events.TabEvents
 import dev.efnilite.ws.hook.PapiHook
-import dev.efnilite.ws.player.WorldPlayer
 import dev.efnilite.ws.world.Worlds
 import java.io.File
 
@@ -47,7 +46,7 @@ class WS : ViPlugin() {
         val metrics = Metrics(this, 13856)
         metrics.addCustomChart(SimplePie("chat_enabled") { Config.CONFIG.getBoolean("chat").toString() })
         metrics.addCustomChart(SimplePie("tab_enabled") { Config.CONFIG.getBoolean("tab").toString() })
-        metrics.addCustomChart(SimplePie("eco_enabled") { Config.CONFIG.getBoolean("eco").toString() })
+        metrics.addCustomChart(SimplePie("eco_enabled") { Config.CONFIG.getBoolean("eco.enabled").toString() })
     }
 
     override fun disable() {

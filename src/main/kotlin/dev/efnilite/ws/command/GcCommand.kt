@@ -2,7 +2,7 @@ package dev.efnilite.ws.command
 
 import dev.efnilite.vilib.command.ViCommand
 import dev.efnilite.ws.config.Locales
-import dev.efnilite.ws.player.WorldPlayer.Companion.asWorldPlayer
+import dev.efnilite.ws.WorldPlayer.Companion.asWorldPlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

@@ -5,7 +5,7 @@ import dev.efnilite.vilib.util.Task
 import dev.efnilite.ws.WS
 import dev.efnilite.ws.config.Config
 import dev.efnilite.ws.config.Locales
-import dev.efnilite.ws.player.WorldPlayer.Companion.asWorldPlayer
+import dev.efnilite.ws.WorldPlayer.Companion.asWorldPlayer
 import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.World.Companion.asWorld
 import org.bukkit.event.EventHandler

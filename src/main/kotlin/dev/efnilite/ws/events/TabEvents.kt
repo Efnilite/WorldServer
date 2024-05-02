@@ -3,7 +3,7 @@ package dev.efnilite.ws.events
 import dev.efnilite.vilib.event.EventWatcher
 import dev.efnilite.ws.WS
 import dev.efnilite.ws.config.Config
-import dev.efnilite.ws.player.WorldPlayer.Companion.asWorldPlayer
+import dev.efnilite.ws.WorldPlayer.Companion.asWorldPlayer
 import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.World.Companion.asWorld
 import org.bukkit.Bukkit
@@ -46,6 +46,10 @@ object TabEvents : EventWatcher {
 
     @EventHandler
     fun switchWorld(event: PlayerChangedWorldEvent) {
+        if (Config.CONFIG.getBoolean("clear-chat-on-switch")) {
+            repeat(100) { event.player.sendMessage("") }
+        }
+
         if (!Config.CONFIG.getBoolean("tab")) {
             return
         }

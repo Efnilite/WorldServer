@@ -30,3 +30,30 @@ chat-quit-formats:
   world_nether: '<#930508>%player% left'
   world_the_end: '<#f7fc76>%player% left'
   factions: '<red><bold>-</bold> <#98FF89>%player%'
+
+eco:
+
+  # -= Economy balance notification format =-
+  # This will only be set if economy and economy switch notifications are enabled.
+  # %amount% - the current amount
+  switch-format: '<white>You now have <#4DF019>E$%amount%<gray>.'
+  currency-symbol: 'E$'
+  currency-names:
+    singular: 'eurodollar'
+    plural: 'eurodollars'
+
+  # -= Economy balance format =-
+  # The message format of the /bal command.
+  balance-format: '%player% has E$ %amount%'
+
+  # -= Economy balance change format =-
+  # The message a player receives when their balance is changed.
+  # Placeholders:
+  # %amount% - the given amount.
+  # %prefix% - a + or -, depending on whether the amount is added or removed.
+  # Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
+  balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
+
+  pay-no-funds-format: "You don't have enough E$ to do that!"
+  pay-send-format: 'You sent %player% E$ %amount%'
+  pay-receive-format: '%player% sent you E$ %amount%'

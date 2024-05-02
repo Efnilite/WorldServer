@@ -59,88 +59,49 @@ clear-chat-on-switch: false
 # -= Enable per world economy =-
 # True: players will have a different balance, depending on which World or World Group they are in.
 # False: players will share
-economy-enabled: true
+eco:
 
-# -= Economy global =-
-# True: the economy will be shared across the entire server
-# False: if economy is enabled, each world or world group will have a different economy.
-economy-global-enabled: false
+  enabled: false
 
-# -= Economy switch notification =-
-# True: players will receive a message when they switch worlds (or join) detailing how much balance they have
-# False: players won't get a message
-economy-switch-notification: true
+  # -= Economy global =-
+  # True: the economy will be shared across the entire server
+  # False: if economy is enabled, each world or world group will have a different economy.
+  global-enabled: false
 
-# -= Economy balance notification format =-
-# Set the format of the message players get if they switch worlds.
-# This will only be set if economy and economy switch notifications are enabled.
-# Placeholders:
-# %amount% - the current amount
-economy-switch-format: '<white>You now have <#4DF019>E$%amount%<gray>.'
+  # -= Economy switch notification =-
+  # True: players will receive a message when they switch worlds (or join) detailing how much balance they have
+  # False: players won't get a message
+  switch-notification: true
 
-# -= Economy currency symbol =-
-# The economy currency symbol.
-economy-currency-symbol: 'E$'
+  # -= Economy allow negative balance =-
+  # When true, WorldServer will not check if the player has enough balance when withdrawing.
+  # This will allow players to have a negative balance.
+  allow-negative-balance: false
 
-# -= Economy currency names =-
-# The names of the currency.
-# The first entry is for singular, the second for plural.
-economy-currency-names:
-  singular: 'eurodollar'
-  plural: 'eurodollars'
+  # -= Economy starting amount =-
+  # The amount of money the player will start with in a specific world group if they haven't ever joined that group.
+  starting-amount:
+    example: 1000
+    MyWorld: 69.69
 
-# -= Economy allow negative balance =-
-# When true, WorldServer will not check if the player has enough balance when withdrawing.
-# This will allow players to have a negative balance.
-economy-allow-negative-balance: false
+  # -= Economy override balance command =-
+  # Whether WorldServer should register /bal and /balance.
+  # This will override any plugin who is already using this command.
+  # Requires a restart to take effect.
+  override-balance-command: true
 
-# -= Economy starting amount =-
-# The amount of money the player will start with in a specific world group if they haven't ever joined that group.
-economy-starting-amount:
-  example: 1000
-  MyWorld: 69.69
+  # -= Economy balance change =-
+  # Sends a message to the player when their balance changes.
+  balance-change: true
 
-# -= Economy override balance command =-
-# Whether WorldServer should register /bal and /balance.
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-balance-command: true
+  # -= Economy override pay command =-
+  # Whether WorldServer should register /pay
+  # This will override any plugin who is already using this command.
+  # Requires a restart to take effect.
+  override-pay-command: true
 
-# -= Economy balance format =-
-# The message format of the /bal command.
-economy-balance-format: '%player% has E$ %amount%'
-
-# -= Economy balance change =-
-# Sends a message to the player when their balance changes.
-economy-balance-change: true
-
-# -= Economy balance change format =-
-# The message a player receives when their balance is changed.
-# Placeholders:
-# %amount% - the given amount.
-# %prefix% - a + or -, depending on whether the amount is added or removed.
-# Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
-economy-balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
-
-# -= Economy override pay command =-
-# Whether WorldServer should register /pay
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-pay-command: true
-
-# -= Economy pay format =-
-# These messages support PlaceholderAPI placeholders.
-# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
-
-# The format for when a player does not have enough funds to pay someone.
-economy-pay-no-funds-format: 'You don''t have enough E$ to do that!'
-# The format for when a player sends another player money.
-economy-pay-send-format: 'You sent %player% E$ %amount%'
-# The format for when a player receives money from another player.
-economy-pay-receive-format: '%player% sent you E$ %amount%'
-
-# -= Economy override baltop command =-
-# Whether WorldServer should register /baltop and /balancetop
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-baltop-command: true
+  # -= Economy override baltop command =-
+  # Whether WorldServer should register /baltop and /balancetop
+  # This will override any plugin who is already using this command.
+  # Requires a restart to take effect.
+  override-baltop-command: true
