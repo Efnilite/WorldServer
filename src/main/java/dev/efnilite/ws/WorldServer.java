@@ -136,18 +136,4 @@ public class WorldServer extends ViPlugin {
     public void disable() {
         new HashSet<>(WorldPlayer.PLAYERS.values()).forEach(wp -> WorldPlayer.unregister(wp.player, false));
     }
-
-    @Override
-    public @Nullable GitElevator getElevator() {
-        return null;
-    }
-
-    @Nullable
-    public GitElevator getElevatorInstance() {
-        if (elevator == null) {
-            elevator = getElevator();
-        }
-
-        return elevator;
-    }
 }

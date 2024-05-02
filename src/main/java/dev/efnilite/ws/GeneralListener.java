@@ -11,17 +11,7 @@ public class GeneralListener implements EventWatcher {
 
     @EventHandler
     public void join(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        GitElevator elevator = WorldServer.getPlugin().getElevatorInstance();
-
-        if (player.isOp() && elevator != null && elevator.isOutdated()) {
-            WorldServerCommand.send(player, "");
-            WorldServerCommand.send(player, "%sYour WorldServer version is outdated. Please update!".formatted(WorldServer.MESSAGE_PREFIX));
-            WorldServerCommand.send(player, "");
-        }
-
-        WorldPlayer.register(player);
+        WorldPlayer.register(event.getPlayer());
     }
 
     @EventHandler
