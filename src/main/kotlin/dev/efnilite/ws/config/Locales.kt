@@ -116,18 +116,18 @@ object Locales {
         }
     }
 
-    private fun getLocale(player: Player): String {
-        return player.asElytraPlayer()?.getGenerator()?.settings?.locale
-            ?: Config.CONFIG.getString("settings.locale.default")
-    }
-
-    fun getString(player: Player, path: String): String {
-        return getString(getLocale(player), path)
-    }
-
-    fun getString(player: ElytraPlayer, path: String): String {
-        return getString(player.getGenerator().settings.locale, path)
-    }
+//    private fun getLocale(player: Player): String {
+//        return player.asElytraPlayer()?.getGenerator()?.settings?.locale
+//            ?: Config.CONFIG.getString("settings.locale.default")
+//    }
+//
+//    fun getString(player: Player, path: String): String {
+//        return getString(getLocale(player), path)
+//    }
+//
+//    fun getString(player: ElytraPlayer, path: String): String {
+//        return getString(player.getGenerator().settings.locale, path)
+//    }
 
     private fun getString(locale: String, path: String): String {
         return Strings.colour(
@@ -139,13 +139,13 @@ object Locales {
         )
     }
 
-    fun getStringList(player: Player, path: String): List<String> {
-        return getStringList(getLocale(player), path)
-    }
-
-    fun getStringList(player: ElytraPlayer, path: String): List<String> {
-        return getStringList(player.getGenerator().settings.locale, path)
-    }
+//    fun getStringList(player: Player, path: String): List<String> {
+//        return getStringList(getLocale(player), path)
+//    }
+//
+//    fun getStringList(player: ElytraPlayer, path: String): List<String> {
+//        return getStringList(player.getGenerator().settings.locale, path)
+//    }
 
     private fun getStringList(locale: String, path: String): List<String> {
         return getValue(
@@ -163,13 +163,13 @@ object Locales {
         return f.apply(config) ?: def
     }
 
-    fun getItem(player: ElytraPlayer, path: String, vararg replace: String): Item {
-        return getItem(player.getGenerator().settings.locale, path, *replace)
-    }
-
-    fun getItem(player: Player, path: String, vararg replace: String): Item {
-        return getItem(getLocale(player), path, *replace)
-    }
+//    fun getItem(player: ElytraPlayer, path: String, vararg replace: String): Item {
+//        return getItem(player.getGenerator().settings.locale, path, *replace)
+//    }
+//
+//    fun getItem(player: Player, path: String, vararg replace: String): Item {
+//        return getItem(getLocale(player), path, *replace)
+//    }
 
     private val pattern: Pattern = Pattern.compile("%[a-z]")
 

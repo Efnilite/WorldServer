@@ -26,10 +26,9 @@ shared:
     - 'chat||tab||eco||factions_nether'
     - 'chat||tab||eco||factions_the_end'
 
-# -= Enable per world tab list =-
-# True: players not in the same world will be hidden
-# False: every player will be visible
-tab-enabled: true
+# -= Tab =-
+# If true, hides players not in the player's current world.
+tab: true
 
 # -= Enable per world chat =-
 # True: players not in the same world can't chat with each other
