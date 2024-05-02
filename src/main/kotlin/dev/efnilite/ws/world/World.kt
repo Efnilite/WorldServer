@@ -24,6 +24,8 @@ data class World(val name: String,
      * Returns the players in [Shared] with the specified [ShareType].
      */
     fun getPlayers(shareType: ShareType): Set<Player> {
+        if (shared.isEmpty()) return asWorld()?.players?.toSet() ?: emptySet()
+
         return shared.asSequence()
             .filter { it.shareType == shareType }
             .flatMap { it.worlds }

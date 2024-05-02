@@ -1,0 +1,3 @@
+- ws
+- ws.global
+- ws.menu

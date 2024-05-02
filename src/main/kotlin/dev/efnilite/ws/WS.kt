@@ -1,10 +1,15 @@
 package dev.efnilite.ws
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import dev.efnilite.ws.config.Config
 import dev.efnilite.vilib.ViPlugin
 import dev.efnilite.vilib.util.Logging
+import dev.efnilite.ws.command.Command
+import dev.efnilite.ws.command.GcCommand
+import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.config.Locales
+import dev.efnilite.ws.events.ChatEvents
+import dev.efnilite.ws.events.EcoEvents
+import dev.efnilite.ws.events.TabEvents
+import dev.efnilite.ws.hook.PapiHook
 import java.io.File
 
 class WS : ViPlugin() {
@@ -15,8 +20,21 @@ class WS : ViPlugin() {
         instance = this
         stopping = false
 
+        Locales.init()
+
         registerListener(Events)
+        registerListener(ChatEvents)
+        registerListener(EcoEvents)
+        registerListener(TabEvents)
+
         registerCommand("ws", Command)
+        registerCommand("globalchat", GcCommand)
+
+        if (server.pluginManager.isPluginEnabled("PlaceholderAPI")) {
+            log("Registered PlaceholderAPI Hook")
+            papiHook = PapiHook
+            PapiHook.register()
+        }
     }
 
     override fun disable() {
@@ -32,10 +50,10 @@ class WS : ViPlugin() {
     }
 
     companion object {
+        var papiHook: PapiHook? = null
+
         var stopping = false
             private set
-
-        val GSON: Gson = GsonBuilder().disableHtmlEscaping().create()
 
         lateinit var instance: WS
             private set

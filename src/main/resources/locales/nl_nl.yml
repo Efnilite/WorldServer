@@ -1,0 +1,6 @@
+# US English (en_US)
+
+global-chat:
+  format: "<#cc0066>[%world%] <#ff80bf>%player% <gray>%message%"
+  enable: "<#cc0066>Enabled global chat."
+  disable: "<#cc0066>Disabled global chat."

@@ -1,6 +1,6 @@
 name: WorldServer
 version: ${project.version}
-api-version: 1.16
+api-version: 1.19
 author: Efnilite
 main: dev.efnilite.ws.WorldServer
 description: Separate chat, the tab list and the economy in each world.
@@ -9,3 +9,6 @@ commands:
   worldserver:
     aliases: [ws]
     description: The main command of WorldServer.
+  globalchat:
+    aliases: [gc, global-chat, global]
+    description: Toggle global chat.

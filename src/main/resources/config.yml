@@ -9,12 +9,12 @@
 debug: false
 
 # -= Permissions =-
-# If true, using /ws requires the "ws" permission.
+# If true, commands will require permissions.
 permissions: false
 
 # -= Locale =-
 # The default locale to use if the player's locale is not found.
-locale: "en_US"
+locale: "en_us"
 
 # -= Shared =-
 # Worlds in these groups share chat, tab list, or economy.
@@ -52,56 +52,13 @@ global-chat: true
 # If you set this to '!', typing '!hello' will be seen by all players.
 global-chat-prefix: '!'
 
-# -= World chat format =-
-# Change the chat format for a group of worlds or a specific world
-# If conflict happens, groups are prioritized over worlds.
-# These messages support PlaceholderAPI placeholders.
-# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
-# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-chat-format:
-  example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
-  MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
-
-# -= World chat cooldown =-
-# The chat cooldown per world group or world.
-# This is in seconds. Time cheat sheet:
-# 1 minute = 60 seconds
-# 1 hour = 3600 seconds
-# 1 day = 86400 seconds
-chat-cooldown:
-  global: 5
-  example: 1
-  MyWorld: 2.5
-
-# -= World chat cooldown format =-
-# The message players get when they are on chat cooldown.
-# Placeholders:
-# %remaining% - the time remaining
-# %time% - the total cooldown time
-chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds until you can send another message!'
-
-# -= Chat blocked =-
-# Words which will be banned in chat.
-# These are case-insensitive.
-chat-blocked:
-  - "bad word"
-
-# -= Chat blocked format =-
-# The message players get when their message contains a blocked word.
-chat-blocked-format: '<gray>You can''t say mean things :('
-
 # -= World chat join formats =-
 # Add a custom join message per world chat.
 # Placeholders:
 # %player% - the player
 # %prefix% - The player's prefix
 # %suffix% - The player's suffix
+# All PlaceholderAPI placeholders are supported.
 chat-join-formats:
   example: '<green><bold>+</bold> <#98FF89>%player%'
   MyWorld: '<#98FF89>%player% joined.'
@@ -112,12 +69,13 @@ chat-join-formats:
 # %player% - the player
 # %prefix% - The player's prefix
 # %suffix% - The player's suffix
+# All PlaceholderAPI placeholders are supported.
 chat-leave-formats:
   example: '<red><bold>-</bold> <#98FF89>%player%'
   MyWorld: '<#FF8888>%player% left.'
 
 # -= Clear chat on switch =-
-# If set to true, will clear the chat on a switch of the world.
+# If true, will clear the chat on a switch of the world.
 clear-chat-on-switch: false
 
 # -= Enable per world economy =-

@@ -43,7 +43,7 @@ object Locales {
             locales.clear()
             val embedded: FileConfiguration = YamlConfiguration.loadConfiguration(
                 InputStreamReader(
-                    plugin.getResource("locales/en.yml")!!,
+                    plugin.getResource("locales/en_us.yml")!!,
                     StandardCharsets.UTF_8
                 )
             )
@@ -62,8 +62,8 @@ object Locales {
 
             // create non-existent files
             if (files != null && files.isEmpty()) {
-                plugin.saveResource("locales/en.yml", false)
-                plugin.saveResource("locales/nl.yml", false)
+                plugin.saveResource("locales/en_us.yml", false)
+                plugin.saveResource("locales/nl_nl.yml", false)
             }
 
             // get all files in locales folder
@@ -116,36 +116,22 @@ object Locales {
         }
     }
 
-//    private fun getLocale(player: Player): String {
-//        return player.asElytraPlayer()?.getGenerator()?.settings?.locale
-//            ?: Config.CONFIG.getString("settings.locale.default")
-//    }
-//
-//    fun getString(player: Player, path: String): String {
-//        return getString(getLocale(player), path)
-//    }
-//
-//    fun getString(player: ElytraPlayer, path: String): String {
-//        return getString(player.getGenerator().settings.locale, path)
-//    }
+    fun getString(player: Player, path: String): String {
+        return getString(player.locale.lowercase(), path)
+    }
 
     private fun getString(locale: String, path: String): String {
         return Strings.colour(
             getValue(
             locale,
             Function<FileConfiguration, String> { config: FileConfiguration -> config.getString(path) },
-            ""
-        )
+            "")
         )
     }
 
-//    fun getStringList(player: Player, path: String): List<String> {
-//        return getStringList(getLocale(player), path)
-//    }
-//
-//    fun getStringList(player: ElytraPlayer, path: String): List<String> {
-//        return getStringList(player.getGenerator().settings.locale, path)
-//    }
+    fun getStringList(player: Player, path: String): List<String> {
+        return getStringList(player.locale.lowercase(), path)
+    }
 
     private fun getStringList(locale: String, path: String): List<String> {
         return getValue(
@@ -158,18 +144,14 @@ object Locales {
     private fun <T> getValue(locale: String, f: Function<FileConfiguration, T>, def: T): T {
         if (locales.isEmpty()) return def
 
-        val config: FileConfiguration = locales[locale] ?: return def
+        val config = (locales[locale] ?: locales[Config.CONFIG.getString("locale")]) ?: return def
 
         return f.apply(config) ?: def
     }
 
-//    fun getItem(player: ElytraPlayer, path: String, vararg replace: String): Item {
-//        return getItem(player.getGenerator().settings.locale, path, *replace)
-//    }
-//
-//    fun getItem(player: Player, path: String, vararg replace: String): Item {
-//        return getItem(getLocale(player), path, *replace)
-//    }
+    fun getItem(player: Player, path: String, vararg replace: String): Item {
+        return getItem(player.locale.lowercase(), path, *replace)
+    }
 
     private val pattern: Pattern = Pattern.compile("%[a-z]")
 

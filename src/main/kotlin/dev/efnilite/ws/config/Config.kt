@@ -4,17 +4,21 @@ import dev.efnilite.vilib.configupdater.ConfigUpdater
 import dev.efnilite.ws.WS
 import org.bukkit.configuration.file.YamlConfiguration
 
-enum class Config(file: String) {
+enum class Config(private val file: String) {
 
     CONFIG("config.yml");
 
-    private val config: YamlConfiguration
+    private lateinit var config: YamlConfiguration
 
     init {
         WS.instance.saveFile(file)
 
         ConfigUpdater.update(WS.instance, file, WS.instance.dataFolder.resolve(file), listOf("shared"))
 
+        load()
+    }
+
+    fun load() {
         config = YamlConfiguration.loadConfiguration(WS.instance.dataFolder.resolve(file))
     }
 
