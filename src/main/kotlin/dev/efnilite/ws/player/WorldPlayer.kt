@@ -19,7 +19,7 @@ class WorldPlayer(val player: Player) {
 
         val players = mutableMapOf<UUID, WorldPlayer>()
 
-        fun Player.asWorldPlayer() = WorldPlayer(this)
+        fun Player.asWorldPlayer() = players[uniqueId]!!
 
     }
 }

@@ -1,4 +1,10 @@
-**This build requires [vilib v1.2.0](https://github.com/Efnilite/vilib/releases/tag/v1.2.0) to work. ✨**
+Before installing, make sure to back up your config and apply changes carefully.
+A lot has changed!
 
-- Added /ws eco reset
-- Fixed /baltop sometimes not working
+- Rewrote everything in Kotlin
+- Added command for toggling global chat (/gc)
+- Added locales
+- Removed chat format 
+  - This should now be handled by chat formatting plugins
+- Removed chat cooldown, blocked words list
+  - These should now be handled by chat management plugins

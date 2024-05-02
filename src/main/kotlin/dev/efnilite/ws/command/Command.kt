@@ -3,6 +3,7 @@ package dev.efnilite.ws.command
 import dev.efnilite.vilib.command.ViCommand
 import dev.efnilite.vilib.util.Strings
 import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.world.Worlds
 import org.bukkit.command.CommandSender
 
 object Command : ViCommand() {
@@ -45,7 +46,9 @@ object Command : ViCommand() {
                 }
 
                 Config.entries.forEach { it.load() }
-                sender.send("Config files reloaded")
+                Worlds.init()
+
+                sender.send("<#cc0066>Config files reloaded")
             }
         }
         return true

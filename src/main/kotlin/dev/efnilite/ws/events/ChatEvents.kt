@@ -1,14 +1,18 @@
 package dev.efnilite.ws.events
 
 import dev.efnilite.vilib.event.EventWatcher
+import dev.efnilite.vilib.util.Task
 import dev.efnilite.ws.WS
 import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.config.Locales
 import dev.efnilite.ws.player.WorldPlayer.Companion.asWorldPlayer
 import dev.efnilite.ws.world.ShareType
-import org.bukkit.entity.Player
+import dev.efnilite.ws.world.World.Companion.asWorld
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
 
 object ChatEvents : EventWatcher {
 
@@ -22,20 +26,75 @@ object ChatEvents : EventWatcher {
         val message = event.message
 
         val prefix = Config.CONFIG.getString("global-chat-prefix")
-        if (useGlobalChat(player, message, prefix)) {
-            event.message = message.substring(prefix.length)
 
-            WS.log("Sending global chat from ${player.name}: $message")
+        if (!Config.CONFIG.getBoolean("global-chat")) {
+            event.recipients.clear()
+            event.recipients.addAll(player.asWorldPlayer().world.getPlayers(ShareType.CHAT))
+            return
         }
 
-        event.recipients.clear()
-        event.recipients.addAll(player.asWorldPlayer().world.getPlayers(ShareType.CHAT))
+        if (player.asWorldPlayer().globalChat) {
+            WS.log("Sending global chat from ${player.name}: $message")
+        } else if (message.startsWith(prefix) && message.length > prefix.length) {
+            event.message = message.substring(prefix.length)
+        }
+
+        return
     }
 
-    private fun useGlobalChat(player: Player, message: String, prefix: String): Boolean {
-        if (!Config.CONFIG.getBoolean("global-chat")) return false
+    @EventHandler
+    fun join(event: PlayerJoinEvent) {
+        val player = event.player
+        val world = player.world.asWorld()
 
-        return player.asWorldPlayer().globalChat || (message.startsWith(prefix) && message.length > prefix.length)
+        val sharedName = world.shared.firstOrNull { it.shareType == ShareType.CHAT }?.name
+        val worldName = world.name
+
+        val sharedFormat = Locales.getString(player, "chat-join-formats.$sharedName")
+        val worldFormat = Locales.getString(player, "chat-join-formats.$worldName")
+
+        val format = when {
+            sharedFormat.isNotEmpty() -> sharedFormat
+            worldFormat.isNotEmpty() -> worldFormat
+            else -> return
+        }
+
+        event.joinMessage = null
+
+        Task.create(WS.instance)
+            .delay(1)
+            .execute {
+                if (world.asWorld() != player.world) {
+                    return@execute
+                }
+
+                for (recipient in world.getPlayers(ShareType.CHAT)) {
+                    recipient.sendMessage(format)
+                }
+            }.run()
     }
 
+    @EventHandler
+    fun quit(event: PlayerQuitEvent) {
+        val player = event.player
+        val world = player.world.asWorld()
+
+        val sharedName = world.shared.firstOrNull { it.shareType == ShareType.CHAT }?.name
+        val worldName = world.name
+
+        val sharedFormat = Locales.getString(player, "chat-quit-formats.$sharedName")
+        val worldFormat = Locales.getString(player, "chat-quit-formats.$worldName")
+
+        val format = when {
+            sharedFormat.isNotEmpty() -> sharedFormat
+            worldFormat.isNotEmpty() -> worldFormat
+            else -> return
+        }
+
+        event.quitMessage = null
+
+        for (recipient in world.getPlayers(ShareType.CHAT)) {
+            recipient.sendMessage(format)
+        }
+    }
 }

@@ -1,8 +1,8 @@
 name: WorldServer
-version: ${project.version}
+version: 2.0.0
 api-version: 1.19
 author: Efnilite
-main: dev.efnilite.ws.WorldServer
+main: dev.efnilite.ws.WS
 description: Separate chat, the tab list and the economy in each world.
 softdepend: [Vault, PlaceholderAPI]
 commands:

@@ -1,10 +1,21 @@
 package dev.efnilite.ws.world
 
+import dev.efnilite.ws.WS
+import dev.efnilite.ws.config.Config
 import org.jetbrains.annotations.TestOnly
 
+/**
+ * Worlds handler.
+ */
 object Worlds {
 
     private val worlds = mutableMapOf<String, World>()
+
+    fun init() {
+        worlds.clear()
+
+        populate(Config.CONFIG.getPaths("shared").associateWith { Config.CONFIG.getStringList("shared.$it") })
+    }
 
     /**
      * Transforms the shared config options of the worlds into a map
@@ -12,7 +23,7 @@ object Worlds {
      *
      * @param sharedMap A map where the keys are
      */
-    fun init(sharedMap: Map<String, List<String>>) {
+    fun populate(sharedMap: Map<String, List<String>>) {
         for (sharedName in sharedMap.keys) {
             val inShared = mutableSetOf<World>()
 
@@ -30,7 +41,7 @@ object Worlds {
                     .toSet()
 
                 for (world in sharingWorlds) {
-                    map[world] = map.getOrDefault(world, emptySet()) + Shared(shareType, sharingWorlds)
+                    map[world] = map.getOrDefault(world, emptySet()) + Shared(sharedName, shareType, sharingWorlds)
                 }
             }
 
@@ -59,6 +70,7 @@ object Worlds {
 
         if (name !in worlds) {
             worlds[name] = world
+            WS.log("Registered late World as ${worlds[name]}")
         }
 
         return world

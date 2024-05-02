@@ -1,6 +1,8 @@
 package dev.efnilite.ws
 
 import dev.efnilite.vilib.ViPlugin
+import dev.efnilite.vilib.bstats.bukkit.Metrics
+import dev.efnilite.vilib.bstats.charts.SimplePie
 import dev.efnilite.vilib.util.Logging
 import dev.efnilite.ws.command.Command
 import dev.efnilite.ws.command.GcCommand
@@ -10,6 +12,8 @@ import dev.efnilite.ws.events.ChatEvents
 import dev.efnilite.ws.events.EcoEvents
 import dev.efnilite.ws.events.TabEvents
 import dev.efnilite.ws.hook.PapiHook
+import dev.efnilite.ws.player.WorldPlayer
+import dev.efnilite.ws.world.Worlds
 import java.io.File
 
 class WS : ViPlugin() {
@@ -21,6 +25,7 @@ class WS : ViPlugin() {
         stopping = false
 
         Locales.init()
+        Worlds.init()
 
         registerListener(Events)
         registerListener(ChatEvents)
@@ -30,11 +35,19 @@ class WS : ViPlugin() {
         registerCommand("ws", Command)
         registerCommand("globalchat", GcCommand)
 
+        // if /reload (ew)
+        server.onlinePlayers.forEach { WorldPlayer.players[it.uniqueId] = WorldPlayer(it) }
+
         if (server.pluginManager.isPluginEnabled("PlaceholderAPI")) {
             log("Registered PlaceholderAPI Hook")
             papiHook = PapiHook
             PapiHook.register()
         }
+
+        val metrics = Metrics(this, 13856)
+        metrics.addCustomChart(SimplePie("chat_enabled") { Config.CONFIG.getBoolean("chat").toString() })
+        metrics.addCustomChart(SimplePie("tab_enabled") { Config.CONFIG.getBoolean("tab").toString() })
+        metrics.addCustomChart(SimplePie("eco_enabled") { Config.CONFIG.getBoolean("eco").toString() })
     }
 
     override fun disable() {

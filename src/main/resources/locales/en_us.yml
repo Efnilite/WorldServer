@@ -4,3 +4,29 @@ global-chat:
   format: "<#cc0066>[%world%] <#ff80bf>%player% <gray>%message%"
   enable: "<#cc0066>Enabled global chat."
   disable: "<#cc0066>Disabled global chat."
+
+# -= World chat join formats =-
+# Add a custom join message per world chat.
+# Placeholders:
+# %player% - the player
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
+# All PlaceholderAPI placeholders are supported.
+chat-join-formats:
+  world: '<#19d347>%player% joined'
+  world_nether: '<#930508>%player% joined'
+  world_the_end: '<#f7fc76>%player% joined'
+  factions: '<green><bold>+</bold> <#98FF89>%player%'
+
+# -= World chat quit formats =-
+# Add a custom quit message per world chat.
+# Placeholders:
+# %player% - the player
+# %prefix% - The player's prefix
+# %suffix% - The player's suffix
+# All PlaceholderAPI placeholders are supported.
+chat-quit-formats:
+  world: '<#19d347>%player% left'
+  world_nether: '<#930508>%player% left'
+  world_the_end: '<#f7fc76>%player% left'
+  factions: '<red><bold>-</bold> <#98FF89>%player%'

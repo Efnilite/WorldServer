@@ -52,28 +52,6 @@ global-chat: true
 # If you set this to '!', typing '!hello' will be seen by all players.
 global-chat-prefix: '!'
 
-# -= World chat join formats =-
-# Add a custom join message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-# All PlaceholderAPI placeholders are supported.
-chat-join-formats:
-  example: '<green><bold>+</bold> <#98FF89>%player%'
-  MyWorld: '<#98FF89>%player% joined.'
-
-# -= World chat leave formats =-
-# Add a custom leave message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-# All PlaceholderAPI placeholders are supported.
-chat-leave-formats:
-  example: '<red><bold>-</bold> <#98FF89>%player%'
-  MyWorld: '<#FF8888>%player% left.'
-
 # -= Clear chat on switch =-
 # If true, will clear the chat on a switch of the world.
 clear-chat-on-switch: false

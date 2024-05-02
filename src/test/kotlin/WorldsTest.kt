@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test
 class WorldsTest {
 
     @Test
-    fun testInit() {
+    fun testPopulate() {
         mapOf(
             "lobby" to listOf("world", "chat||tab||world_nether", "chat||world_the_end"),
             "factions" to listOf("chat||tab||eco||factions", "chat||tab||eco||factions_nether", "chat||tab||eco||factions_the_end")
         ).let { sharedMap ->
-            Worlds.init(sharedMap)
+            Worlds.populate(sharedMap)
         }
 
         // test no overlap
