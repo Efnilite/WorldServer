@@ -1,6 +1,5 @@
-package dev.efnilite.ws.group
+package dev.efnilite.ws.world
 
-import dev.efnilite.ws.config.Config
 import org.jetbrains.annotations.TestOnly
 
 object Worlds {
@@ -10,15 +9,14 @@ object Worlds {
     /**
      * Transforms the shared config options of the worlds into a map
      * where each [World] instance has the correct set of [Shared].
+     *
+     * @param sharedMap A map where the keys are
      */
-    // todo tests
-    fun init() {
-        val shared = Config.CONFIG.getPaths("shared")
-
-        for (sharedName in shared) {
+    fun init(sharedMap: Map<String, List<String>>) {
+        for (sharedName in sharedMap.keys) {
             val inShared = mutableSetOf<World>()
 
-            for (line in Config.CONFIG.getStringList("shared.$sharedName")) {
+            for (line in sharedMap[sharedName]!!) {
                 val (name, shareTypes) = parseLine(line)
                 val world = World(name, emptySet(), shareTypes)
 
@@ -28,7 +26,7 @@ object Worlds {
             val map = mutableMapOf<World, Set<Shared>>()
 
             for (shareType in ShareType.entries) {
-                val sharingWorlds = inShared.filter { it.shareTypes.contains(shareType) }
+                val sharingWorlds = inShared.filter { shareType in it.shareTypes }
                     .toSet()
 
                 for (world in sharingWorlds) {
@@ -42,16 +40,27 @@ object Worlds {
         }
     }
 
+    // parses line into parts
     @TestOnly
     fun parseLine(line: String): Pair<String, Set<ShareType>> {
         val shareTypes = mutableSetOf<ShareType>()
         val elements = line.split("||")
             .map { it.lowercase().trim() }
 
-        if (elements.contains("chat")) shareTypes.add(ShareType.CHAT)
-        if (elements.contains("tab")) shareTypes.add(ShareType.TAB)
-        if (elements.contains("eco")) shareTypes.add(ShareType.ECO)
+        if ("chat" in elements) shareTypes.add(ShareType.CHAT)
+        if ("tab" in elements) shareTypes.add(ShareType.TAB)
+        if ("eco" in elements) shareTypes.add(ShareType.ECO)
 
         return Pair(elements.last(), shareTypes)
+    }
+
+    fun getWorld(name: String): World {
+        val world = worlds.getOrDefault(name, World(name, emptySet(), emptySet()))
+
+        if (name !in worlds) {
+            worlds[name] = world
+        }
+
+        return world
     }
 }

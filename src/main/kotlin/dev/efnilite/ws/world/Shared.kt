@@ -1,4 +1,4 @@
-package dev.efnilite.ws.group
+package dev.efnilite.ws.world
 
 /**
  * Represents a group of worlds which share some values.

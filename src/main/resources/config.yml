@@ -1,5 +1,5 @@
-# WorldServer
-# by Efnilite
+# -= WorldServer =-
+# by Efnilite (https://efnilite.dev)
 # (c) 2024
 
 # Need help?
@@ -12,10 +12,17 @@ debug: false
 # If true, using /ws requires the "ws" permission.
 permissions: false
 
+# -= Locale =-
+# The default locale to use if the player's locale is not found.
+locale: "en_US"
+
 # -= Shared =-
 # Worlds in these groups share chat, tab list, or economy.
 # Specify per world which features are shared.
-# 'chat||tab||world_name' will share chat and tab list with the rest of the group in the world 'world_name'.
+# Examples:
+# - 'chat||tab||world_name' will share chat and tab list with the rest of the group in the world 'world_name'.
+# - In the lobby section below, chat is shared between world, world_nether and world_the_end, but tab
+#   is only shared between world_nether and world_the_end.
 shared:
   lobby:
     - 'chat||world'
@@ -30,49 +37,20 @@ shared:
 # If true, hides players not in the player's current world.
 tab: true
 
-# -= Enable per world chat =-
-# True: players not in the same world can't chat with each other
-# False: chat will be global
-chat-enabled: true
+# -= Chat =-
+# If true, chat will be separated per world.
+chat: true
 
-# -= Enable global chat =-
-# True: players will be able to talk in global chat using a prefix
-# False: players are bound to talk in their own world (if enabled)
-global-chat-enabled: true
+# -= Global chat =-
+# If true, players can chat globally if they prefix their message with a certain string.
+# View the global chat prefix setting to change this.
+global-chat: true
 
 # -= Global chat prefix =-
 # The prefix for global chat.
 # This is used to be able to type in global chat.
 # If you set this to '!', typing '!hello' will be seen by all players.
-# This is not a command. Add the prefix (by default '!') in front of your message to access global chat!
 global-chat-prefix: '!'
-
-# -= Global chat format =-
-# The text format when a message is sent in global chat
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-global-chat-format: '<#468094>[Global] <white>%player%: %message%'
-
-# -= Global chat change =-
-# Message on change of chat format.
-global-chat-change:
-  enabled: "<dark_gray>Enabled global chat."
-  disabled: "<dark_gray>Disabled global chat."
-
-# -= Spy Format =-
-# The message format for when spy mode is enabled for an admin.
-# Change this by using /ws menu.
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
 
 # -= World chat format =-
 # Change the chat format for a group of worlds or a specific world

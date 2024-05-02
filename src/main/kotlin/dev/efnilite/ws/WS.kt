@@ -14,6 +14,9 @@ class WS : ViPlugin() {
     override fun enable() {
         instance = this
         stopping = false
+
+        registerListener(Events)
+        registerCommand("ws", Command)
     }
 
     override fun disable() {

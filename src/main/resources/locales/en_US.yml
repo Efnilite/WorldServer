@@ -1,0 +1,11 @@
+# US English (en_US)
+
+# The chat format for the shared worlds
+chat:
+  lobby: "<#d65cad>[Lobby] <#ebadd6>%player% <gray>%message%"
+  factions: "<#ff0088>[Factions] <#ff80c3>%player% <gray>%message%"
+
+global-chat:
+  format: "<#cc0066>[%world%] <#ff80bf>%player% <gray>%message%"
+  enable: "<#cc0066>Enabled global chat."
+  disable: "<#cc0066>Disabled global chat."
