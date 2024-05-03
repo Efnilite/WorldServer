@@ -21,14 +21,17 @@ data class World(val name: String,
     fun asWorld(): World? = Bukkit.getWorld(name)
 
     /**
+     * Returns the [Shared] with the specified [ShareType].
+     */
+    fun getShared(shareType: ShareType) = shared.firstOrNull { it.shareType == shareType }
+
+    /**
      * Returns the players in [Shared] with the specified [ShareType].
      */
     fun getPlayers(shareType: ShareType): Set<Player> {
-        val sharedWithType = shared.filter { it.shareType == shareType }
+        val sharedWithType = getShared(shareType) ?: return asWorld()?.players?.toSet() ?: emptySet()
 
-        if (sharedWithType.isEmpty()) return asWorld()?.players?.toSet() ?: emptySet()
-
-        return sharedWithType.flatMap { it.worlds }
+        return sharedWithType.worlds
             .mapNotNull { it.asWorld() }
             .flatMap { it.players }
             .toSet()

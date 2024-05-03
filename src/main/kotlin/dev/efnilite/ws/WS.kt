@@ -1,11 +1,12 @@
 package dev.efnilite.ws
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dev.efnilite.vilib.ViPlugin
 import dev.efnilite.vilib.bstats.bukkit.Metrics
 import dev.efnilite.vilib.bstats.charts.SimplePie
 import dev.efnilite.vilib.util.Logging
-import dev.efnilite.ws.command.Command
-import dev.efnilite.ws.command.GcCommand
+import dev.efnilite.ws.command.*
 import dev.efnilite.ws.config.Config
 import dev.efnilite.ws.config.Locales
 import dev.efnilite.ws.events.ChatEvents
@@ -34,13 +35,15 @@ class WS : ViPlugin() {
         registerCommand("ws", Command)
         registerCommand("globalchat", GcCommand)
 
-        // if /reload (ew)
-        server.onlinePlayers.forEach { WorldPlayer.players[it.uniqueId] = WorldPlayer(it) }
+        if (Config.CONFIG.getBoolean("eco.enabled")) {
+            registerCommand("balance", BalCommand)
+            registerCommand("balancetop", TopCommand)
+            registerCommand("pay", PayCommand)
+        }
 
         if (server.pluginManager.isPluginEnabled("PlaceholderAPI")) {
             log("Registered PlaceholderAPI Hook")
             papiHook = PapiHook
-            PapiHook.register()
         }
 
         val metrics = Metrics(this, 13856)
@@ -51,6 +54,8 @@ class WS : ViPlugin() {
 
     override fun disable() {
         stopping = true
+
+        WorldPlayer.players.values.forEach { it.save() }
     }
 
     fun saveFile(path: String) {
@@ -63,6 +68,8 @@ class WS : ViPlugin() {
 
     companion object {
         var papiHook: PapiHook? = null
+
+        val gson: Gson = GsonBuilder().disableHtmlEscaping().excludeFieldsWithoutExposeAnnotation().create()
 
         var stopping = false
             private set

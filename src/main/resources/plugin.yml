@@ -12,3 +12,11 @@ commands:
   globalchat:
     aliases: [gc, global-chat, global]
     description: Toggle global chat.
+  balance:
+    aliases: [bal]
+    description: Check your balance.
+  balancetop:
+    aliases: [baltop]
+    description: Check the top balances.
+  pay:
+    description: Pay a player.

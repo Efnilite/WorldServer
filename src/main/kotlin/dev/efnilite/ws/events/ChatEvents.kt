@@ -59,6 +59,8 @@ object ChatEvents : EventWatcher {
             else -> return
         }
 
+        val translated = WS.papiHook?.translate(player, format)?.replace("%player%", player.displayName)
+
         event.joinMessage = null
 
         Task.create(WS.instance)
@@ -68,9 +70,7 @@ object ChatEvents : EventWatcher {
                     return@execute
                 }
 
-                for (recipient in world.getPlayers(ShareType.CHAT)) {
-                    recipient.sendMessage(format)
-                }
+                world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(translated) }
             }.run()
     }
 
@@ -91,10 +91,10 @@ object ChatEvents : EventWatcher {
             else -> return
         }
 
+        val translated = WS.papiHook?.translate(player, format)?.replace("%player%", player.displayName)
+
         event.quitMessage = null
 
-        for (recipient in world.getPlayers(ShareType.CHAT)) {
-            recipient.sendMessage(format)
-        }
+        world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(translated) }
     }
 }

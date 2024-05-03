@@ -55,21 +55,19 @@ object Command : ViCommand() {
     }
 
     override fun tabComplete(sender: CommandSender, args: Array<out String>): List<String> {
+        val suggestions = mutableListOf<String>()
+
         if (args.size == 1) {
-            val list = mutableListOf<String>()
-
-            if (sender.hasWPermission("menu")) list += "menu"
-            if (sender.isOp) list += "reload"
-
-            return list
+            if (sender.hasWPermission("menu")) suggestions += "menu"
+            if (sender.isOp) suggestions += "reload"
         }
 
-        return emptyList()
+        return suggestions
     }
 
     private fun CommandSender.send(message: String) = sendMessage(Strings.colour(message))
 
-    private fun CommandSender.hasWPermission(permission: String): Boolean {
+    fun CommandSender.hasWPermission(permission: String): Boolean {
         return if (Config.CONFIG.getBoolean("permissions")) {
             hasPermission(permission)
         } else {

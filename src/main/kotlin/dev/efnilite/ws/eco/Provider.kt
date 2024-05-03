@@ -2,6 +2,7 @@ package dev.efnilite.ws.eco
 
 import dev.efnilite.ws.WorldPlayer
 import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.config.Locales
 import net.milkbowl.vault.economy.AbstractEconomy
 import net.milkbowl.vault.economy.EconomyResponse
 import org.bukkit.Bukkit
@@ -10,7 +11,7 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class Provider : AbstractEconomy() {
+object Provider : AbstractEconomy() {
 
     private val currencyFormat = NumberFormat.getInstance(Locale.US)
 
@@ -39,15 +40,15 @@ class Provider : AbstractEconomy() {
     }
 
     override fun format(amount: Double): String {
-        return Option.ECONOMY_CURRENCY_SYMBOL + currencyFormat.format(amount)
+        return Config.CONFIG.getString("eco.currency-symbol") + currencyFormat.format(amount)
     }
 
     override fun currencyNamePlural(): String {
-        return Option.ECONOMY_CURRENCY_NAMES_PLURAL
+        return Config.CONFIG.getString("eco.currency-names.plural")
     }
 
     override fun currencyNameSingular(): String {
-        return Option.ECONOMY_CURRENCY_NAMES_SINGULAR
+        return Config.CONFIG.getString("eco.currency-names.singular")
     }
 
     override fun hasAccount(s: String?): Boolean {
@@ -59,15 +60,11 @@ class Provider : AbstractEconomy() {
     }
 
     override fun getBalance(name: String): Double {
-        val player = getPlayer(name)
-
-        return if (player == null) 0 else player.getBalance()
+        return getPlayer(name)?.getBalance() ?: 0.0
     }
 
     override fun getBalance(name: String, world: String): Double {
-        val player = getPlayer(name)
-
-        return if (player == null) 0 else player.getBalance(getWorldGroup(world))
+        return getPlayer(name)?.getBalance(world) ?: 0.0
     }
 
     override fun has(name: String, amount: Double): Boolean {
@@ -79,7 +76,7 @@ class Provider : AbstractEconomy() {
     override fun has(name: String, world: String, amount: Double): Boolean {
         val player = getPlayer(name)
 
-        return player != null && player.getBalance(getWorldGroup(world)) >= amount
+        return player != null && player.getBalance(world) >= amount
     }
 
     override fun withdrawPlayer(name: String, amount: Double): EconomyResponse {
@@ -90,11 +87,11 @@ class Provider : AbstractEconomy() {
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Can't withdraw negative amount")
         }
 
-        if (!Option.ECONOMY_ALLOW_NEGATIVE_BALANCE && amount > player.getBalance()) {
-            player.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT)
+        if (!Config.CONFIG.getBoolean("eco.allow-negative-balance") && amount > player.getBalance()) {
+            player.player.sendMessage(Locales.getString(player.player, "eco.pay.no-funds"))
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Not enough balance")
         }
-        player.withdraw(amount)
+        player.alterBalance(-amount)
         return EconomyResponse(amount, player.getBalance(), EconomyResponse.ResponseType.SUCCESS, null)
     }
 
@@ -106,14 +103,14 @@ class Provider : AbstractEconomy() {
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Can't withdraw negative amount")
         }
 
-        if (!Option.ECONOMY_ALLOW_NEGATIVE_BALANCE && amount > player.getBalance()) {
-            player.send(Option.ECONOMY_PAY_NO_FUNDS_FORMAT)
+        if (!Config.CONFIG.getBoolean("eco.allow-negative-balance") && amount > player.getBalance()) {
+            player.player.sendMessage(Locales.getString(player.player, "eco.pay.no-funds"))
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Not enough balance")
         }
-        player.withdraw(getWorldGroup(world), amount)
+        player.alterBalance(world, -amount)
         return EconomyResponse(
             amount,
-            player.getBalance(getWorldGroup(world)),
+            player.getBalance(world),
             EconomyResponse.ResponseType.SUCCESS,
             null
         )
@@ -127,7 +124,7 @@ class Provider : AbstractEconomy() {
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Can't deposit negative amount")
         }
 
-        player.deposit(amount)
+        player.alterBalance(amount)
         return EconomyResponse(amount, player.getBalance(), EconomyResponse.ResponseType.SUCCESS, null)
     }
 
@@ -139,10 +136,10 @@ class Provider : AbstractEconomy() {
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Can't deposit negative amount")
         }
 
-        player.deposit(getWorldGroup(world), amount)
+        player.alterBalance(world, amount)
         return EconomyResponse(
             amount,
-            player.getBalance(getWorldGroup(world)),
+            player.getBalance(world),
             EconomyResponse.ResponseType.SUCCESS,
             null
         )
@@ -192,16 +189,7 @@ class Provider : AbstractEconomy() {
         return true
     }
 
-    private fun getWorldGroup(name: String): String {
-        val world = Bukkit.getWorld(name) ?: return ""
-
-        return GroupUtil.getGroupFromWorld(world)
-    }
-
     private fun getPlayer(name: String): WorldPlayer? {
-        val player = Bukkit.getPlayer(name) ?: return null
-
-        return WorldPlayer.player
+        return WorldPlayer.players[Bukkit.getPlayer(name)?.uniqueId]
     }
-
 }

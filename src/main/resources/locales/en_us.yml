@@ -7,10 +7,7 @@ global-chat:
 
 # -= World chat join formats =-
 # Add a custom join message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
+# Placeholders: %player% - the player
 # All PlaceholderAPI placeholders are supported.
 chat-join-formats:
   world: '<#19d347>%player% joined'
@@ -20,10 +17,7 @@ chat-join-formats:
 
 # -= World chat quit formats =-
 # Add a custom quit message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
+# Placeholders: %player% - the player
 # All PlaceholderAPI placeholders are supported.
 chat-quit-formats:
   world: '<#19d347>%player% left'
@@ -35,16 +29,14 @@ eco:
 
   # -= Economy balance notification format =-
   # This will only be set if economy and economy switch notifications are enabled.
-  # %amount% - the current amount
-  switch-format: '<white>You now have <#4DF019>E$%amount%<gray>.'
-  currency-symbol: 'E$'
-  currency-names:
-    singular: 'eurodollar'
-    plural: 'eurodollars'
+  # Placeholders: %amount% - the current amount
+  switch: '<white>You now have <#4DF019>E$%amount%<gray>.'
 
-  # -= Economy balance format =-
-  # The message format of the /bal command.
-  balance-format: '%player% has E$ %amount%'
+  # -= Bal message formats =-
+  bal:
+    you: 'You have E$ %amount%'
+    other: '%player% has E$ %amount%'
+    unknown: 'Player %player% is not online'
 
   # -= Economy balance change format =-
   # The message a player receives when their balance is changed.
@@ -52,8 +44,9 @@ eco:
   # %amount% - the given amount.
   # %prefix% - a + or -, depending on whether the amount is added or removed.
   # Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
-  balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
+  balance-change: '<gray>%prefix%<white>%amount% eurodollars'
 
-  pay-no-funds-format: "You don't have enough E$ to do that!"
-  pay-send-format: 'You sent %player% E$ %amount%'
-  pay-receive-format: '%player% sent you E$ %amount%'
+  pay:
+    no-funds: "You don't have enough E$ to do that!"
+    send: 'You sent %player% E$ %amount%'
+    receive: '%player% sent you E$ %amount%'

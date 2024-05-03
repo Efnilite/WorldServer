@@ -61,6 +61,7 @@ clear-chat-on-switch: false
 # False: players will share
 eco:
 
+  # -= Economy enabled =-
   enabled: false
 
   # -= Economy global =-
@@ -84,24 +85,11 @@ eco:
     example: 1000
     MyWorld: 69.69
 
-  # -= Economy override balance command =-
-  # Whether WorldServer should register /bal and /balance.
-  # This will override any plugin who is already using this command.
-  # Requires a restart to take effect.
-  override-balance-command: true
-
   # -= Economy balance change =-
   # Sends a message to the player when their balance changes.
   balance-change: true
 
-  # -= Economy override pay command =-
-  # Whether WorldServer should register /pay
-  # This will override any plugin who is already using this command.
-  # Requires a restart to take effect.
-  override-pay-command: true
-
-  # -= Economy override baltop command =-
-  # Whether WorldServer should register /baltop and /balancetop
-  # This will override any plugin who is already using this command.
-  # Requires a restart to take effect.
-  override-baltop-command: true
+  currency-symbol: 'E$'
+  currency-names:
+    singular: 'eurodollar'
+    plural: 'eurodollars'
