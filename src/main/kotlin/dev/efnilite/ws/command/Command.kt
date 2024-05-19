@@ -2,7 +2,11 @@ package dev.efnilite.ws.command
 
 import dev.efnilite.vilib.command.ViCommand
 import dev.efnilite.vilib.util.Strings
+import dev.efnilite.vilib.util.Task
+import dev.efnilite.ws.WS
 import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.eco.EssentialConverter
+import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.Worlds
 import org.bukkit.command.CommandSender
 
@@ -26,6 +30,7 @@ object Command : ViCommand() {
 
                 if (sender.isOp) {
                     send("<#cc0066>/ws reload <dark_gray>- <gray>Reloads config files")
+                    send("<#cc0066>/ws migrate %group% <dark_gray>- <gray>Migrate Essentials economy to WorldServer economy")
                     send("")
                 }
             }
@@ -50,6 +55,24 @@ object Command : ViCommand() {
 
                 sender.send("<#cc0066>Config files reloaded")
             }
+            "migrate" -> {
+                if (!sender.isOp) {
+                    return true
+                }
+
+                if (args.size != 2) {
+                    sender.send("<#cc0066>/ws migrate %group%")
+                    return true
+                }
+
+
+                val world = Worlds.getWorld(args[1])
+                val group = world.getShared(ShareType.ECO) ?: return true
+
+                Task.create(WS.instance).async()
+                    .execute { EssentialConverter.convert(group) }
+                    .run()
+            }
         }
         return true
     }
@@ -60,6 +83,7 @@ object Command : ViCommand() {
         if (args.size == 1) {
             if (sender.hasWPermission("menu")) suggestions += "menu"
             if (sender.isOp) suggestions += "reload"
+            if (sender.isOp) suggestions += "migrate-eco"
         }
 
         return suggestions

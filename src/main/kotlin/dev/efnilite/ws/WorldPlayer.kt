@@ -1,6 +1,9 @@
 package dev.efnilite.ws
 
 import com.google.gson.annotations.Expose
+import dev.efnilite.vilib.util.Strings
+import dev.efnilite.ws.config.Config
+import dev.efnilite.ws.config.Locales
 import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.Shared
 import dev.efnilite.ws.world.World
@@ -35,12 +38,18 @@ class WorldPlayer private constructor(val player: Player) {
         }
     }
 
+    /**
+     * Alter the balance of this player in the current [Shared].
+     */
     fun alterBalance(amount: Double) {
         val shared = world.getShared(ShareType.ECO)?.name ?: return
 
         balances[shared] = getBalance() + amount
     }
 
+    /**
+     * Alter the balance of this player in the specified world.
+     */
     fun alterBalance(worldName: String, amount: Double) {
         val shared = Worlds.getWorld(worldName).getShared(ShareType.ECO)?.name ?: return
 
