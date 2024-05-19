@@ -1,11 +1,22 @@
 name: WorldServer
+version: 2.0.0
+api-version: 1.19
 author: Efnilite
-main: dev.efnilite.ws.WorldServer
-version: ${project.version}
-api-version: 1.16
+main: dev.efnilite.ws.WS
 description: Separate chat, the tab list and the economy in each world.
 softdepend: [Vault, PlaceholderAPI]
 commands:
   worldserver:
     aliases: [ws]
     description: The main command of WorldServer.
+  globalchat:
+    aliases: [gc, global-chat, global]
+    description: Toggle global chat.
+  balance:
+    aliases: [bal]
+    description: Check your balance.
+  balancetop:
+    aliases: [baltop]
+    description: Check the top balances.
+  pay:
+    description: Pay a player.

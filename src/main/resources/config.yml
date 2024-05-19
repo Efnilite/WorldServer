@@ -1,241 +1,91 @@
-#====================================================================================================================================#
-#                                                                                                                                    #
-#     :::       :::  ::::::::  :::::::::  :::        :::::::::   ::::::::  :::::::::: :::::::::  :::     ::: :::::::::: :::::::::    #
-#     :+:       :+: :+:    :+: :+:    :+: :+:        :+:    :+: :+:    :+: :+:        :+:    :+: :+:     :+: :+:        :+:    :+:   #
-#    +:+       +:+ +:+    +:+ +:+    +:+ +:+        +:+    +:+ +:+        +:+        +:+    +:+ +:+     +:+ +:+        +:+    +:+    #
-#   +#+  +:+  +#+ +#+    +:+ +#++:++#:  +#+        +#+    +:+ +#++:++#++ +#++:++#   +#++:++#:  +#+     +:+ +#++:++#   +#++:++#:      #
-#  +#+ +#+#+ +#+ +#+    +#+ +#+    +#+ +#+        +#+    +#+        +#+ +#+        +#+    +#+  +#+   +#+  +#+        +#+    +#+      #
-#  #+#+# #+#+#  #+#    #+# #+#    #+# #+#        #+#    #+# #+#    #+# #+#        #+#    #+#   #+#+#+#   #+#        #+#    #+#       #
-#  ###   ###    ########  ###    ### ########## #########   ########  ########## ###    ###     ###     ########## ###    ###        #
-#                                                                                                                                    #
-#====================================================================================================================================#
+# -= WorldServer =-
+# by Efnilite (https://efnilite.dev)
+# (c) 2024
 
-#====================================================================================================================================#
-#                                                                                                                                    #
-#                                            (c) Efnilite 2022-2023. Do not distribute!                                              #
-#                                                                                                                                    #
-#====================================================================================================================================#
+# Need help?
+# Join my Discord (https://efnilite.dev/discord) or email me (https://efnilite.dev/#contact).
 
-# -= Auto updater =-
-# The auto updater will automatically download updates if they are available.
-# It's highly recommended to keep this on!
-auto-updater: true
+# -= Debug =-
+debug: false
 
-# -= /ws requires permission =-
-# If true, using /ws requires the "ws" permission.
-ws-requires-permission: false
+# -= Permissions =-
+# If true, commands will require permissions.
+permissions: false
 
-# -= World groups =-
-# Group together worlds to share the tab list and chat
-# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
-groups:
-  example:
-    - 'World-1'
-    - 'World-2'
-    - 'Nether'
+# -= Locale =-
+# The default locale to use if the player's locale is not found.
+locale: "en_us"
 
-# -= Enable per world tab list =-
-# True: players not in the same world will be hidden
-# False: every player will be visible
-tab-enabled: true
+# -= Shared =-
+# Worlds in these groups share chat, tab list, or economy.
+# Specify per world which features are shared.
+# Examples:
+# - 'chat||tab||world_name' will share chat and tab list with the rest of the group in the world 'world_name'.
+# - In the lobby section below, chat is shared between world, world_nether and world_the_end, but tab
+#   is only shared between world_nether and world_the_end.
+shared:
+  lobby:
+    - 'chat||world'
+    - 'chat||tab||world_nether'
+    - 'chat||tab||world_the_end'
+  factions:
+    - 'chat||tab||eco||factions'
+    - 'chat||tab||eco||factions_nether'
+    - 'chat||tab||eco||factions_the_end'
 
-# -= Enable per world chat =-
-# True: players not in the same world can't chat with each other
-# False: chat will be global
-chat-enabled: true
+# -= Tab =-
+# If true, hides players not in the player's current world.
+tab: true
 
-# -= Enable global chat =-
-# True: players will be able to talk in global chat using a prefix
-# False: players are bound to talk in their own world (if enabled)
-global-chat-enabled: true
+# -= Chat =-
+# If true, chat will be separated per world.
+chat: true
+
+# -= Global chat =-
+# If true, players can chat globally if they prefix their message with a certain string.
+# View the global chat prefix setting to change this.
+global-chat: true
 
 # -= Global chat prefix =-
 # The prefix for global chat.
 # This is used to be able to type in global chat.
 # If you set this to '!', typing '!hello' will be seen by all players.
-# This is not a command. Add the prefix (by default '!') in front of your message to access global chat!
 global-chat-prefix: '!'
 
-# -= Global chat format =-
-# The text format when a message is sent in global chat
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-global-chat-format: '<#468094>[Global] <white>%player%: %message%'
-
-# -= Global chat change =-
-# Message on change of chat format.
-global-chat-change:
-  enabled: "<dark_gray>Enabled global chat."
-  disabled: "<dark_gray>Disabled global chat."
-
-# -= Spy Format =-
-# The message format for when spy mode is enabled for an admin.
-# Change this by using /ws menu.
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-spy-format: '<#abcdef>(%world%) <gray>%player%: %message%'
-
-# -= World chat format =-
-# Change the chat format for a group of worlds or a specific world
-# If conflict happens, groups are prioritized over worlds.
-# These messages support PlaceholderAPI placeholders.
-# Have any questions? Join my Discord (https://discord.gg/wRpSWHx)
-# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
-# Placeholders:
-# %world% - The group/world in which the message was sent
-# %player% - The player
-# %message% - The message
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-chat-format:
-  example: '<red>[Example World Group] <white>%player%: <gray>%message%' # Example with a group
-  MyWorld: '<red>[MyWorld] <gray>%player% - %message%' # Example with a world
-
-# -= World chat cooldown =-
-# The chat cooldown per world group or world.
-# This is in seconds. Time cheat sheet:
-# 1 minute = 60 seconds
-# 1 hour = 3600 seconds
-# 1 day = 86400 seconds
-chat-cooldown:
-  global: 5
-  example: 1
-  MyWorld: 2.5
-
-# -= World chat cooldown format =-
-# The message players get when they are on chat cooldown.
-# Placeholders:
-# %remaining% - the time remaining
-# %time% - the total cooldown time
-chat-cooldown-format: '<gray>You need to wait <green>%remaining%<gray> seconds until you can send another message!'
-
-# -= Chat blocked =-
-# Words which will be banned in chat.
-# These are case-insensitive.
-chat-blocked:
-  - "bad word"
-
-# -= Chat blocked format =-
-# The message players get when their message contains a blocked word.
-chat-blocked-format: '<gray>You can''t say mean things :('
-
-# -= World chat join formats =-
-# Add a custom join message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-chat-join-formats:
-  example: '<green><bold>+</bold> <#98FF89>%player%'
-  MyWorld: '<#98FF89>%player% joined.'
-
-# -= World chat leave formats =-
-# Add a custom leave message per world chat.
-# Placeholders:
-# %player% - the player
-# %prefix% - The player's prefix
-# %suffix% - The player's suffix
-chat-leave-formats:
-  example: '<red><bold>-</bold> <#98FF89>%player%'
-  MyWorld: '<#FF8888>%player% left.'
-
 # -= Clear chat on switch =-
-# If set to true, will clear the chat on a switch of the world.
+# If true, will clear the chat on a switch of the world.
 clear-chat-on-switch: false
 
 # -= Enable per world economy =-
 # True: players will have a different balance, depending on which World or World Group they are in.
 # False: players will share
-economy-enabled: true
+eco:
 
-# -= Economy global =-
-# True: the economy will be shared across the entire server
-# False: if economy is enabled, each world or world group will have a different economy.
-economy-global-enabled: false
+  # -= Economy enabled =-
+  enabled: false
 
-# -= Economy switch notification =-
-# True: players will receive a message when they switch worlds (or join) detailing how much balance they have
-# False: players won't get a message
-economy-switch-notification: true
+  # -= Economy global =-
+  # True: the economy will be shared across the entire server
+  # False: if economy is enabled, each world or world group will have a different economy.
+  global-enabled: false
 
-# -= Economy balance notification format =-
-# Set the format of the message players get if they switch worlds.
-# This will only be set if economy and economy switch notifications are enabled.
-# Placeholders:
-# %amount% - the current amount
-economy-switch-format: '<white>You now have <#4DF019>E$%amount%<gray>.'
+  # -= Economy switch notification =-
+  # True: players will receive a message when they switch worlds (or join) detailing how much balance they have
+  # False: players won't get a message
+  switch-notification: true
 
-# -= Economy currency symbol =-
-# The economy currency symbol.
-economy-currency-symbol: 'E$'
+  # -= Economy allow negative balance =-
+  # When true, WorldServer will not check if the player has enough balance when withdrawing.
+  # This will allow players to have a negative balance.
+  allow-negative-balance: false
 
-# -= Economy currency names =-
-# The names of the currency.
-# The first entry is for singular, the second for plural.
-economy-currency-names:
-  singular: 'eurodollar'
-  plural: 'eurodollars'
+  # -= Economy starting amount =-
+  # The amount of money the player will start with in a specific world group if they haven't ever joined that group.
+  starting-amount:
+    factions: 1000
+    example: 69.69
 
-# -= Economy allow negative balance =-
-# When true, WorldServer will not check if the player has enough balance when withdrawing.
-# This will allow players to have a negative balance.
-economy-allow-negative-balance: false
-
-# -= Economy starting amount =-
-# The amount of money the player will start with in a specific world group if they haven't ever joined that group.
-economy-starting-amount:
-  example: 1000
-  MyWorld: 69.69
-
-# -= Economy override balance command =-
-# Whether WorldServer should register /bal and /balance.
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-balance-command: true
-
-# -= Economy balance format =-
-# The message format of the /bal command.
-economy-balance-format: '%player% has E$ %amount%'
-
-# -= Economy balance change =-
-# Sends a message to the player when their balance changes.
-economy-balance-change: true
-
-# -= Economy balance change format =-
-# The message a player receives when their balance is changed.
-# Placeholders:
-# %amount% - the given amount.
-# %prefix% - a + or -, depending on whether the amount is added or removed.
-# Example: '%prefix%%amount% eurodollars' -> '+10 eurodollars'
-economy-balance-change-format: '<gray>%prefix%<white>%amount% eurodollars'
-
-# -= Economy override pay command =-
-# Whether WorldServer should register /pay
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-pay-command: true
-
-# -= Economy pay format =-
-# These messages support PlaceholderAPI placeholders.
-# Learn more about colouring: https://docs.adventure.kyori.net/minimessage/format.html
-
-# The format for when a player does not have enough funds to pay someone.
-economy-pay-no-funds-format: 'You don''t have enough E$ to do that!'
-# The format for when a player sends another player money.
-economy-pay-send-format: 'You sent %player% E$ %amount%'
-# The format for when a player receives money from another player.
-economy-pay-receive-format: '%player% sent you E$ %amount%'
-
-# -= Economy override baltop command =-
-# Whether WorldServer should register /baltop and /balancetop
-# This will override any plugin who is already using this command.
-# Requires a restart to take effect.
-economy-override-baltop-command: true
+  currency-symbol: 'E$'
+  currency-names:
+    singular: 'eurodollar'
+    plural: 'eurodollars'
