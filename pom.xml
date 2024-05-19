@@ -114,10 +114,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-<<<<<<< HEAD
-=======
                             <minimizeJar>true</minimizeJar>
->>>>>>> master
                             <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                             <relocations>
                                 <relocation>
