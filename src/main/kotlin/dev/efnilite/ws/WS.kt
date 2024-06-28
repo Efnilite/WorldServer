@@ -6,6 +6,7 @@ import dev.efnilite.vilib.ViPlugin
 import dev.efnilite.vilib.bstats.bukkit.Metrics
 import dev.efnilite.vilib.bstats.charts.SimplePie
 import dev.efnilite.vilib.util.Logging
+import dev.efnilite.vilib.util.UpdateChecker
 import dev.efnilite.ws.command.*
 import dev.efnilite.ws.config.Config
 import dev.efnilite.ws.config.Locales
@@ -50,6 +51,8 @@ class WS : ViPlugin() {
         metrics.addCustomChart(SimplePie("chat_enabled") { Config.CONFIG.getBoolean("chat").toString() })
         metrics.addCustomChart(SimplePie("tab_enabled") { Config.CONFIG.getBoolean("tab").toString() })
         metrics.addCustomChart(SimplePie("eco_enabled") { Config.CONFIG.getBoolean("eco.enabled").toString() })
+
+        UpdateChecker.check(this, 99010)
     }
 
     override fun disable() {

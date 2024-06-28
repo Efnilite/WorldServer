@@ -5,8 +5,6 @@ import org.bukkit.entity.Player
 
 object PapiHook {
 
-    private var hasPapi: Boolean = false
-
     /**
      * If PAPI is found, translate placeholders. If not, return the given string.
      *

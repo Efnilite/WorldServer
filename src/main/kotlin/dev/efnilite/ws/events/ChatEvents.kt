@@ -85,16 +85,20 @@ object ChatEvents : EventWatcher {
         val sharedFormat = Locales.getString(player, "chat-quit-formats.$sharedName")
         val worldFormat = Locales.getString(player, "chat-quit-formats.$worldName")
 
-        val format = when {
+        var format = when {
             sharedFormat.isNotEmpty() -> sharedFormat
             worldFormat.isNotEmpty() -> worldFormat
             else -> return
         }
 
-        val translated = WS.papiHook?.translate(player, format)?.replace("%player%", player.displayName)
+        if (WS.papiHook != null) {
+            format = WS.papiHook!!.translate(player, format)
+        }
+
+        format = format.replace("%player%", player.displayName)
 
         event.quitMessage = null
 
-        world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(translated) }
+        world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(format) }
     }
 }
