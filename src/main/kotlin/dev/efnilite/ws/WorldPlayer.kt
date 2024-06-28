@@ -1,9 +1,6 @@
 package dev.efnilite.ws
 
 import com.google.gson.annotations.Expose
-import dev.efnilite.vilib.util.Strings
-import dev.efnilite.ws.config.Config
-import dev.efnilite.ws.config.Locales
 import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.Shared
 import dev.efnilite.ws.world.World
@@ -11,7 +8,7 @@ import dev.efnilite.ws.world.Worlds
 import org.bukkit.entity.Player
 import java.util.*
 
-class WorldPlayer private constructor(val player: Player) {
+class WorldPlayer private constructor(private val player: Player) {
 
     @Expose
     val balances = mutableMapOf<String, Double>()
@@ -33,9 +30,7 @@ class WorldPlayer private constructor(val player: Player) {
         file.parentFile.mkdirs()
         file.createNewFile()
 
-        file.writer().use {
-            WS.gson.toJson(this, it)
-        }
+        file.writer().use { WS.gson.toJson(this, it) }
     }
 
     /**
@@ -80,6 +75,8 @@ class WorldPlayer private constructor(val player: Player) {
          * Create a [WorldPlayer] from a [Player].
          */
         fun create(player: Player): WorldPlayer {
+            WS.log("Added ${player.name}")
+
             val file = WS.instance.dataFolder.resolve("players/${player.uniqueId}.json")
             val wp = WorldPlayer(player)
 
@@ -101,7 +98,6 @@ class WorldPlayer private constructor(val player: Player) {
 
         val players = mutableMapOf<UUID, WorldPlayer>()
 
-        fun Player.asWorldPlayer() = players[uniqueId]!!
-
+        fun Player.asWorldPlayer() = players.getOrPut(uniqueId) { create(this) }
     }
 }

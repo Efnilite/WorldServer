@@ -59,6 +59,7 @@ class WS : ViPlugin() {
         stopping = true
 
         WorldPlayer.players.values.forEach { it.save() }
+        WorldPlayer.players.clear()
     }
 
     fun saveFile(path: String) {

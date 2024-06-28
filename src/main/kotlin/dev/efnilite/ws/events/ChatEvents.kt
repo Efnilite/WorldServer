@@ -8,6 +8,7 @@ import dev.efnilite.ws.config.Locales
 import dev.efnilite.ws.WorldPlayer.Companion.asWorldPlayer
 import dev.efnilite.ws.world.ShareType
 import dev.efnilite.ws.world.World.Companion.asWorld
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -39,6 +40,8 @@ object ChatEvents : EventWatcher {
             event.message = message.substring(prefix.length)
         }
 
+        // todo global format
+
         return
     }
 
@@ -53,13 +56,7 @@ object ChatEvents : EventWatcher {
         val sharedFormat = Locales.getString(player, "chat-join-formats.$sharedName")
         val worldFormat = Locales.getString(player, "chat-join-formats.$worldName")
 
-        val format = when {
-            sharedFormat.isNotEmpty() -> sharedFormat
-            worldFormat.isNotEmpty() -> worldFormat
-            else -> return
-        }
-
-        val translated = WS.papiHook?.translate(player, format)?.replace("%player%", player.displayName)
+        val format = getFormat(sharedFormat, worldFormat, player) ?: return
 
         event.joinMessage = null
 
@@ -70,7 +67,7 @@ object ChatEvents : EventWatcher {
                     return@execute
                 }
 
-                world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(translated) }
+                world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(format) }
             }.run()
     }
 
@@ -85,20 +82,24 @@ object ChatEvents : EventWatcher {
         val sharedFormat = Locales.getString(player, "chat-quit-formats.$sharedName")
         val worldFormat = Locales.getString(player, "chat-quit-formats.$worldName")
 
+        val format = getFormat(sharedFormat, worldFormat, player) ?: return
+
+        event.quitMessage = null
+
+        world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(format) }
+    }
+
+    private fun getFormat(sharedFormat: String, worldFormat: String, player: Player): String? {
         var format = when {
             sharedFormat.isNotEmpty() -> sharedFormat
             worldFormat.isNotEmpty() -> worldFormat
-            else -> return
+            else -> return null
         }
 
         if (WS.papiHook != null) {
             format = WS.papiHook!!.translate(player, format)
         }
 
-        format = format.replace("%player%", player.displayName)
-
-        event.quitMessage = null
-
-        world.getPlayers(ShareType.CHAT).forEach { it.sendMessage(format) }
+        return format.replace("%player%", player.displayName)
     }
 }
