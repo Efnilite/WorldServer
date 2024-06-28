@@ -3,6 +3,10 @@ A lot has changed!
 
 - Rewrote everything in Kotlin
 - Added command for toggling global chat (/gc)
+- Added ability to select which of the following to share among worlds:
+  - Chat
+  - Tab
+  - Eco
 - Added locales
 - Removed chat format 
   - This should now be handled by chat formatting plugins
