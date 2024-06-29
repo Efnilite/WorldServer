@@ -88,7 +88,7 @@ object Provider : AbstractEconomy() {
         }
 
         if (!Config.CONFIG.getBoolean("eco.allow-negative-balance") && amount > player.getBalance()) {
-            player.player.sendMessage(Locales.getString(player.player, "eco.pay.no-funds"))
+            player.send(Locales.getString(player.getPlayer(), "eco.pay.no-funds"))
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Not enough balance")
         }
         player.alterBalance(-amount)
@@ -104,7 +104,7 @@ object Provider : AbstractEconomy() {
         }
 
         if (!Config.CONFIG.getBoolean("eco.allow-negative-balance") && amount > player.getBalance()) {
-            player.player.sendMessage(Locales.getString(player.player, "eco.pay.no-funds"))
+            player.send(Locales.getString(player.getPlayer(), "eco.pay.no-funds"))
             return EconomyResponse(0.0, 0.0, EconomyResponse.ResponseType.FAILURE, "Not enough balance")
         }
         player.alterBalance(world, -amount)

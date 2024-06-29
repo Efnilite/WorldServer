@@ -40,9 +40,15 @@ object ChatEvents : EventWatcher {
             event.message = message.substring(prefix.length)
         }
 
-        // todo global format
+        var format = Locales.getString(player, "global-chat.format")
 
-        return
+        if (WS.papiHook != null) {
+            format = WS.papiHook!!.translate(player, format)
+        }
+
+        event.format = format.replace("%player%", player.displayName)
+            .replace("%message%", event.message)
+            .replace("%world%", player.world.name)
     }
 
     @EventHandler

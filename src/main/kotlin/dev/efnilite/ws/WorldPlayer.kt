@@ -69,6 +69,12 @@ class WorldPlayer private constructor(private val player: Player) {
         return balances.getOrDefault(shared, 0.0)
     }
 
+    fun send(message: String) {
+        return player.sendMessage(message)
+    }
+
+    fun getPlayer() = player
+
     companion object {
 
         /**
