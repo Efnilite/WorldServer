@@ -28,27 +28,38 @@ object ChatEvents : EventWatcher {
 
         val prefix = Config.CONFIG.getString("global-chat-prefix")
 
-        if (!Config.CONFIG.getBoolean("global-chat")) {
-            event.recipients.clear()
-            event.recipients.addAll(player.asWorldPlayer().world.getPlayers(ShareType.CHAT))
+        var global = false
+
+        if (Config.CONFIG.getBoolean("global-chat")) {
+            if (player.asWorldPlayer().globalChat) {
+                WS.log("Sending toggled global chat from ${player.name}: $message")
+                global = true
+            } else if (message.startsWith(prefix) && message.length > prefix.length) {
+                event.message = message.substring(prefix.length)
+                WS.log("Sending global chat from ${player.name}: $message")
+                global = true
+            }
+        }
+
+        if (global) {
+            var format = Locales.getString(player, "global-chat.format")
+
+            if (WS.papiHook != null) {
+                format = WS.papiHook!!.translate(player, format)
+            }
+
+            event.format = format.replace("%player%", player.displayName)
+                .replace("%message%", event.message)
+                .replace("%world%", player.world.name)
+
             return
         }
 
-        if (player.asWorldPlayer().globalChat) {
-            WS.log("Sending global chat from ${player.name}: $message")
-        } else if (message.startsWith(prefix) && message.length > prefix.length) {
-            event.message = message.substring(prefix.length)
-        }
+        val to = player.asWorldPlayer().world.getPlayers(ShareType.CHAT)
 
-        var format = Locales.getString(player, "global-chat.format")
-
-        if (WS.papiHook != null) {
-            format = WS.papiHook!!.translate(player, format)
-        }
-
-        event.format = format.replace("%player%", player.displayName)
-            .replace("%message%", event.message)
-            .replace("%world%", player.world.name)
+        event.recipients.clear()
+        WS.log("Sending to ${to.joinToString(", ") { it.name }}")
+        event.recipients.addAll(to)
     }
 
     @EventHandler
