@@ -10,7 +10,6 @@ import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
 
-
 object Provider : AbstractEconomy() {
 
     private val currencyFormat = NumberFormat.getInstance(Locale.US)
