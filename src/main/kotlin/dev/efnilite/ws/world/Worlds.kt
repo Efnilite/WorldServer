@@ -75,4 +75,8 @@ object Worlds {
 
         return world
     }
+
+    fun getWorlds(): Set<String> {
+        return worlds.keys.toSet()
+    }
 }

@@ -80,7 +80,7 @@ class WorldPlayer private constructor(private val player: Player) {
         /**
          * Create a [WorldPlayer] from a [Player].
          */
-        fun create(player: Player): WorldPlayer {
+        private fun create(player: Player): WorldPlayer {
             WS.log("Added ${player.name}")
 
             val file = WS.instance.dataFolder.resolve("players/${player.uniqueId}.json")

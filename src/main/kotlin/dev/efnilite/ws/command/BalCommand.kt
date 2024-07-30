@@ -8,7 +8,6 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-
 object BalCommand : ViCommand() {
 
     override fun execute(sender: CommandSender, args: Array<out String>): Boolean {
