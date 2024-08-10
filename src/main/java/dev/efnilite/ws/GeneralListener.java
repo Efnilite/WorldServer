@@ -1,8 +1,6 @@
 package dev.efnilite.ws;
 
 import dev.efnilite.vilib.event.EventWatcher;
-import dev.efnilite.vilib.util.elevator.GitElevator;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;

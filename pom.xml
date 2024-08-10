@@ -6,7 +6,7 @@
 
     <groupId>dev.efnilite</groupId>
     <artifactId>WorldServer</artifactId>
-    <version>1.9.3</version>
+    <version>1.9.4</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.github.Efnilite</groupId>
             <artifactId>vilib</artifactId>
-            <version>e26c6e807d</version>
+            <version>c8976daa22</version>
             <scope>compile</scope>
         </dependency>
 
