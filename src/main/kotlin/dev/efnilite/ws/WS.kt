@@ -10,21 +10,40 @@ import dev.efnilite.vilib.util.UpdateChecker
 import dev.efnilite.ws.command.*
 import dev.efnilite.ws.config.Config
 import dev.efnilite.ws.config.Locales
+import dev.efnilite.ws.eco.Provider
 import dev.efnilite.ws.events.ChatEvents
 import dev.efnilite.ws.events.EcoEvents
 import dev.efnilite.ws.events.TabEvents
 import dev.efnilite.ws.hook.PapiHook
 import dev.efnilite.ws.world.Worlds
+import net.milkbowl.vault.economy.Economy
+import org.bukkit.Bukkit
+import org.bukkit.plugin.ServicePriority
 import java.io.File
 
 class WS : ViPlugin() {
 
     val logging = Logging(this)
 
-    override fun enable() {
+    override fun onLoad() {
         instance = this
         stopping = false
 
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault") &&
+            Config.CONFIG.getBoolean("eco.enabled")) {
+            try {
+                Class.forName("net.milkbowl.vault.economy.Economy")
+                server.servicesManager.register(Economy::class.java, Provider, this, ServicePriority.High)
+                logging.info("Registered with Vault!");
+            } catch (ignored: ClassNotFoundException) {
+
+            } catch (ignored: NoClassDefFoundError) {
+
+            }
+        }
+    }
+
+    override fun enable() {
         Locales.init()
         Worlds.init()
 

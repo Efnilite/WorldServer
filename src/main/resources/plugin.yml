@@ -5,6 +5,7 @@ website: https://github.com/Efnilite/WorldServer
 author: Efnilite
 main: dev.efnilite.ws.WS
 description: Separate chat, the tab list and the economy in each world.
+loadbefore: [Essentials, EssentialsX]
 softdepend: [Vault, PlaceholderAPI]
 commands:
   ws:
